@@ -2,26 +2,247 @@
 @tailwind components;
 @tailwind utilities;
 
-:root {
-  --foreground-rgb: 0, 0, 0;
-  --background-start-rgb: 214, 219, 220;
-  --background-end-rgb: 255, 255, 255;
+@font-face {
+  font-family: "Overpass";
+  src: url("/fonts/Overpass/Overpass-VariableFont_wght.ttf") format("truetype");
+  font-style: normal;
+  font-weight: 100;
 }
 
-@media (prefers-color-scheme: dark) {
-  :root {
-    --foreground-rgb: 255, 255, 255;
-    --background-start-rgb: 0, 0, 0;
-    --background-end-rgb: 0, 0, 0;
+@font-face {
+  font-family: "Overpass";
+  src: url("/fonts/Overpass/Overpass-VariableFont_wght.ttf") format("truetype");
+  font-style: normal;
+  font-weight: 200;
+}
+
+@font-face {
+  font-family: "Overpass";
+  src: url("/fonts/Overpass/Overpass-VariableFont_wght.ttf") format("truetype");
+  font-style: normal;
+  font-weight: 300;
+}
+
+@font-face {
+  font-family: "Overpass";
+  src: url("/fonts/Overpass/Overpass-VariableFont_wght.ttf") format("truetype");
+  font-style: normal;
+  font-weight: 400;
+}
+
+@font-face {
+  font-family: "Overpass";
+  src: url("/fonts/Overpass/Overpass-VariableFont_wght.ttf") format("truetype");
+  font-style: normal;
+  font-weight: 500;
+}
+
+@font-face {
+  font-family: "Overpass";
+  src: url("/fonts/Overpass/Overpass-VariableFont_wght.ttf") format("truetype");
+  font-style: normal;
+  font-weight: 600;
+}
+
+@font-face {
+  font-family: "Overpass";
+  src: url("/fonts/Overpass/Overpass-VariableFont_wght.ttf") format("truetype");
+  font-style: normal;
+  font-weight: 700;
+}
+
+@font-face {
+  font-family: "Overpass";
+  src: url("/fonts/Overpass/Overpass-VariableFont_wght.ttf") format("truetype");
+  font-style: normal;
+  font-weight: 800;
+}
+
+@font-face {
+  font-family: "Overpass";
+  src: url("/fonts/Overpass/Overpass-VariableFont_wght.ttf") format("truetype");
+  font-style: normal;
+  font-weight: 900;
+}
+
+@font-face {
+  font-family: "Overpass";
+  src: url("/fonts/Overpass/Overpass-Italic-VariableFont_wght.ttf")
+    format("truetype");
+  font-style: italic;
+  font-weight: 100;
+}
+
+@font-face {
+  font-family: "Overpass";
+  src: url("/fonts/Overpass/Overpass-Italic-VariableFont_wght.ttf")
+    format("truetype");
+  font-style: italic;
+  font-weight: 200;
+}
+
+@font-face {
+  font-family: "Overpass";
+  src: url("/fonts/Overpass/Overpass-Italic-VariableFont_wght.ttf")
+    format("truetype");
+  font-style: italic;
+  font-weight: 300;
+}
+
+@font-face {
+  font-family: "Overpass";
+  src: url("/fonts/Overpass/Overpass-Italic-VariableFont_wght.ttf")
+    format("truetype");
+  font-style: italic;
+  font-weight: 400;
+}
+
+@font-face {
+  font-family: "Overpass";
+  src: url("/fonts/Overpass/Overpass-Italic-VariableFont_wght.ttf")
+    format("truetype");
+  font-style: italic;
+  font-weight: 500;
+}
+
+@font-face {
+  font-family: "Overpass";
+  src: url("/fonts/Overpass/Overpass-Italic-VariableFont_wght.ttf")
+    format("truetype");
+  font-style: italic;
+  font-weight: 600;
+}
+
+@font-face {
+  font-family: "Overpass";
+  src: url("/fonts/Overpass/Overpass-Italic-VariableFont_wght.ttf")
+    format("truetype");
+  font-style: italic;
+  font-weight: 700;
+}
+
+@layer base {
+  h1 {
+    @apply text-textExtraDark text-6xl font-extrabold;
+  }
+
+  h2 {
+    @apply text-textExtraDark text-5xl font-extrabold;
+  }
+
+  h3 {
+    @apply text-textExtraDark text-4xl font-bold;
+  }
+
+  h4 {
+    @apply text-textDark text-3xl font-bold;
+  }
+
+  h5 {
+    @apply text-textDark text-2xl font-semibold;
+  }
+
+  h6 {
+    @apply text-textDark text-xl font-semibold;
+  }
+
+  p,
+  textarea,
+  input {
+    @apply text-base p-0 focus:outline-none;
+  }
+
+  /* Remove flashed gray background color on input element when clicked on iPhone */
+  input,
+  textarea,
+  button,
+  select,
+  a {
+    -webkit-tap-highlight-color: rgba(0, 0, 0, 0);
+  }
+
+  h1,
+  h2,
+  h3,
+  h4,
+  h5,
+  h6,
+  p,
+  span {
+    @apply p-0 m-0;
+  }
+
+  button {
+    @apply text-textDark flex justify-center items-center h-10 m-0 p-0 mx-auto;
   }
 }
 
-body {
-  color: rgb(var(--foreground-rgb));
-  background: linear-gradient(
-      to bottom,
-      transparent,
-      rgb(var(--background-end-rgb))
-    )
-    rgb(var(--background-start-rgb));
+@layer components {
+  .page {
+    @apply w-screen text-center bg-white pb-80;
+  }
+
+  .btn-light {
+    @apply bg-neutral-200 font-semibold rounded-md shadow-sm hover:bg-neutral-100 focus:outline-none;
+  }
+
+  .btn-dark {
+    @apply bg-neutral-800 text-white font-semibold rounded-md shadow-sm hover:bg-neutral-700 focus:outline-none;
+  }
+
+  .btn-blue {
+    @apply bg-blueBase text-white font-semibold rounded-md shadow-sm hover:bg-blueDark focus:outline-none;
+  }
+
+  .btn-orange {
+    @apply bg-orangeBase text-white font-semibold rounded-md shadow-sm hover:bg-orangeDark focus:outline-none;
+  }
+
+  .btn-cancel {
+    @apply bg-red-500 text-white font-semibold rounded-md shadow-sm hover:bg-red-600 focus:outline-none;
+  }
+
+  .error {
+    @apply font-extralight text-error text-sm;
+  }
+
+  .success {
+    @apply font-semibold text-blueDark text-base;
+  }
+
+  .disabled {
+    @apply opacity-30 cursor-not-allowed;
+  }
+
+  /* NProgress styles */
+  /* Make clicks pass-through */
+  /* #nprogress {
+    pointer-events: none;
+  } */
+
+  #nprogress .bar {
+    @apply bg-blueBase fixed top-0 left-0 w-full h-[2px];
+  }
+
+  /* For Webkit-based browsers (Chrome, Safari and Opera) */
+  .scrollbar-hide::-webkit-scrollbar {
+    display: none;
+  }
+
+  /* For IE, Edge and Firefox */
+  .scrollbar-hide {
+    -ms-overflow-style: none; /* IE and Edge */
+    scrollbar-width: none; /* Firefox */
+  }
+
+  /* For Webkit-based browsers (Chrome, Safari and Opera) */
+  .scrollbar-hide::-webkit-scrollbar {
+    display: none;
+  }
+
+  /* For IE, Edge and Firefox */
+  .scrollbar-hide {
+    -ms-overflow-style: none; /* IE and Edge */
+    scrollbar-width: none; /* Firefox */
+  }
 }
