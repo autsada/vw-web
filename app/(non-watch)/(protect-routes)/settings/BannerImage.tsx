@@ -3,6 +3,7 @@
 import React, { useState, useCallback } from "react"
 import Dropzone from "react-dropzone"
 import { MdFileUpload } from "react-icons/md"
+import Image from "next/image"
 
 import BannerModal from "./BannerModal"
 import type { FileWithPrview } from "@/types"
@@ -51,20 +52,20 @@ export default function BannerImage({ profile }: Props) {
             <section className="h-full w-full">
               <div {...getRootProps()} className="h-full">
                 <input {...getInputProps()} />
-                <div className="h-full w-full text-center flex flex-col justify-center items-center">
+                <div className="relative h-full w-full text-center flex flex-col justify-center items-center">
                   {image && imageError ? (
-                    // eslint-disable-next-line @next/next/no-img-element
-                    <img
+                    <Image
                       src={image.preview}
                       alt={image.name}
-                      className="h-full w-full object-cover"
+                      fill
+                      style={{ objectFit: "cover" }}
                     />
                   ) : profile?.bannerImage ? (
-                    // eslint-disable-next-line @next/next/no-img-element
-                    <img
+                    <Image
                       src={profile.bannerImage}
                       alt={profile.displayName}
-                      className="w-full h-full object-cover"
+                      fill
+                      style={{ objectFit: "cover" }}
                     />
                   ) : (
                     <MdFileUpload size={25} />

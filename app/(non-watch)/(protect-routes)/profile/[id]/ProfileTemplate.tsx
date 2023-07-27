@@ -1,4 +1,5 @@
 import React from "react"
+import Image from "next/image"
 
 import ContentTabs from "./ContentTabs"
 import ManageFollow from "@/app/(watch)/watch/[id]/ManageFollow"
@@ -16,19 +17,19 @@ export default function ProfileTemplate({ isAuthenticated, profile }: Props) {
   return (
     <>
       {profile?.bannerImage && (
-        <div className="w-full">
-          {/* eslint-disable-next-line @next/next/no-img-element */}
-          <img
+        <div className="relative w-full h-[120px] sm:h-[160px] md:h-[200px]">
+          <Image
             src={profile.bannerImage}
             alt={profile?.displayName}
-            className="w-full h-[120px] sm:h-[160px] md:h-[200px] object-cover"
+            fill
+            style={{ objectFit: "cover" }}
           />
         </div>
       )}
 
       <div className="mt-2">
         <div className="relative flex mt-5">
-          <div className="flex items-center justify-center w-[70px] h-[70px] sm:w-[100px] sm:h-[100px] rounded-full overflow-hidden cursor-pointer">
+          <div className="relative flex items-center justify-center w-[70px] h-[70px] sm:w-[100px] sm:h-[100px] rounded-full overflow-hidden cursor-pointer">
             {!profile || !profile.image ? (
               !profile ? (
                 <div className="w-full h-full flex items-center justify-center bg-blue-500 text-white text-xs">
@@ -43,11 +44,11 @@ export default function ProfileTemplate({ isAuthenticated, profile }: Props) {
                 </div>
               )
             ) : (
-              // eslint-disable-next-line @next/next/no-img-element
-              <img
+              <Image
                 src={profile.image}
                 alt={profile.displayName}
-                className="w-full h-full object-cover"
+                fill
+                style={{ objectFit: "cover" }}
               />
             )}
           </div>

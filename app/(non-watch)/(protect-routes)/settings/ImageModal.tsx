@@ -1,4 +1,5 @@
 import React, { useState, useTransition } from "react"
+import Image from "next/image"
 
 import ConfirmModal from "@/components/ConfirmModal"
 import ProgressBar from "@/components/ProgressBar"
@@ -57,12 +58,12 @@ export default function ImageModal({ profile, image, cancelUpload }: Props) {
 
           <div className="relative w-full py-5 bg-gray-50">
             <div className="w-[150px] h-[150px] mx-auto border border-gray-200 rounded">
-              <div className="w-full h-full rounded-full overflow-hidden">
-                {/* eslint-disable-next-line @next/next/no-img-element */}
-                <img
+              <div className="relative w-full h-full rounded-full overflow-hidden">
+                <Image
                   src={image.preview}
                   alt={image.name}
-                  className="h-full w-full object-cover"
+                  fill
+                  style={{ objectFit: "cover" }}
                 />
               </div>
             </div>

@@ -1,5 +1,6 @@
 import React from "react"
 import Link from "next/link"
+import Image from "next/image"
 
 import type { Maybe, Profile } from "@/graphql/codegen/graphql"
 
@@ -53,14 +54,14 @@ export default function Avatar({
             </div>
           )
         ) : (
-          // eslint-disable-next-line @next/next/no-img-element
-          <img
-            src={profile.image}
-            alt={profile.displayName || ""}
-            width={width}
-            height={height}
-            className="w-full h-full object-cover"
-          />
+          <div style={{ width, height, position: "relative" }}>
+            <Image
+              src={profile.image}
+              alt={profile.displayName || ""}
+              fill
+              style={{ objectFit: "cover" }}
+            />
+          </div>
         )}
       </div>
     </Link>
@@ -75,7 +76,7 @@ export default function Avatar({
       {!profile || !profile.image ? (
         !profile ? (
           <div className="w-full h-full flex items-center justify-center bg-blueBase text-white text-xs">
-            DiiR
+            VW
           </div>
         ) : (
           <div
@@ -88,14 +89,14 @@ export default function Avatar({
           </div>
         )
       ) : (
-        // eslint-disable-next-line @next/next/no-img-element
-        <img
-          src={profile.image}
-          alt={profile.displayName || ""}
-          width={width}
-          height={height}
-          className="w-full h-full object-cover"
-        />
+        <div style={{ width, height, position: "relative" }}>
+          <Image
+            src={profile.image}
+            alt={profile.displayName || ""}
+            fill
+            style={{ objectFit: "cover" }}
+          />
+        </div>
       )}
     </div>
   )

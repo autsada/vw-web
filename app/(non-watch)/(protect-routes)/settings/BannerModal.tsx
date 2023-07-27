@@ -1,4 +1,5 @@
 import React, { useState, useTransition } from "react"
+import Image from "next/image"
 
 import ConfirmModal from "@/components/ConfirmModal"
 import ProgressBar from "@/components/ProgressBar"
@@ -55,12 +56,12 @@ export default function BannerModal({ profile, image, cancelUpload }: Props) {
           <h6 className="mb-4">Change banner image</h6>
 
           <div className="relative w-full py-5 bg-gray-50">
-            <div className="w-full h-[160px] sm:h-[200px] mx-auto border border-gray-200 rounded">
-              {/* eslint-disable-next-line @next/next/no-img-element */}
-              <img
+            <div className="relative w-full h-[160px] sm:h-[200px] mx-auto border border-gray-200 rounded">
+              <Image
                 src={image.preview}
                 alt={image.name}
-                className="h-full w-full object-cover"
+                fill
+                style={{ objectFit: "cover" }}
               />
             </div>
 

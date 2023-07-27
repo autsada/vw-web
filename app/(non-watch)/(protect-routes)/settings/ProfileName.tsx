@@ -27,7 +27,7 @@ export default function ProfileName({ profile }: Props) {
     const el = document.getElementById("display-name") as HTMLInputElement
     if (!isEditing) {
       if (el) {
-        el.select()
+        el.focus()
       }
     } else {
       setError("")
@@ -98,7 +98,7 @@ export default function ProfileName({ profile }: Props) {
               id="display-name"
               type="text"
               defaultValue={optimisticName}
-              className="w-full rounded-none border-b-[2px] border-neutral-700"
+              className="w-full text-textLight rounded-none border-b-[2px] border-neutral-700"
             />
             {error && (
               <p className="absolute bottom-5 error text-xs">{error}</p>

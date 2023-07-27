@@ -2,6 +2,7 @@
 
 import React, { useState, useCallback } from "react"
 import Dropzone from "react-dropzone"
+import Image from "next/image"
 
 import Avatar from "@/components/Avatar"
 import ImageModal from "./ImageModal"
@@ -52,13 +53,13 @@ export default function ProfileImage({ profile }: Props) {
               <div {...getRootProps()} className="h-full">
                 <input {...getInputProps()} />
                 <div className="h-full w-full text-center flex flex-col justify-center items-center">
-                  <div className="h-full w-full rounded-full overflow-hidden">
+                  <div className="relative h-full w-full rounded-full overflow-hidden">
                     {image && imageError ? (
-                      // eslint-disable-next-line @next/next/no-img-element
-                      <img
+                      <Image
                         src={image.preview}
                         alt={image.name}
-                        className="h-full w-full object-cover"
+                        fill
+                        style={{ objectFit: "cover" }}
                       />
                     ) : (
                       <Avatar

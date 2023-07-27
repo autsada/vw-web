@@ -33,8 +33,8 @@ export default async function Settings() {
         <div className="sm:col-span-4">
           <div className="mb-6">
             <h6 className="text-base">Profile image</h6>
-            <p className="font-light text-textLight text-sm">
-              This image will be used as a profile image of your profile.
+            <p className="text-sm">
+              This image will be used as your profile image.
             </p>
             <div className="grid grid-cols-1 lg:grid-cols-3 sm:gap-x-5 mt-2 pb-2 lg:pb-0 bg-neutral-100 rounded-lg">
               <div className="relative lg:col-span-2 pt-2 pb-4">
@@ -56,7 +56,7 @@ export default async function Settings() {
 
           <div className="mb-6">
             <h6 className="text-base">Banner image</h6>
-            <p className="font-light text-textLight text-sm">
+            <p className="text-sm">
               This image will appear on the top of your profile.
             </p>
             <div className="grid grid-cols-1 lg:grid-cols-3 sm:gap-x-5 mt-2 pb-2 lg:pb-0 bg-neutral-100 rounded-lg">

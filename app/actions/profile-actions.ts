@@ -4,7 +4,7 @@ import { revalidatePath } from "next/cache"
 
 import {
   createProfile,
-  updateProfileName,
+  updateProfileDisplayName,
   updateProfileImage,
   updateProfileBannerImage,
   follow,
@@ -49,7 +49,7 @@ export async function updateDisplayName(name: string) {
 
     if (!name) throw new Error("Bad input")
 
-    await updateProfileName({
+    await updateProfileDisplayName({
       idToken,
       signature,
       input: {
