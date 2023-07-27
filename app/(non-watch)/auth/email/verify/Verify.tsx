@@ -3,21 +3,26 @@
 import React, { useState, useEffect, useCallback, ChangeEvent } from "react"
 import { signInWithEmailLink, isSignInWithEmailLink } from "firebase/auth"
 import { firebaseAuth } from "@/firebase/config"
+import { useRouter } from "next/navigation"
 
 import PageLoaderWithInfo from "@/components/PageLoaderWithInfo"
 import ModalWrapper from "@/components/ModalWrapper"
 import EmailInput from "@/components/auth/EmailInput"
 import PageLoader from "@/components/PageLoader"
 import ButtonLoader from "@/components/ButtonLoader"
-import { useRouter } from "next/navigation"
 import { wait } from "@/lib/helpers"
 import { EMAIL_KEY } from "@/lib/constants"
+import type { Maybe, Account } from "@/graphql/codegen/graphql"
 
 /**
  * @dev Verify user's email
  * For email signin, when user clicks the sign-in link they will be brought back to this route to verify their email.
  */
-export default function VerifyEmail() {
+export default function VerifyEmail({
+  account,
+}: {
+  account: Maybe<Account> | undefined
+}) {
   const savedEmail =
     typeof window !== "undefined"
       ? window?.localStorage?.getItem(EMAIL_KEY)
@@ -29,6 +34,16 @@ export default function VerifyEmail() {
   const [isError, setIsError] = useState(false)
 
   const router = useRouter()
+
+  useEffect(() => {
+    if (account) {
+      if (!account.defaultProfile) {
+        router.replace("/profile")
+      } else {
+        router.replace("/")
+      }
+    }
+  }, [account, router])
 
   const onEmailChange = useCallback((e: ChangeEvent<HTMLInputElement>) => {
     setEmail(e.target.value)
@@ -52,7 +67,6 @@ export default function VerifyEmail() {
           // Refresh queries
           router.refresh()
           setIsError(false)
-          router.replace("/profile")
         }
       } catch (error) {
         setLoading(false)
