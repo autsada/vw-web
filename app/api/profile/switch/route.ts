@@ -19,8 +19,7 @@ export async function POST(req: Request) {
   const account = (await getMyAccount(idToken, signature)) as Account
   if (!account) throw new Error("No account found")
 
-  const { address, profileId } = (await req.json()) as {
-    address: string
+  const { profileId } = (await req.json()) as {
     profileId: string
   }
 
@@ -28,7 +27,7 @@ export async function POST(req: Request) {
     idToken,
     signature,
     input: {
-      address,
+      address: account.owner,
       profileId,
       accountId: account.id,
     },

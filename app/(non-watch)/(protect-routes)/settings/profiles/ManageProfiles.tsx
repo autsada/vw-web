@@ -11,16 +11,11 @@ import type { Account } from "@/graphql/codegen/graphql"
 
 interface Props {
   account: Account
-  owner: string
   defaultProfileId: string
 }
 
 // TODO: Change from using api route to server action
-export default function ManageProfiles({
-  account,
-  defaultProfileId,
-  owner,
-}: Props) {
+export default function ManageProfiles({ account, defaultProfileId }: Props) {
   const [modalVisible, setModalVisible] = useState(!defaultProfileId)
   const [switchToId, setSwitchToId] = useState("")
   const [loading, setLoading] = useState(false)
@@ -50,7 +45,7 @@ export default function ManageProfiles({
     setSwitchToId("")
   }, [])
 
-  async function confirmSwitchProfile() {
+  const confirmSwitchProfile = useCallback(async () => {
     if (!switchToId) return
 
     try {
@@ -60,7 +55,7 @@ export default function ManageProfiles({
         headers: {
           "Content-Type": "application/json",
         },
-        body: JSON.stringify({ address: owner, profileId: switchToId }),
+        body: JSON.stringify({ profileId: switchToId }),
       })
 
       const data = await result.json()
@@ -75,7 +70,7 @@ export default function ManageProfiles({
       setLoading(false)
       setError("Switch profile failed")
     }
-  }
+  }, [switchToId, error, router])
 
   return (
     <>

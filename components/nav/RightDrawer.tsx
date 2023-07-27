@@ -77,28 +77,31 @@ export default function RightDrawer({
     setIsProfilesExpanded(false)
   }, [])
 
-  async function switchProfile(address: string, profileId: string) {
-    try {
-      setSwitchLoading(true)
-      const result = await fetch(`/settings/profiles/switch`, {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify({ address, profileId }),
-      })
+  const switchProfile = useCallback(
+    async (profileId: string) => {
+      try {
+        setSwitchLoading(true)
+        const result = await fetch(`/api/profile/switch`, {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify({ profileId }),
+        })
 
-      const data = await result.json()
-      if (data?.status === "Ok") {
-        // Reload data
-        router.refresh()
+        const data = await result.json()
+        if (data?.status === "Ok") {
+          // Reload data
+          router.refresh()
+          setSwitchLoading(false)
+          closeDrawer()
+        }
+      } catch (error) {
         setSwitchLoading(false)
-        closeDrawer()
       }
-    } catch (error) {
-      setSwitchLoading(false)
-    }
-  }
+    },
+    [closeDrawer, router]
+  )
 
   return (
     <>
@@ -153,14 +156,21 @@ export default function RightDrawer({
 
         {isProfilesExpanded ? (
           <div className="px-5 flex flex-col gap-y-2 overflow-y-auto">
-            {profiles.map((profile) => (
-              <ProfileItem
-                key={profile.id}
-                item={profile}
-                defaultId={profile?.id || ""}
-                switchProfile={switchProfile}
-              />
-            ))}
+            <div className="relative">
+              {profiles.map((p) => (
+                <ProfileItem
+                  key={p.id}
+                  profile={p}
+                  defaultId={profile?.id || ""}
+                  switchProfile={switchProfile}
+                />
+              ))}
+              {switchLoading && (
+                <div className="absolute inset-0 flex items-center justify-center bg-white opacity-60">
+                  <ButtonLoader loading color="#2096F3" />
+                </div>
+              )}
+            </div>
 
             <div className="mt-2">
               <Link href="/settings/profiles">
@@ -178,10 +188,8 @@ export default function RightDrawer({
                   className="px-5 flex items-center justify-between cursor-pointer py-2 hover:bg-gray-100 rounded-md"
                   onClick={viewProfiles}
                 >
-                  <p className="font-light text-textExtraLight">
-                    Switch profile
-                  </p>
-                  <p className="font-light text-textExtraLight">&#10095;</p>
+                  <p className="font-light">Switch profile</p>
+                  <p className="font-light text-textLight">&#10095;</p>
                 </div>
               </div>
             )}

@@ -8,7 +8,6 @@ import { getAccount } from "@/lib/server"
 export default async function Profiles() {
   const data = await getAccount()
   const account = data?.account
-  const defaultProfile = account?.defaultProfile
 
   return (
     <>
@@ -19,7 +18,6 @@ export default async function Profiles() {
           <ManageProfiles
             account={account!}
             defaultProfileId={account?.defaultProfile?.id || ""}
-            owner={account?.owner || ""}
           />
         </Suspense>
       </div>

@@ -14,7 +14,6 @@ import NameInput from "./NameInput"
 import ButtonLoader from "@/components/ButtonLoader"
 import Mask from "@/components/Mask"
 import ModalWrapper from "@/components/ModalWrapper"
-import type { Account } from "@/graphql/codegen/graphql"
 import { PROFILE_KEY } from "@/lib/constants"
 
 interface Props {
