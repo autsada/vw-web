@@ -14,8 +14,8 @@ export async function saveVideo(
     const account = data?.account
     const idToken = data?.idToken
     const signature = data?.signature
-    const station = account?.defaultProfile
-    if (!account || !station || !idToken)
+    const profile = account?.defaultProfile
+    if (!account || !profile || !idToken)
       throw new Error("Please sign in to proceed.")
 
     const {
@@ -37,7 +37,7 @@ export async function saveVideo(
       input: {
         accountId: account.id,
         owner: account.owner,
-        creatorId: station.id,
+        creatorId: profile.id,
         publishId,
         thumbnail: thumbnail || null,
         thumbnailRef: thumbnailRef || null,
@@ -94,15 +94,15 @@ export async function saveBlogPost({
     const account = data?.account
     const idToken = data?.idToken
     const signature = data?.signature
-    const station = account?.defaultProfile
-    if (!account || !station || !idToken)
+    const profile = account?.defaultProfile
+    if (!account || !profile || !idToken)
       throw new Error("Please sign in to proceed.")
 
     await updateBlog({
       idToken,
       signature,
       input: {
-        creatorId: station.id,
+        creatorId: profile.id,
         accountId: account.id,
         owner: account.owner,
         publishId,

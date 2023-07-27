@@ -206,9 +206,9 @@ export async function cacheLoggedInSession({
  * Validate auth
  */
 export const VALIDATE_AUTH_MUTATION = gql`
-  mutation CacheSession($input: CacheSessionInput!) {
-    cacheSession(input: $input) {
-      status
+  mutation ValidateAuth($input: ValidateAuthInput!) {
+    validateAuth(input: $input) {
+      isAuthenticated
     }
   }
 `

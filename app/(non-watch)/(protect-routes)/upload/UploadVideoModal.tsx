@@ -45,7 +45,7 @@ export default function UploadVideoModal({
       if (!isAuthenticated) {
         openAuthModal("Please sign in to upload.")
       } else {
-        const result = await fetch(`/api/publish/draft/video`, {
+        const result = await fetch(`/api/publish/draftVideo`, {
           method: "POST",
           headers: {
             "Content-Type": "application/json",

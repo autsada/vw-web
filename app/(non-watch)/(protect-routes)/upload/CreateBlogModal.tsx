@@ -76,7 +76,7 @@ export default function CreateBlogModal({
   }, [])
 
   const createPublish = useCallback(async () => {
-    const result = await fetch(`/upload/draft/blog`, {
+    const result = await fetch(`/api/publish/draftBlog`, {
       method: "POST",
       headers: {
         "Content-Type": "application/json",
