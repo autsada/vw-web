@@ -94,7 +94,7 @@ export default function MainNav({
       </div>
       <div className="h-full flex-grow flex items-center justify-center">
         <div
-          className={`relative h-[50px] w-full max-w-[500px] flex items-center md:border ${
+          className={`relative h-[50px] w-full sm:max-w-[300px] md:max-w-[400px] lg:max-w-[500px] xl:max-w-[600px] flex items-center md:border ${
             isWatchPage ? "md:border-neutral-500" : "md:border-neutral-200"
           } md:rounded-full overflow-hidden`}
         >

@@ -16,20 +16,34 @@ export default function UploadBtn({
   color?: string
 }) {
   return !isAuthenticated ? (
-    <div onClick={onClick}>
+    <>
       <AiOutlinePlusCircle
         size={size}
         color={color}
-        className="cursor-pointer"
+        className="sm:hidden cursor-pointer"
+        onClick={onClick}
       />
-    </div>
+      <button
+        type="button"
+        className="hidden sm:block btn-blue px-4 h-8 rounded-full"
+        onClick={onClick}
+      >
+        Upload
+      </button>
+    </>
   ) : (
     <Link href="/upload">
       <AiOutlinePlusCircle
         size={size}
         color={color}
-        className="cursor-pointer"
+        className="sm:hidden cursor-pointer"
       />
+      <button
+        type="button"
+        className="hidden sm:block btn-blue px-4 h-8 rounded-full"
+      >
+        Upload
+      </button>
     </Link>
   )
 }
