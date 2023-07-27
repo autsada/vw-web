@@ -1,23 +1,14 @@
 import { NextResponse } from "next/server"
-import { cookies } from "next/headers"
-import { createProfile, getMyAccount } from "@/graphql"
-import type { Account } from "@/graphql/codegen/graphql"
+import { createProfile } from "@/graphql"
+import { getAccount } from "@/lib/server"
 
 export async function POST(req: Request) {
   try {
-    const cookieStore = cookies()
-    const token = cookieStore.get("dtoken")
-
-    if (!token || !token.value) return null
-    const idToken = token.value
-    if (!idToken) throw new Error("Unauthenticated")
-
-    const signedMessage = cookieStore.get("dsignature")
-    const signature = signedMessage?.value
-
-    // Get an account
-    const account = (await getMyAccount(idToken, signature)) as Account
-    if (!account) throw new Error("No account found")
+    const data = await getAccount()
+    const account = data?.account
+    const idToken = data?.idToken
+    const signature = data?.signature
+    if (!account || !idToken) throw new Error("Please sign in to proceed.")
 
     const { name } = (await req.json()) as {
       name: string

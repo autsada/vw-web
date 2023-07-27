@@ -85,7 +85,7 @@ export default function ManageProfiles({ account, defaultProfileId }: Props) {
         </div>
 
         <div className="lg:col-span-3">
-          {profiles.length > 0 ? (
+          {profiles?.length > 0 ? (
             <>
               <h6 className="text-base">Your profiles</h6>
               <div className="mt-2 divide-y">

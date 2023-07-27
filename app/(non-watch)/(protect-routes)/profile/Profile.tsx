@@ -1,6 +1,6 @@
 "use client"
 
-import React, { useCallback, useState } from "react"
+import React, { useCallback } from "react"
 import { useRouter } from "next/navigation"
 
 import CreateProfileModal from "../settings/profiles/CreateProfileModal"
@@ -11,25 +11,28 @@ interface Props {
 }
 
 export default function Profile({ account }: Props) {
-  const [modalVisible, setModalVisible] = useState(
-    () => !account?.defaultProfile
-  )
-
   const router = useRouter()
 
   const closeModal = useCallback(() => {
-    setModalVisible(false)
-    router.back()
+    router.replace("/")
   }, [router])
 
   return (
     <>
       <h6 className="text-lg">No profile found.</h6>
       <p className="text-textLight">
-        Create a profile to start upload, follow, comment, and more on VewWit.
+        Create a profile to start upload, like, comment, and more on VewWit.
       </p>
 
-      {modalVisible && <CreateProfileModal closeModal={closeModal} />}
+      {!account?.defaultProfile && (
+        <CreateProfileModal
+          closeModal={closeModal}
+          title="Create Profile"
+          additionalInfo="One more step, create a profile to start upload, like, comment, and more on VewWit."
+          useDoItLaterClose={true}
+          doItLaterText="I will do it later"
+        />
+      )}
     </>
   )
 }

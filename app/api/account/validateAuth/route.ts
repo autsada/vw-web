@@ -1,9 +1,9 @@
 import { NextResponse } from "next/server"
 
-import { cacheLoggedInSession } from "@/graphql"
+import { validateAuth } from "@/graphql"
 import { getAccount } from "@/lib/server"
 
-export async function POST(req: Request) {
+export async function GET(req: Request) {
   const data = await getAccount()
   const account = data?.account
   const idToken = data?.idToken
@@ -12,18 +12,15 @@ export async function POST(req: Request) {
   if (!account || !profile || !idToken)
     throw new Error("Please sign in to proceed.")
 
-  const { profileId } = (await req.json()) as {
-    profileId: string
-  }
-
-  const result = await cacheLoggedInSession({
+  const result = await validateAuth({
     idToken,
     signature,
     input: {
-      address: account.owner,
-      profileId,
       accountId: account.id,
+      owner: account.owner,
+      profileId: profile.id,
     },
   })
-  return NextResponse.json(result)
+
+  return NextResponse.json({ isAuthenticated: result?.isAuthenticated })
 }

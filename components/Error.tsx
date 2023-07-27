@@ -1,8 +1,6 @@
-"use client" // Error components must be Client Components
-
 import { useRouter } from "next/navigation"
 
-export default function Error({
+export default function ErrorPage({
   error,
   reset,
 }: {

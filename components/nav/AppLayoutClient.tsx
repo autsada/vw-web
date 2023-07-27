@@ -9,7 +9,6 @@ import MainNav from "./MainNav"
 import AuthModal from "../auth/AuthModal"
 import LeftDrawer from "./LeftDrawer"
 import RightDrawer from "./RightDrawer"
-import CreateProfileModal from "@/app/(non-watch)/(protect-routes)/settings/profiles/CreateProfileModal"
 import BottomTabs from "./BottomTabs"
 import { useAuthContext } from "@/context/AuthContext"
 import { useIdTokenChanged } from "@/hooks/useIdTokenChanged"
@@ -18,18 +17,13 @@ import type { Account } from "@/graphql/codegen/graphql"
 interface Props {
   account: Account | null
   isAuthenticated: boolean // True when account is not null
-  isNoProfile: boolean // Authenticated and doesn't have a profile yet
 }
 
-export default function AppLayoutClient({
-  account,
-  isAuthenticated,
-  isNoProfile,
-}: Props) {
+export default function AppLayoutClient({ account, isAuthenticated }: Props) {
   const [leftDrawerVisible, setLeftDrawerVisible] = useState(false)
   const [rightDrawerVisible, setRightDrawerVisible] = useState(false)
-  const [createProfileModalVisible, setCreateProfileModalVisible] =
-    useState<boolean>(false)
+  // const [createProfileModalVisible, setCreateProfileModalVisible] =
+  //   useState<boolean>(false)
 
   const { visible: authModalVisible, offVisible, headerText } = useAuthContext()
 
@@ -70,15 +64,6 @@ export default function AppLayoutClient({
     }
   }, [pathname, searchParams])
 
-  // Show create profile modal if user is authenticated and doesn't have a profile yet
-  useEffect(() => {
-    if (isNoProfile) {
-      setCreateProfileModalVisible(true)
-    } else {
-      setCreateProfileModalVisible(false)
-    }
-  }, [isNoProfile])
-
   const openLeftDrawer = useCallback(() => {
     setLeftDrawerVisible(true)
   }, [])
@@ -93,10 +78,6 @@ export default function AppLayoutClient({
 
   const closeRightDrawer = useCallback(() => {
     setRightDrawerVisible(false)
-  }, [])
-
-  const closeCreateProfileModal = useCallback(() => {
-    setCreateProfileModalVisible(false)
   }, [])
 
   return (
@@ -127,16 +108,6 @@ export default function AppLayoutClient({
         closeModal={offVisible}
         headerText={headerText}
       />
-
-      {createProfileModalVisible && account && (
-        <CreateProfileModal
-          closeModal={closeCreateProfileModal}
-          title="Create Profile"
-          additionalInfo="Last step, create a profile to start upload, like, comment, and more on VewWit."
-          useDoItLaterClose={true}
-          doItLaterText="I will do it later"
-        />
-      )}
 
       {/* Toast */}
       <ToastContainer

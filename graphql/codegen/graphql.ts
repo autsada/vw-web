@@ -529,6 +529,7 @@ export type Mutation = {
   updateReadPreferences?: Maybe<WriteResult>;
   updateVideo?: Maybe<Publish>;
   updateWatchPreferences?: Maybe<WriteResult>;
+  validateAuth?: Maybe<ValidateAuthResult>;
   validateName?: Maybe<Scalars['Boolean']['output']>;
 };
 
@@ -735,6 +736,11 @@ export type MutationUpdateVideoArgs = {
 
 export type MutationUpdateWatchPreferencesArgs = {
   input: UpdatePreferencesInput;
+};
+
+
+export type MutationValidateAuthArgs = {
+  input: ValidateAuthInput;
 };
 
 
@@ -1257,6 +1263,17 @@ export type UpdateVideoInput = {
   thumbnailType: ThumbnailType;
   title?: InputMaybe<Scalars['String']['input']>;
   visibility?: InputMaybe<Visibility>;
+};
+
+export type ValidateAuthInput = {
+  accountId: Scalars['String']['input'];
+  owner: Scalars['String']['input'];
+  profileId: Scalars['String']['input'];
+};
+
+export type ValidateAuthResult = {
+  __typename?: 'ValidateAuthResult';
+  isAuthenticated: Scalars['Boolean']['output'];
 };
 
 export enum Visibility {

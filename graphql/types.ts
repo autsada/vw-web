@@ -21,6 +21,7 @@ export type MutationArgsType<T extends keyof NexusGenArgTypes["Mutation"]> =
 
 // Account
 export type CacheSessionInput = NexusGenInputs["CacheSessionInput"]
+export type ValidateAuthInput = NexusGenInputs["ValidateAuthInput"]
 
 // Profile
 export type QueryByIdInput = NexusGenInputs["QueryByIdInput"]

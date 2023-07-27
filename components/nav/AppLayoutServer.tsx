@@ -10,11 +10,7 @@ export default async function AppLayoutServer() {
 
   return (
     <Suspense fallback={<TempAppLayout />}>
-      <AppLayoutClient
-        account={account}
-        isAuthenticated={!!account}
-        isNoProfile={!!account && !account?.defaultProfile}
-      />
+      <AppLayoutClient account={account} isAuthenticated={!!account} />
     </Suspense>
   )
 }

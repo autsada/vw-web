@@ -93,7 +93,6 @@ export default function CreateProfileModal({
 
         // Reload data to update the UI
         router.refresh()
-        setLoading(false)
         // Write to local storage so if user opens the browser more than one tab, other tabs will be notified.
         window?.localStorage?.setItem(PROFILE_KEY, "profile_done")
         closeModal()

@@ -7,6 +7,7 @@ import type {
   MutationReturnType,
   MutationArgsType,
   CacheSessionInput,
+  ValidateAuthInput,
 } from "./types"
 
 /**
@@ -196,6 +197,43 @@ export async function cacheLoggedInSession({
       >(CACHE_SESSION_MUTATION, { input })
 
     return data?.cacheSession
+  } catch (error) {
+    throw error
+  }
+}
+
+/**
+ * Validate auth
+ */
+export const VALIDATE_AUTH_MUTATION = gql`
+  mutation CacheSession($input: CacheSessionInput!) {
+    cacheSession(input: $input) {
+      status
+    }
+  }
+`
+export async function validateAuth({
+  idToken,
+  signature,
+  input,
+}: {
+  idToken: string
+  signature?: string
+  input: ValidateAuthInput
+}) {
+  try {
+    const data = await client
+      .setHeaders({
+        "Content-Type": "application/json",
+        Authorization: `Bearer ${idToken}`,
+        "auth-wallet-signature": signature || "",
+      })
+      .request<
+        MutationReturnType<"validateAuth">,
+        MutationArgsType<"validateAuth">
+      >(VALIDATE_AUTH_MUTATION, { input })
+
+    return data?.validateAuth
   } catch (error) {
     throw error
   }
