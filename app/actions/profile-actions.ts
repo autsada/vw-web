@@ -8,8 +8,11 @@ import {
   updateProfileImage,
   updateProfileBannerImage,
   follow,
+  updateWatchPreferences,
+  updateReadPreferences,
 } from "@/graphql"
 import { getAccount } from "@/lib/server"
+import type { PublishCategory } from "@/graphql/types"
 
 export async function createNewProfile(name: string) {
   try {
@@ -126,6 +129,70 @@ export async function updateBannerImage(imageUrl: string, imageRef: string) {
 
     // Revalidate page
     revalidatePath(`/settings`)
+  } catch (error) {
+    console.error(error)
+  }
+}
+
+export async function updateUserWatchPreferences(
+  preferences: PublishCategory[]
+) {
+  try {
+    const data = await getAccount()
+    const account = data?.account
+    const idToken = data?.idToken
+    const signature = data?.signature
+    const profile = account?.defaultProfile
+    if (!account || !profile || !idToken)
+      throw new Error("Please sign in to proceed.")
+
+    if (!preferences) throw new Error("Bad input")
+
+    await updateWatchPreferences({
+      idToken,
+      signature,
+      input: {
+        accountId: account.id,
+        owner: account.owner,
+        profileId: profile.id,
+        preferences,
+      },
+    })
+
+    // Revalidate page
+    revalidatePath(`/settings/preferences`)
+  } catch (error) {
+    console.error(error)
+  }
+}
+
+export async function updateUserReadPreferences(
+  preferences: PublishCategory[]
+) {
+  try {
+    const data = await getAccount()
+    const account = data?.account
+    const idToken = data?.idToken
+    const signature = data?.signature
+    const profile = account?.defaultProfile
+    if (!account || !profile || !idToken)
+      throw new Error("Please sign in to proceed.")
+
+    if (!preferences) throw new Error("Bad input")
+
+    await updateReadPreferences({
+      idToken,
+      signature,
+      input: {
+        accountId: account.id,
+        owner: account.owner,
+        profileId: profile.id,
+        preferences,
+      },
+    })
+
+    // Revalidate page
+    revalidatePath(`/settings/preferences`)
   } catch (error) {
     console.error(error)
   }
