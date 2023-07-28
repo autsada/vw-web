@@ -28,7 +28,7 @@ const modules = {
     ["bold", "italic", "underline", "strike"],
     ["blockquote", "code-block"],
     [{ list: "ordered" }, { list: "bullet" }, { align: [] }],
-    ["link", "image"],
+    ["link", "image", "video"],
     [{ color: [] }, { background: [] }], // dropdown with defaults from theme
     ["clean"],
   ],
@@ -47,6 +47,7 @@ const formats = [
   "indent",
   "link",
   "image",
+  "video",
 ]
 
 export default function QuillEditor({

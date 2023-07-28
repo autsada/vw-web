@@ -50,6 +50,7 @@ export default function BlogModal({ profile, publish }: Props) {
     () => _.isEqual(prevTitle, title),
     [prevTitle, title]
   )
+
   const prevImage = publish.thumbnail
   const [oldImage, setOldImage] = useState(prevImage)
   const prevImageRef = publish.thumbnailRef
@@ -61,10 +62,10 @@ export default function BlogModal({ profile, publish }: Props) {
   const [fileError, setFileError] = useState("")
   const prevTags = publish.tags
   const [tags, setTags] = useState<string[]>(
-    !prevTags ? [] : prevTags.split(" ")
+    !prevTags ? [] : prevTags.split(" | ")
   )
   const isTagsEqual = useMemo(
-    () => _.isEqual(!prevTags ? [] : prevTags.split(" "), tags),
+    () => _.isEqual(!prevTags ? [] : prevTags.split(" | "), tags),
     [prevTags, tags]
   )
   const prevPrimaryCat = publish.primaryCategory as PublishCategory
@@ -111,6 +112,8 @@ export default function BlogModal({ profile, publish }: Props) {
       isTagsEqual &&
       isOldImageEqual &&
       !image &&
+      isPrimaryCatEqual &&
+      isSecondaryCatEqual &&
       isContentEqual
     ) {
       goBack()
@@ -122,6 +125,8 @@ export default function BlogModal({ profile, publish }: Props) {
     isTagsEqual,
     isOldImageEqual,
     image,
+    isPrimaryCatEqual,
+    isSecondaryCatEqual,
     isContentEqual,
     goBack,
   ])
@@ -178,11 +183,7 @@ export default function BlogModal({ profile, publish }: Props) {
     const last = value.slice(value.length - 1)
     if (last === ",") {
       // Remove space and lowercase before saving a tag
-      const newTag = value
-        .substring(0, value.length - 1)
-        .split(" ")
-        .join("")
-        .toLowerCase()
+      const newTag = value.substring(0, value.length - 1).toLowerCase()
       if (newTag && !newTag.includes(",")) {
         setTags((prev) =>
           prev.includes(newTag) || prev.length === 4 ? prev : [...prev, newTag]
@@ -308,7 +309,7 @@ export default function BlogModal({ profile, publish }: Props) {
             imageUrl: !imageUrl && !oldImage ? "" : imageUrl,
             imageRef: !imageRef && !oldImage ? "" : imageRef,
             filename: !filename && !oldImage ? "" : filename,
-            tags: tags.length > 0 ? tags.join(" ") : undefined,
+            tags: tags.length > 0 ? tags.join(" | ") : undefined,
             primaryCategory: primaryCat,
             secondaryCategory: secondaryCat,
             content: content ? JSON.stringify(content) : undefined,
@@ -449,7 +450,7 @@ export default function BlogModal({ profile, publish }: Props) {
             imageUrl: !imageUrl && !oldImage ? "" : imageUrl,
             imageRef: !imageRef && !oldImage ? "" : imageRef,
             filename: !filename && !oldImage ? "" : filename,
-            tags: tags.length > 0 ? tags.join(" ") : undefined,
+            tags: tags.length > 0 ? tags.join(" | ") : undefined,
             primaryCategory: primaryCat,
             secondaryCategory: secondaryCat,
             content: content ? JSON.stringify(content) : undefined,
@@ -658,7 +659,7 @@ export default function BlogModal({ profile, publish }: Props) {
                             name="tag"
                             maxLength={31}
                             placeholder="Add up to 4 tags"
-                            className="block w-full h-full"
+                            className="block h-full"
                             onChange={addTag}
                           />
                         )}
@@ -669,7 +670,7 @@ export default function BlogModal({ profile, publish }: Props) {
                     </p>
                   </label>
 
-                  <div className="mt-5 pb-5">
+                  <div className="mt-5 pb-10">
                     <label
                       htmlFor="category"
                       className="block text-start font-semibold mb-5"

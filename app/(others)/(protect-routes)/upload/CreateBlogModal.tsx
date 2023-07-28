@@ -162,7 +162,7 @@ export default function CreateBlogModal({
             filename,
             primaryCategory: primaryCat,
             secondaryCategory: secondaryCat,
-            tags: tags.length > 0 ? tags.join(" ") : undefined,
+            tags: tags.length > 0 ? tags.join(" | ") : undefined,
             content: content ? JSON.stringify(content) : undefined,
             htmlContent: contentForPreview,
             visibility,
@@ -243,11 +243,7 @@ export default function CreateBlogModal({
     const last = value.slice(value.length - 1)
     if (last === ",") {
       // Remove space and lowercase before saving a tag
-      const newTag = value
-        .substring(0, value.length - 1)
-        .split(" ")
-        .join("")
-        .toLowerCase()
+      const newTag = value.substring(0, value.length - 1).toLowerCase()
       if (newTag && !newTag.includes(",")) {
         setTags((prev) =>
           prev.includes(newTag) || prev.length === 4 ? prev : [...prev, newTag]
@@ -322,7 +318,7 @@ export default function CreateBlogModal({
                 />
               </div>
 
-              <div className="w-full h-full px-2 sm:px-4 sm:divide-neutral-100 flex flex-col lg:flex-row pb-[100px]">
+              <div className="w-full h-full px-2 sm:px-4 sm:divide-neutral-100 flex flex-col lg:flex-row">
                 <div className="w-full h-max lg:h-full lg:w-2/5 py-2 px-2 lg:overflow-y-auto scrollbar-hide">
                   <div className="mb-4 w-full">
                     <div className="relative z-0 w-full flex items-center justify-center">
@@ -403,7 +399,7 @@ export default function CreateBlogModal({
                     </p>
                   </label>
 
-                  <div className="mt-5">
+                  <div className="mt-5 pb-10">
                     <label
                       htmlFor="category"
                       className="block text-start font-semibold mb-5"
@@ -480,7 +476,7 @@ export default function CreateBlogModal({
                   </div>
                 </div>
 
-                <div className="w-full h-full lg:w-3/5 sm:px-2 lg:px-3 xl:px-4 pb-[100px]">
+                <div className="w-full h-full lg:w-3/5 sm:px-2 lg:px-3 xl:px-4">
                   <QuillEditor
                     content={content}
                     setContent={setContent}

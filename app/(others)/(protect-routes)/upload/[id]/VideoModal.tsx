@@ -61,7 +61,7 @@ export default function VideoModal({ publish, profileName }: Props) {
   )
   const prevTags = publish?.tags
   const [tags, setTags] = useState<string[]>(
-    !prevTags ? [] : prevTags.split(" ")
+    !prevTags ? [] : prevTags.split(" | ")
   )
   const [isChanged, setIsChanged] = useState<boolean>()
   const [thumbnailLoading, setThumbnailLoading] = useState(false)
@@ -159,12 +159,8 @@ export default function VideoModal({ publish, profileName }: Props) {
     const value = e.target.value
     const last = value.slice(value.length - 1)
     if (last === ",") {
-      // Remove space and lowercase before saving a tag
-      const newTag = value
-        .substring(0, value.length - 1)
-        .split(" ")
-        .join("")
-        .toLowerCase()
+      // Lowercase before saving a tag
+      const newTag = value.substring(0, value.length - 1).toLowerCase()
       if (newTag && !newTag.includes(",")) {
         setTags((prev) =>
           prev.includes(newTag) || prev.length === 4 ? prev : [...prev, newTag]
@@ -229,7 +225,7 @@ export default function VideoModal({ publish, profileName }: Props) {
         primaryCategory: data.primaryCat || "",
         secondaryCategory: data.secondaryCat || "",
         visibility: data.visibility,
-        tags: tags.length > 0 ? tags.join(" ") : undefined,
+        tags: tags.length > 0 ? tags.join(" | ") : undefined,
       }
 
       const isEqual = _.isEqual(oldData, newData)
@@ -302,7 +298,10 @@ export default function VideoModal({ publish, profileName }: Props) {
             <h6 className="text-xs sm:text-sm md:text-base lg:text-textRegular">
               Id: {publish.id}
             </h6>
-            <div>
+            <div className="flex items-center gap-x-10">
+              {publish.uploading && (
+                <h6 className="text-base">You can savely leave this page.</h6>
+              )}
               <CloseButton
                 onClick={() => router.back()}
                 className="text-base"
@@ -699,7 +698,7 @@ export default function VideoModal({ publish, profileName }: Props) {
                             name="tag"
                             maxLength={31}
                             placeholder="Add up to 4 tags"
-                            className="block w-full h-full"
+                            className="block h-full"
                             onChange={addTag}
                           />
                         )}
