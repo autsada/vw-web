@@ -25,7 +25,7 @@ export default function UploadBtn({
       />
       <button
         type="button"
-        className="hidden sm:block btn-blue px-4 h-8 rounded-full text-sm"
+        className="hidden sm:block btn-orange px-4 h-8 rounded-full text-sm"
         onClick={onClick}
       >
         Upload
@@ -40,7 +40,7 @@ export default function UploadBtn({
       />
       <button
         type="button"
-        className="hidden sm:block btn-blue px-4 h-8 rounded-full text-sm"
+        className="hidden sm:block btn-orange px-4 h-8 rounded-full text-sm"
       >
         Upload
       </button>

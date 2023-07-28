@@ -28,6 +28,7 @@ export default function RightDrawer({
   isOpen = false,
   closeDrawer,
 }: Props) {
+  const nonActiveProfiles = profiles.filter((p) => p.id !== profile?.id)
   const [loading, setLoading] = useState(false)
   const [isProfilesExpanded, setIsProfilesExpanded] = useState(false)
   const [switchLoading, setSwitchLoading] = useState(false)
@@ -138,14 +139,13 @@ export default function RightDrawer({
                       <p className="text-textLight">@{profile?.name}</p>
                     </>
                   ) : (
-                    <div className="font-thin px-2 text-textLight">
-                      Please{" "}
+                    <div className="font-light text-center px-2 py-1 rounded-md hover:bg-neutral-100">
                       <Link href="/settings/profiles">
                         <span className="font-semibold text-textRegular cursor-pointer">
-                          create
-                        </span>
-                      </Link>{" "}
-                      a profile to get started.
+                          Create
+                        </span>{" "}
+                        a profile to get started.
+                      </Link>
                     </div>
                   )}
                 </div>
@@ -157,14 +157,23 @@ export default function RightDrawer({
         {isProfilesExpanded ? (
           <div className="px-5 flex flex-col gap-y-2 overflow-y-auto">
             <div className="relative">
-              {profiles.map((p) => (
+              {profile && (
                 <ProfileItem
-                  key={p.id}
-                  profile={p}
+                  key={profile.id}
+                  profile={profile}
                   defaultId={profile?.id || ""}
                   switchProfile={switchProfile}
                 />
-              ))}
+              )}
+              {nonActiveProfiles.length > 0 &&
+                nonActiveProfiles.map((p) => (
+                  <ProfileItem
+                    key={p.id}
+                    profile={p}
+                    defaultId={profile?.id || ""}
+                    switchProfile={switchProfile}
+                  />
+                ))}
               {switchLoading && (
                 <div className="absolute inset-0 flex items-center justify-center bg-white opacity-60">
                   <ButtonLoader loading color="#2096F3" />
@@ -182,7 +191,7 @@ export default function RightDrawer({
           </div>
         ) : (
           <>
-            {profiles.length > 1 && (
+            {profiles?.length > 1 && (
               <div className="relative px-5">
                 <div
                   className="px-5 flex items-center justify-between cursor-pointer py-2 hover:bg-gray-100 rounded-md"
