@@ -45,7 +45,7 @@ export default function Videos({ fetchResult }: Props) {
 
     try {
       setLoading(true)
-      const res = await fetch(`/api/publish/query`, {
+      const res = await fetch(`/api/publish/query/my-publishes`, {
         method: "POST",
         headers: {
           "Content-Type": "application/json",

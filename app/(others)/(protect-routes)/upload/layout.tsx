@@ -2,7 +2,7 @@ import React, { Suspense } from "react"
 import { redirect } from "next/navigation"
 
 import { getAccount } from "@/lib/server"
-import InformModal from "./InformModal"
+import InformModal from "../../../../components/InformModal"
 
 export default async function Layout({
   children,

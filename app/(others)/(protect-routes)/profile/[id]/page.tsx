@@ -2,7 +2,7 @@ import React, { Suspense } from "react"
 import { redirect } from "next/navigation"
 
 import ProfileTemplate from "./ProfileTemplate"
-// import ContentItems from "@/app/(non-watch)/(station)/[station]/ContentItems"
+import ContentItems from "@/app/(others)/[profile]/ContentItems"
 import { getAccount } from "@/lib/server"
 import {
   fetchMyPlaylists,
@@ -63,8 +63,7 @@ export default async function ProfilePage({
           <h6 className="text-textLight text-center">No content found</h6>
         ) : (
           <Suspense fallback={<p className="px-2">Loading...</p>}>
-            Content
-            {/* <ContentItems
+            <ContentItems
               creatorName={profile.name}
               creatorId={profile.id}
               isAuthenticated={!!account}
@@ -72,7 +71,7 @@ export default async function ProfilePage({
               itemsResult={publishesResult}
               playlistsResult={playlistsResult}
               tab="all"
-            /> */}
+            />
           </Suspense>
         )}
       </div>

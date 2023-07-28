@@ -28,7 +28,7 @@ export default async function Layout({
   }
 
   return (
-    <div className="w-full px-4 py-2">
+    <div className="w-full px-4 py-2 pb-40">
       <ProfileTemplate isAuthenticated={!!account} profile={profile} />
 
       {children}

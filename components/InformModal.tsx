@@ -1,20 +1,28 @@
 "use client"
 
-import React from "react"
+import React, { useCallback } from "react"
 
 import Backdrop from "@/components/Backdrop"
 import { useRouter } from "next/navigation"
 
-export default function InformModal() {
+export default function InformModal({
+  closeModal,
+}: {
+  closeModal?: () => void
+}) {
   const router = useRouter()
 
-  function onConfirm() {
+  const onConfirm = useCallback(() => {
     router.push("/profile")
-  }
+  }, [router])
 
-  function onCancel() {
-    router.push("/")
-  }
+  const onCancel = useCallback(() => {
+    if (closeModal) {
+      closeModal()
+    } else {
+      router.push("/")
+    }
+  }, [router, closeModal])
 
   return (
     <>
