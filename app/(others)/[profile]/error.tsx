@@ -12,10 +12,11 @@ export default function Error({
   const router = useRouter()
 
   return (
-    <div className="text-center py-10">
+    <div className="h-screen flex flex-col justify-center items-center">
       <h4 className="error font-semibold text-4xl">Something not right!</h4>
       <p className="mt-4 mb-8">
-        Please try refreshing the page or click below to go to homepage.
+        The profile you are trying to reach might not exist. Please try
+        refreshing the page or click below to go to homepage.
       </p>
       <button
         className="btn-dark px-8 rounded-full"

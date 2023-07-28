@@ -152,7 +152,7 @@ export function upload({
     process.env.NEXT_PUBLIC_UPLOAD_URL || "http://localhost:4444"
   // const uploadURL =
   //   process.env.NEXT_PUBLIC_UPLOAD_URL ||
-  //   "https://1d7b-2001-fb1-b9-2802-6c0f-511e-5efe-bf98.ngrok-free.app"
+  //   "https://f304-2001-fb1-b9-69bf-48b5-7bf2-8983-1efb.ngrok-free.app"
 
   const formData = new FormData()
   formData.append("file", file!)

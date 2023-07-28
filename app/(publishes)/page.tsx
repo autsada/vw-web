@@ -43,7 +43,7 @@ export default async function Home() {
 
   return (
     <div className="mt-[40px] py-2 sm:px-4 sm:ml-[100px]">
-      <div className="h-screen flex items-center justify-center">ViewWit</div>
+      <div className="h-screen flex items-center justify-center">Home</div>
       {/* <Videos
         profile={profile || undefined}
         isAuthenticated={!!account}

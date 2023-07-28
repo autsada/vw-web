@@ -1,6 +1,6 @@
 import { useState, useCallback, useRef, useTransition, useEffect } from "react"
 
-import { countPublishViews } from "@/app/(watch)/watch/[id]/actions"
+import { countPublishViews } from "@/app/(publish)/watch/[id]/actions"
 
 export function useCountView(publishId: string, duration: number) {
   const [intervalId, setIntervalId] = useState<NodeJS.Timer>()
