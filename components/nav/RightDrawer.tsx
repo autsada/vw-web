@@ -213,8 +213,8 @@ export default function RightDrawer({
             </div>
             <div className="w-full px-5 mt-5">
               <ActiveLink
-                name="Uploads"
-                href="/upload/publishes"
+                name="Content"
+                href="/content"
                 ActiveIcon={BsCollectionPlayFill}
                 InActiveIcon={BsCollectionPlay}
               />

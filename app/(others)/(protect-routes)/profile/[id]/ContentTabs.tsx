@@ -4,7 +4,7 @@ import React from "react"
 import { useParams } from "next/navigation"
 
 import LinkTab from "@/components/LinkTab"
-import { publishKinds } from "@/lib/helpers"
+import { publishTypes } from "@/lib/helpers"
 import type { Profile } from "@/graphql/codegen/graphql"
 
 interface Props {
@@ -19,13 +19,13 @@ export default function ContentTabs({ profile }: Props) {
   return (
     <div className="flex gap-x-1 sm:gap-x-4">
       <LinkTab href={`/@${profile.name}`} name="HOME" isActive={!tab} />
-      {publishKinds.map((k) =>
-        k === "ads" && !isOwner ? null : (
+      {publishTypes.map((t) =>
+        t === "ads" && !isOwner ? null : (
           <LinkTab
-            key={k}
-            href={`/@${profile.name}/${k.toLowerCase()}`}
-            name={k.toUpperCase()}
-            isActive={tab === k.toLowerCase()}
+            key={t}
+            href={`/@${profile.name}/${t.toLowerCase()}`}
+            name={t.toUpperCase()}
+            isActive={tab === t.toLowerCase()}
           />
         )
       )}

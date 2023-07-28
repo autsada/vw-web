@@ -170,8 +170,8 @@ export default function CreateBlogModal({
           })
         )
 
-        // Push user to upload --> blogs
-        router.push("/upload/publishes/blogs")
+        // Push user to content --> blogs
+        router.push("/content/blogs")
       } catch (error) {
         if (visibility === "draft") {
           setSavingDraft(false)

@@ -53,8 +53,8 @@ export async function saveVideo(
 
     // Revalidate page
     revalidatePath(`/upload/[id]`)
-    revalidatePath(`/upload/publishes`)
-    revalidatePath(`/upload/publishes/[type]`)
+    revalidatePath(`/content`)
+    revalidatePath(`/content/[type]`)
     revalidatePath(`/`)
   } catch (error) {
     console.error(error)
@@ -122,8 +122,8 @@ export async function saveBlogPost({
 
     // Revalidate page
     revalidatePath(`/upload/[id]`)
-    revalidatePath(`/upload/publishes`)
-    revalidatePath(`/upload/publishes/[type]`)
+    revalidatePath(`/content`)
+    revalidatePath(`/content/[type]`)
     revalidatePath(`/blogs`)
   } catch (error) {
     console.error(error)
