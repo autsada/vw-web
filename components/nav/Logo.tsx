@@ -6,7 +6,7 @@ import VwDark from "../../public/vw-dark.png"
 
 export default function Logo({
   size = "h-[70px]",
-  theme,
+  theme = "light",
 }: {
   size?: string
   theme?: "light" | "dark"

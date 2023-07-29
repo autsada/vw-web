@@ -22,6 +22,8 @@ import type {
   CheckPublishPlaylistsResponse,
   Maybe,
 } from "@/graphql/codegen/graphql"
+import { divide } from "lodash"
+import Divider from "@/components/Divider"
 
 interface Props {
   isAuthenticated: boolean
@@ -153,6 +155,10 @@ export default function Videos({
       <div className="py-1 pb-20 md:py-5 md:px-10 lg:px-24 xl:px-14">
         {/* Short videos */}
         <Shorts fetchResult={shortsResult} selectedTab={selectedCat} />
+
+        {shortsResult?.edges?.length && shortsResult?.edges?.length > 0 && (
+          <div className="w-full h-[4px] bg-neutral-200 my-10" />
+        )}
 
         {/* Render videos by category */}
         <VideosByCat

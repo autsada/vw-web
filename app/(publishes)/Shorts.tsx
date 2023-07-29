@@ -39,11 +39,7 @@ export default function Shorts({ fetchResult, selectedTab }: Props) {
   if (shorts.length === 0) return null
 
   return (
-    <div
-      className={`pb-20 ${
-        selectedTab !== "All" ? "hidden" : "block"
-      } border-b-4 border-neutral-200`}
-    >
+    <div className={`${selectedTab !== "All" ? "hidden" : "block"}`}>
       <Link href="/shorts">
         <div className="w-max flex items-center gap-x-6">
           <h6 className="text-base sm:text-lg lg:text-xl px-5 sm:px-0">
