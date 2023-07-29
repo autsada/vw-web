@@ -2,7 +2,7 @@ import React from "react"
 import Image from "next/image"
 
 import ContentTabs from "./ContentTabs"
-import ManageFollow from "@/app/(publish)/watch/[id]/ManageFollow"
+import ManageFollow from "@/components/ManageFollow"
 import type { Profile } from "@/graphql/codegen/graphql"
 
 interface Props {

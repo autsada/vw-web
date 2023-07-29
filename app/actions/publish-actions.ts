@@ -17,9 +17,11 @@ import {
   dontRecommend,
   report,
   countViews,
+  deleteComment,
 } from "@/graphql"
 import { getAccount } from "@/lib/server"
 import type {
+  CommentPublishInput,
   DisplayedPlaylist,
   ReportReason,
   UpdateBlogInput,
@@ -600,6 +602,116 @@ export async function countPublishViews(publishId: string) {
     // Revalidate watch page
     revalidatePath(`/`)
     revalidatePath(`/watch/[id]`)
+  } catch (error) {
+    console.error(error)
+  }
+}
+
+export async function commentOnBlog({
+  publishId,
+  contentBlog,
+  htmlContentBlog,
+}: Pick<CommentPublishInput, "publishId" | "contentBlog" | "htmlContentBlog">) {
+  try {
+    const data = await getAccount()
+    const account = data?.account
+    const idToken = data?.idToken
+    const signature = data?.signature
+    if (!account || !account?.defaultProfile || !idToken)
+      throw new Error("Please sign in to proceed.")
+
+    if (!publishId || !contentBlog || !htmlContentBlog)
+      throw new Error("Bad input")
+
+    await commentPublish({
+      idToken,
+      signature,
+      input: {
+        accountId: account.id,
+        owner: account.owner,
+        profileId: account.defaultProfile?.id,
+        publishId,
+        commentType: "PUBLISH",
+        contentBlog: JSON.parse(contentBlog),
+        htmlContentBlog,
+      },
+    })
+
+    // Revalidate the read page
+    revalidatePath(`/read/[id]`)
+  } catch (error) {
+    console.error(error)
+  }
+}
+
+export async function commentOnBlogComment({
+  publishId,
+  commentId,
+  contentBlog,
+  htmlContentBlog,
+}: Pick<
+  CommentPublishInput,
+  "publishId" | "commentId" | "contentBlog" | "htmlContentBlog"
+>) {
+  try {
+    const data = await getAccount()
+    const account = data?.account
+    const idToken = data?.idToken
+    const signature = data?.signature
+    if (!account || !account?.defaultProfile || !idToken)
+      throw new Error("Please sign in to proceed.")
+
+    if (!publishId || !commentId || !contentBlog || !htmlContentBlog)
+      throw new Error("Bad input")
+
+    await commentPublish({
+      idToken,
+      signature,
+      input: {
+        accountId: account.id,
+        owner: account.owner,
+        profileId: account.defaultProfile?.id,
+        publishId,
+        commentId,
+        commentType: "COMMENT",
+        contentBlog: JSON.parse(contentBlog),
+        htmlContentBlog,
+      },
+    })
+
+    // Revalidate the read page
+    revalidatePath(`/read/[id]`)
+  } catch (error) {
+    console.error(error)
+  }
+}
+
+export async function deletePublishComment(commentId: string) {
+  try {
+    const data = await getAccount()
+    const account = data?.account
+    const idToken = data?.idToken
+    const signature = data?.signature
+    if (!account || !account?.defaultProfile || !idToken)
+      throw new Error("Please sign in to proceed.")
+
+    if (!commentId) throw new Error("Bad input")
+
+    await deleteComment({
+      idToken,
+      signature,
+      input: {
+        accountId: account.id,
+        owner: account.owner,
+        profileId: account.defaultProfile?.id,
+        commentId,
+      },
+    })
+
+    // Revalidate the read page
+    revalidatePath(`/read/[id]`)
+    revalidatePath(`/watch/[id]`)
+    revalidatePath(`/shorts`)
   } catch (error) {
     console.error(error)
   }
