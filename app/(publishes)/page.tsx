@@ -1,3 +1,4 @@
+import Videos from "./Videos"
 import { getAccount } from "@/lib/server"
 import { fetchPublishes, fetchMyPlaylists, getProfileById } from "@/graphql"
 
@@ -43,14 +44,13 @@ export default async function Home() {
 
   return (
     <div className="mt-[40px] py-2 sm:px-4 sm:ml-[100px]">
-      <div className="h-screen flex items-center justify-center">Home</div>
-      {/* <Videos
+      <Videos
         profile={profile || undefined}
         isAuthenticated={!!account}
         videosResult={videosResult}
         shortsResult={shortsResult}
         playlistsResult={playlistsResult || undefined}
-      /> */}
+      />
     </div>
   )
 }

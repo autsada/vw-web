@@ -1,5 +1,10 @@
 import React, { useTransition, useState, useCallback } from "react"
-import { AiOutlineClockCircle, AiOutlineShareAlt } from "react-icons/ai"
+import {
+  AiOutlineClockCircle,
+  AiOutlineShareAlt,
+  AiOutlineFlag,
+  AiOutlineMinusCircle,
+} from "react-icons/ai"
 import { MdPlaylistAdd } from "react-icons/md"
 import type { IconType } from "react-icons"
 import { toast } from "react-toastify"
@@ -8,14 +13,16 @@ import ModalWrapper from "@/components/ModalWrapper"
 import Mask from "@/components/Mask"
 import InformModal from "./InformModal"
 import { useAuthContext } from "@/context/AuthContext"
-import { saveToWatchLater } from "@/app/actions/publish-actions"
+import {
+  saveToWatchLater,
+  dontRecommendProfile,
+} from "@/app/actions/publish-actions"
 import { BASE_URL } from "@/lib/constants"
 import type {
   Maybe,
   CheckPublishPlaylistsResponse,
   Publish,
   Profile,
-  PublishEdge,
 } from "@/graphql/codegen/graphql"
 
 interface Props {
@@ -30,7 +37,8 @@ interface Props {
   loadingPublishPlaylistsData: boolean
   setLoadingPublishPlaylistsData: React.Dispatch<React.SetStateAction<boolean>>
   openShareModal: () => void
-  setItems: React.Dispatch<React.SetStateAction<PublishEdge[]>>
+  openReportModal: () => void
+  fullListMode?: boolean // If true show all actions in the modal
 }
 
 export default function ActionsModal({
@@ -45,8 +53,10 @@ export default function ActionsModal({
   setLoadingPublishPlaylistsData,
   setPublishPlaylistsData,
   openShareModal,
-  setItems,
+  openReportModal,
+  fullListMode = true,
 }: Props) {
+  const isOwner = profile?.id === publish?.creator?.id
   const [informModalVisible, setInformModalVisible] = useState(false)
 
   const { onVisible: openAuthModal } = useAuthContext()
@@ -128,13 +138,31 @@ export default function ActionsModal({
     }
   }, [publish, openShareModal, closeModal])
 
+  const dontRecommendCreator = useCallback(() => {
+    if (!publish) return
+
+    if (!isAuthenticated) {
+      openAuthModal()
+    } else if (!profile) {
+      setInformModalVisible(true)
+    } else {
+      startTransition(() => dontRecommendProfile(publish.creator?.id))
+      toast.success("This creator will not be recommended again", {
+        theme: "dark",
+      })
+    }
+    closeModal()
+  }, [publish, isAuthenticated, profile, openAuthModal, closeModal])
+
   return (
     <ModalWrapper visible>
       <div className="relative z-0 w-full h-full">
         <div className="relative z-0 w-full h-full" onClick={closeModal}></div>
 
         <div
-          className={`absolute z-10 flex flex-col items-center justify-center bg-white rounded-xl w-[300px] h-[200px]`}
+          className={`absolute z-10 flex flex-col items-center justify-center bg-white rounded-xl w-[300px] ${
+            !isOwner && fullListMode ? "h-[280px]" : "h-[200px]"
+          }`}
           style={{
             top,
             left,
@@ -151,6 +179,20 @@ export default function ActionsModal({
             onClick={onStartAddToPlaylist}
           />
           <Item Icon={AiOutlineShareAlt} text="Share" onClick={onStartShare} />
+          {!isOwner && fullListMode && (
+            <>
+              <Item
+                Icon={AiOutlineMinusCircle}
+                text="Don't recommend"
+                onClick={dontRecommendCreator}
+              />
+              <Item
+                Icon={AiOutlineFlag}
+                text="Report"
+                onClick={openReportModal}
+              />
+            </>
+          )}
         </div>
 
         {/* Inform modal */}
@@ -158,7 +200,7 @@ export default function ActionsModal({
       </div>
 
       {/* Prevent interaction while loading */}
-      {loadingPublishPlaylistsData && <Mask />}
+      {(loadingPublishPlaylistsData || isPending) && <Mask />}
     </ModalWrapper>
   )
 }
