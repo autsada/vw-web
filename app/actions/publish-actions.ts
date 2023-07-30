@@ -19,6 +19,8 @@ import {
   countViews,
   deleteComment,
   bookmark,
+  removeAllBookmarks,
+  removeBookmark,
 } from "@/graphql"
 import { getAccount } from "@/lib/server"
 import type {
@@ -742,6 +744,65 @@ export async function bookmarkPost(publishId: string) {
     // Revalidate page
     revalidatePath(`/blogs`)
     revalidatePath(`/read/[id]`)
+  } catch (error) {
+    console.error(error)
+  }
+}
+
+export async function removeOneBookmark(publishId: string) {
+  try {
+    const data = await getAccount()
+    const account = data?.account
+    const idToken = data?.idToken
+    const signature = data?.signature
+    if (!account || !account?.defaultProfile || !idToken)
+      throw new Error("Please sign in to proceed.")
+
+    if (!publishId) throw new Error("Bad input")
+
+    // Remove from watch later
+    await removeBookmark({
+      idToken,
+      signature,
+      input: {
+        accountId: account.id,
+        owner: account.owner,
+        profileId: account.defaultProfile?.id,
+        publishId,
+      },
+    })
+
+    // Revalidate reading list page
+    revalidatePath(`/library/readinglist`)
+    revalidatePath(`/tag/[name]`)
+  } catch (error) {
+    console.error(error)
+  }
+}
+
+export async function removeBookmarks() {
+  try {
+    const data = await getAccount()
+    const account = data?.account
+    const idToken = data?.idToken
+    const signature = data?.signature
+    if (!account || !account?.defaultProfile || !idToken)
+      throw new Error("Please sign in to proceed.")
+
+    // Remove from watch later
+    await removeAllBookmarks({
+      idToken,
+      signature,
+      input: {
+        accountId: account.id,
+        owner: account.owner,
+        profileId: account.defaultProfile?.id,
+      },
+    })
+
+    // Revalidate library page
+    revalidatePath(`/library`)
+    revalidatePath(`/library/readinglist`)
   } catch (error) {
     console.error(error)
   }

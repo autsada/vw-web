@@ -616,6 +616,7 @@ export const FETCH_BY_TAG_QUERY = gql`
   query FetchPublishesByTag($input: FetchPublishesByTagInput!) {
     fetchPublishesByTag(input: $input) {
       pageInfo {
+        count
         endCursor
         hasNextPage
       }
@@ -682,6 +683,7 @@ export const FETCH_BY__QUERY = gql`
   query FetchPublishesByQuery($input: FetchPublishesByQueryStringInput!) {
     fetchPublishesByQueryString(input: $input) {
       pageInfo {
+        count
         endCursor
         hasNextPage
       }

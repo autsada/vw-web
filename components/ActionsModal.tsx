@@ -1,4 +1,5 @@
 import React, { useTransition, useState, useCallback } from "react"
+import { useRouter } from "next/navigation"
 import {
   AiOutlineClockCircle,
   AiOutlineShareAlt,
@@ -6,6 +7,7 @@ import {
   AiOutlineMinusCircle,
 } from "react-icons/ai"
 import { MdPlaylistAdd } from "react-icons/md"
+import { BsBookmarkFill, BsBookmark } from "react-icons/bs"
 import type { IconType } from "react-icons"
 import { toast } from "react-toastify"
 
@@ -16,6 +18,8 @@ import { useAuthContext } from "@/context/AuthContext"
 import {
   saveToWatchLater,
   dontRecommendProfile,
+  bookmarkPost,
+  removeOneBookmark,
 } from "@/app/actions/publish-actions"
 import { BASE_URL } from "@/lib/constants"
 import type {
@@ -26,6 +30,7 @@ import type {
 } from "@/graphql/codegen/graphql"
 
 interface Props {
+  actionsFor?: "videos" | "blogs"
   isAuthenticated: boolean
   profile: Maybe<Profile> | undefined
   publish?: Publish
@@ -42,6 +47,7 @@ interface Props {
 }
 
 export default function ActionsModal({
+  actionsFor = "videos",
   isAuthenticated,
   profile,
   closeModal,
@@ -57,10 +63,12 @@ export default function ActionsModal({
   fullListMode = true,
 }: Props) {
   const isOwner = profile?.id === publish?.creator?.id
+  const bookmarked = publish?.bookmarked
   const [informModalVisible, setInformModalVisible] = useState(false)
 
   const { onVisible: openAuthModal } = useAuthContext()
   const [isPending, startTransition] = useTransition()
+  const router = useRouter()
 
   const addToWatchLater = useCallback(() => {
     if (!publish) return
@@ -154,46 +162,110 @@ export default function ActionsModal({
     closeModal()
   }, [publish, isAuthenticated, profile, openAuthModal, closeModal])
 
+  const bookmark = useCallback(() => {
+    if (!publish) return
+
+    if (!isAuthenticated) {
+      openAuthModal("Sign in to bookmark a post.")
+    } else if (!profile) {
+      setInformModalVisible(true)
+    } else {
+      if (!bookmarked) {
+        startTransition(() => bookmarkPost(publish.id))
+        toast.success("Added to Reading list", { theme: "dark" })
+      } else {
+        startTransition(() => removeOneBookmark(publish.id))
+        toast.success("Removed from Reading list", { theme: "dark" })
+      }
+      router.refresh()
+    }
+    closeModal()
+  }, [
+    publish,
+    isAuthenticated,
+    openAuthModal,
+    profile,
+    closeModal,
+    router,
+    bookmarked,
+  ])
+
   return (
     <ModalWrapper visible>
       <div className="relative z-0 w-full h-full">
         <div className="relative z-0 w-full h-full" onClick={closeModal}></div>
 
-        <div
-          className={`absolute z-10 flex flex-col items-center justify-center bg-white rounded-xl w-[300px] ${
-            !isOwner && fullListMode ? "h-[280px]" : "h-[200px]"
-          }`}
-          style={{
-            top,
-            left,
-          }}
-        >
-          <Item
-            Icon={AiOutlineClockCircle}
-            text="Add to Watch Later"
-            onClick={addToWatchLater}
-          />
-          <Item
-            Icon={MdPlaylistAdd}
-            text="Add to Playlist"
-            onClick={onStartAddToPlaylist}
-          />
-          <Item Icon={AiOutlineShareAlt} text="Share" onClick={onStartShare} />
-          {!isOwner && fullListMode && (
-            <>
-              <Item
-                Icon={AiOutlineMinusCircle}
-                text="Don't recommend"
-                onClick={dontRecommendCreator}
-              />
+        {actionsFor === "videos" ? (
+          <div
+            className={`absolute z-10 flex flex-col items-center justify-center bg-white rounded-xl w-[300px] ${
+              !isOwner && fullListMode ? "h-[280px]" : "h-[200px]"
+            }`}
+            style={{
+              top,
+              left,
+            }}
+          >
+            <Item
+              Icon={AiOutlineClockCircle}
+              text="Add to Watch Later"
+              onClick={addToWatchLater}
+            />
+            <Item
+              Icon={MdPlaylistAdd}
+              text="Add to Playlist"
+              onClick={onStartAddToPlaylist}
+            />
+            <Item
+              Icon={AiOutlineShareAlt}
+              text="Share"
+              onClick={onStartShare}
+            />
+            {!isOwner && fullListMode && (
+              <>
+                <Item
+                  Icon={AiOutlineMinusCircle}
+                  text="Don't recommend"
+                  onClick={dontRecommendCreator}
+                />
+                <Item
+                  Icon={AiOutlineFlag}
+                  text="Report"
+                  onClick={openReportModal}
+                />
+              </>
+            )}
+          </div>
+        ) : (
+          <div
+            className={`absolute z-10 flex flex-col items-center justify-center bg-white rounded-xl w-[300px] ${
+              !isOwner ? "h-[200px]" : "h-[150px]"
+            }`}
+            style={{
+              top,
+              left,
+            }}
+          >
+            <Item
+              Icon={!bookmarked ? BsBookmark : BsBookmarkFill}
+              text={
+                !bookmarked ? "Add to Reading List" : "Remove from Reading List"
+              }
+              onClick={bookmark}
+            />
+            <Item
+              Icon={AiOutlineShareAlt}
+              text="Share"
+              onClick={onStartShare}
+            />
+            {!isOwner && (
               <Item
                 Icon={AiOutlineFlag}
                 text="Report"
                 onClick={openReportModal}
               />
-            </>
-          )}
-        </div>
+            )}
+          </div>
+        )}
 
         {/* Inform modal */}
         {informModalVisible && <InformModal closeModal={closeModal} />}
