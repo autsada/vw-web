@@ -18,6 +18,7 @@ import {
   report,
   countViews,
   deleteComment,
+  bookmark,
 } from "@/graphql"
 import { getAccount } from "@/lib/server"
 import type {
@@ -712,6 +713,35 @@ export async function deletePublishComment(commentId: string) {
     revalidatePath(`/read/[id]`)
     revalidatePath(`/watch/[id]`)
     revalidatePath(`/shorts`)
+  } catch (error) {
+    console.error(error)
+  }
+}
+
+export async function bookmarkPost(publishId: string) {
+  try {
+    const data = await getAccount()
+    const account = data?.account
+    const idToken = data?.idToken
+    const signature = data?.signature
+    const profile = account?.defaultProfile
+    if (!account || !profile || !idToken)
+      throw new Error("Please sign in to proceed.")
+
+    await bookmark({
+      idToken,
+      signature,
+      input: {
+        accountId: account.id,
+        owner: account.owner,
+        profileId: profile.id,
+        publishId,
+      },
+    })
+
+    // Revalidate page
+    revalidatePath(`/blogs`)
+    revalidatePath(`/read/[id]`)
   } catch (error) {
     console.error(error)
   }
