@@ -62,6 +62,7 @@ export default function SubComments({
         comment={parentComment}
         publishId={publishId}
         reloadComments={reloadComments}
+        reloadSubComments={reloadSubComments}
         fetchCommentsSortBy={fetchCommentsSortBy}
         openReportModal={openReportModal}
       />

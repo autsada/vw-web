@@ -10,12 +10,18 @@ interface Props {
   isAuthenticated: boolean
   publish: Publish
   withDescription?: boolean
+  verticalLayout?: boolean
+  buttonWidth?: string // h-[40px]
+  buttonHeight?: string // h-[40px]
 }
 
 export default function TipReaction({
   isAuthenticated,
   publish,
   withDescription = true,
+  verticalLayout,
+  buttonWidth,
+  buttonHeight,
 }: Props) {
   const [tipModalVisible, setTipModalVisible] = useState(false)
 
@@ -43,7 +49,10 @@ export default function TipReaction({
         description="Tip"
         withDescription={withDescription}
         isActive={false}
+        width={buttonWidth}
+        height={buttonHeight}
         onClick={handleStartTip}
+        verticalLayout={verticalLayout}
       />
 
       {tipModalVisible && publish && (

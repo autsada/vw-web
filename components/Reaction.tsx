@@ -54,7 +54,7 @@ export default function Reaction({
       <div
         className={`${
           !width ? "w-full" : width
-        } ${height} flex items-center justify-center gap-x-2 cursor-pointer bg-neutral-100 hover:bg-neutral-200`}
+        } ${height} flex items-center justify-center gap-x-2 cursor-pointer bg-neutral-100 hover:bg-neutral-200 rounded-full`}
         onClick={onClick}
       >
         <div className="h-full flex items-center justify-center">
@@ -63,7 +63,7 @@ export default function Reaction({
       </div>
       {description && withDescription && (
         <div
-          className={`absolute bottom-0 left-0 right-0 py-2 font-semibold text-xs sm:text-sm flex items-center justify-center ${
+          className={`absolute h-[10px] -bottom-[15px] left-0 right-0 py-2 text-xs flex items-center justify-center ${
             descriptionColor ? descriptionColor : "text-textRegular"
           }`}
         >

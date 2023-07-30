@@ -1,3 +1,5 @@
+// Use this component for short item carousel
+
 "use client"
 
 import React, { useEffect } from "react"
@@ -9,6 +11,7 @@ import TipReaction from "@/components/TipReaction"
 import ShareReaction from "@/components/ShareReaction"
 import SaveReaction from "@/components/SaveReaction"
 import ReportReaction from "@/components/ReportReaction"
+import CommentsReaction from "./CommentReaction"
 
 // import { db, publishesCollection } from "@/firebase/config"
 import type {
@@ -23,13 +26,19 @@ interface Props {
   isAuthenticated: boolean
   playlistsResult: Maybe<FetchPlaylistsResponse> | undefined
   publishPlaylistsData: Maybe<CheckPublishPlaylistsResponse> | undefined
+  commentAction: () => void
+  buttonHeight?: string // h-[40px]
+  buttonDescriptionColor?: string // text-white for exp
 }
 
-export default function Reactions({
+export default function VerticalReactions({
   publish,
   isAuthenticated,
   playlistsResult,
   publishPlaylistsData,
+  commentAction,
+  buttonHeight = "h-[35px]",
+  buttonDescriptionColor,
 }: Props) {
   // const router = useRouter()
 
@@ -49,28 +58,55 @@ export default function Reactions({
   // }, [router, publish?.id])
 
   return (
-    <div className="w-max flex items-center gap-x-2">
+    <div className="w-full flex flex-col items-center justify-end gap-y-5">
       <LikeReaction
         isAuthenticated={isAuthenticated}
         publishId={publish?.id}
         liked={!!publish?.liked}
         likesCount={publish?.likesCount}
         disLiked={!!publish?.disLiked}
-        likeButtonWidth={publish?.likesCount > 100 ? "w-[100px]" : "w-[80px]"}
+        likeButtonHeight={buttonHeight}
+        dislikeButtonHeight={buttonHeight}
+        verticalLayout
+        descriptionColor={buttonDescriptionColor}
       />
-      <TipReaction isAuthenticated={isAuthenticated} publish={publish} />
+      <TipReaction
+        isAuthenticated={isAuthenticated}
+        publish={publish}
+        verticalLayout
+        withDescription={false}
+        buttonHeight={buttonHeight}
+      />
       <ShareReaction
         publishId={publish?.id}
         publishType={publish?.publishType!}
         title={publish?.title || ""}
+        withDescription={false}
+        verticalLayout
+        buttonHeight={buttonHeight}
       />
       <SaveReaction
         publishId={publish?.id}
         isAuthenticated={isAuthenticated}
         playlistsResult={playlistsResult}
         publishPlaylistsData={publishPlaylistsData}
+        withDescription={false}
+        verticalLayout
+        buttonHeight={buttonHeight}
       />
-      <ReportReaction publishId={publish?.id} />
+      <ReportReaction
+        publishId={publish?.id}
+        withDescription={false}
+        verticalLayout
+        buttonHeight={buttonHeight}
+      />
+      <CommentsReaction
+        commentsCount={publish?.commentsCount}
+        commentAction={commentAction}
+        verticalLayout
+        buttonHeight={buttonHeight}
+        descriptionColor={buttonDescriptionColor}
+      />
     </div>
   )
 }

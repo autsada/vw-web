@@ -1,30 +1,31 @@
 import { NextResponse } from "next/server"
 
-import { fetchProfilePublishes } from "@/graphql"
+import { fetchPublishes, getProfileById } from "@/graphql"
 import { getAccount } from "@/lib/server"
-import type { PublishOrderBy, QueryPublishType } from "@/graphql/types"
+import type { QueryPublishType } from "@/graphql/types"
 
 export async function POST(req: Request) {
   const data = await getAccount()
   const account = data?.account
-  const requestor =
-    !account || !account.defaultProfile ? undefined : account.defaultProfile
+  const idToken = data?.idToken
 
-  const { creatorId, publishType, cursor, sortBy } = (await req.json()) as {
-    creatorId: string
-    publishType?: QueryPublishType
+  const { cursor, publishType } = (await req.json()) as {
     cursor?: string
-    sortBy?: PublishOrderBy
+    publishType?: QueryPublishType
   }
 
-  // Fetch publishes of the creator
-  const fetchResult = await fetchProfilePublishes({
-    creatorId,
-    requestorId: requestor?.id,
-    publishType,
+  // Get user profile
+  const profile =
+    !account || !idToken || !account.defaultProfile
+      ? undefined
+      : await getProfileById(account?.defaultProfile?.id)
+
+  // Fetch publishes by its type
+  const shortsResult = await fetchPublishes({
+    requestorId: profile?.id,
     cursor,
-    orderBy: sortBy,
+    publishType,
   })
 
-  return NextResponse.json({ result: fetchResult })
+  return NextResponse.json({ result: shortsResult })
 }

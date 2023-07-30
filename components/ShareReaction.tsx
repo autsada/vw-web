@@ -11,6 +11,9 @@ interface Props {
   publishType: PublishType
   title: string
   withDescription?: boolean
+  verticalLayout?: boolean
+  buttonWidth?: string // h-[40px]
+  buttonHeight?: string // h-[40px]
 }
 
 export default function ShareReaction({
@@ -18,6 +21,9 @@ export default function ShareReaction({
   publishType,
   title,
   withDescription = true,
+  verticalLayout,
+  buttonWidth,
+  buttonHeight,
 }: Props) {
   const [shareModalVisible, setShareModalVisible] = useState(false)
 
@@ -59,7 +65,10 @@ export default function ShareReaction({
         description="Share"
         withDescription={withDescription}
         isActive={false}
+        width={buttonWidth}
+        height={buttonHeight}
         onClick={onStartShare}
+        verticalLayout={verticalLayout}
       />
 
       {shareModalVisible && (

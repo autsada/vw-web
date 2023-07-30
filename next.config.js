@@ -4,7 +4,10 @@ const nextConfig = {
     serverActions: true,
   },
   images: {
-    domains: ["firebasestorage.googleapis.com"],
+    domains: [
+      "firebasestorage.googleapis.com",
+      "customer-ndc778ybs24fn8ir.cloudflarestream.com",
+    ],
   },
 }
 

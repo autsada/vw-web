@@ -16,6 +16,9 @@ interface Props {
   playlistsResult: Maybe<FetchPlaylistsResponse> | undefined
   publishPlaylistsData: Maybe<CheckPublishPlaylistsResponse> | undefined
   withDescription?: boolean
+  verticalLayout?: boolean
+  buttonWidth?: string // h-[40px]
+  buttonHeight?: string // h-[40px]
 }
 
 export default function SaveReaction({
@@ -24,6 +27,9 @@ export default function SaveReaction({
   playlistsResult,
   publishPlaylistsData,
   withDescription = true,
+  verticalLayout,
+  buttonWidth,
+  buttonHeight,
 }: Props) {
   const [addToPlaylistsModalVisible, setAddToPlaylistsModalVisible] =
     useState(false)
@@ -71,7 +77,10 @@ export default function SaveReaction({
         description="Save"
         withDescription={withDescription}
         isActive={false}
+        width={buttonWidth}
+        height={buttonHeight}
         onClick={handleSavePublish}
+        verticalLayout={verticalLayout}
       />
 
       {/* Add to playlist modal */}

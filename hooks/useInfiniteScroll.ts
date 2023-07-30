@@ -7,7 +7,7 @@ import { useRef, useEffect } from "react"
  */
 export function useInfiniteScroll(
   threshold: number,
-  onIntersacting: () => void,
+  onIntersacting?: () => void,
   onLeave?: () => void
 ) {
   const observedRef = useRef<HTMLDivElement>(null)
@@ -22,7 +22,7 @@ export function useInfiniteScroll(
       ([entry]) => {
         if (entry.isIntersecting) {
           if (entry.intersectionRatio >= threshold) {
-            onIntersacting()
+            if (onIntersacting) onIntersacting()
           }
         } else {
           if (onLeave) onLeave()

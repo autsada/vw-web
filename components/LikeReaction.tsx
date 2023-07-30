@@ -19,8 +19,10 @@ interface Props {
   likesCount: number
   disLiked: boolean
   withDescription?: boolean
-  likeButtonWith?: string // w-[100px] for exp
-  dislikeButtonWith?: string // w-[100px] for exp
+  likeButtonWidth?: string // w-[100px] for exp
+  dislikeButtonWidth?: string // w-[100px] for exp
+  likeButtonHeight?: string // h-[40px] for exp
+  dislikeButtonHeight?: string // h-[40px] for exp
   verticalLayout?: boolean
   descriptionColor?: string // text-white for exp
 }
@@ -32,8 +34,10 @@ export default function LikeReaction({
   likesCount,
   disLiked,
   withDescription = true,
-  likeButtonWith,
-  dislikeButtonWith,
+  likeButtonWidth,
+  dislikeButtonWidth,
+  likeButtonHeight,
+  dislikeButtonHeight,
   verticalLayout = false,
   descriptionColor,
 }: Props) {
@@ -117,7 +121,8 @@ export default function LikeReaction({
         descriptionColor={descriptionColor}
         isActive={optimisticLiked}
         onClick={likeDebounce}
-        width={likeButtonWith}
+        width={likeButtonWidth}
+        height={likeButtonHeight}
         verticalLayout={verticalLayout}
       />
       <Reaction
@@ -126,7 +131,9 @@ export default function LikeReaction({
         withDescription={false}
         isActive={optimisticDisLiked}
         onClick={disLikeDebounce}
-        width={dislikeButtonWith}
+        width={dislikeButtonWidth}
+        height={dislikeButtonHeight}
+        verticalLayout={verticalLayout}
       />
 
       {/* Prevent interaction while loading */}

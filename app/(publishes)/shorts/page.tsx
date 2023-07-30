@@ -1,4 +1,4 @@
-// import Shorts from "./Shorts"
+import Shorts from "./Shorts"
 import {
   fetchMyPlaylists,
   fetchPublishes,
@@ -71,14 +71,13 @@ export default async function Page({ searchParams }: Props) {
 
   return (
     <div className="sm:ml-[100px]">
-      Shorts
-      {/* <Shorts
+      <Shorts
         isAuthenticated={!!account}
         profile={profile}
         fetchResult={shortsResult}
         playlistsResult={playlistsResult}
         initialId={searchParams.id}
-      /> */}
+      />
     </div>
   )
 }

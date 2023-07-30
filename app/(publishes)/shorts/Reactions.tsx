@@ -57,20 +57,34 @@ export default function Reactions({
         likesCount={publish?.likesCount}
         disLiked={!!publish?.disLiked}
         likeButtonWidth={publish?.likesCount > 100 ? "w-[100px]" : "w-[80px]"}
+        dislikeButtonWidth="w-[60px]"
       />
-      <TipReaction isAuthenticated={isAuthenticated} publish={publish} />
+      <TipReaction
+        isAuthenticated={isAuthenticated}
+        publish={publish}
+        withDescription={false}
+        buttonWidth="w-[60px]"
+      />
       <ShareReaction
         publishId={publish?.id}
         publishType={publish?.publishType!}
         title={publish?.title || ""}
+        withDescription={false}
+        buttonWidth="w-[60px]"
       />
       <SaveReaction
         publishId={publish?.id}
         isAuthenticated={isAuthenticated}
         playlistsResult={playlistsResult}
         publishPlaylistsData={publishPlaylistsData}
+        withDescription={false}
+        buttonWidth="w-[60px]"
       />
-      <ReportReaction publishId={publish?.id} />
+      <ReportReaction
+        publishId={publish?.id}
+        withDescription={false}
+        buttonWidth="w-[60px]"
+      />
     </div>
   )
 }
