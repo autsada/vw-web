@@ -28,9 +28,7 @@ export default function ReadingList({ bookmarksResult }: Props) {
               </div>
             </div>
             {itemsCount === 0 && (
-              <p className="mt-1 text-textLight">
-                No blogs in your reading list yet.
-              </p>
+              <p className="mt-1 text-textLight">{`You don't have any bogs in your reading list.`}</p>
             )}
           </Link>
 

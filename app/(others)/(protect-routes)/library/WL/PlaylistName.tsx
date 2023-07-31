@@ -202,7 +202,7 @@ export default function PlaylistName({
       )}
       {!itemsCount && (
         <p className="mt-1 px-2 sm:px-0 text-textLight">
-          No publishes in this playlist yet.
+          No items in this playlist.
         </p>
       )}
 
