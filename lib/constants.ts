@@ -7,3 +7,7 @@ export const SIGN_IN_HEADER =
   "Sign in to upload, like, comment, and more on VewWit."
 export const BASE_URL =
   "https://f6b7-2001-fb1-b9-69bf-48b5-7bf2-8983-1efb.ngrok-free.app"
+export const LOGO_URL =
+  "https://firebasestorage.googleapis.com/v0/b/vewwit.appspot.com/o/vw.png?alt=media&token=1486648e-771f-4ac3-9f18-91faac2025b3"
+export const DEFAULT_BLOG_COVER_URL =
+  "https://firebasestorage.googleapis.com/v0/b/vewwit.appspot.com/o/defalut-blog-cover.jpeg?alt=media&token=9e29711c-37e3-41d2-9b89-b7e9183d6a2a"

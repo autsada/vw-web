@@ -81,15 +81,13 @@ export default function VideoItem({ publish, onOpenActions, setPOS }: Props) {
               playIcon={<></>}
             />
           </div>
-          {publish.publishType === "Short" ? (
-            <div className="absolute bottom-2 right-2 px-[2px] rounded-sm bg-black text-white font-semibold italic text-xs flex items-center justify-center">
-              SHORTS
-            </div>
-          ) : publish.playback ? (
-            <div className="absolute bottom-2 right-2 px-[2px] rounded-sm bg-white font-thin text-xs flex items-center justify-center">
-              {secondsToHourFormat(publish.playback?.duration)}
-            </div>
-          ) : null}
+          <div className="absolute bottom-2 right-2 px-[2px] rounded-sm bg-white text-xs flex items-center justify-center">
+            {publish.publishType === "Short"
+              ? "SHORT"
+              : publish.playback
+              ? secondsToHourFormat(publish.playback?.duration)
+              : null}
+          </div>
         </div>
       </Link>
 

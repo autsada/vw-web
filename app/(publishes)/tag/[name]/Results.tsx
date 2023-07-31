@@ -71,21 +71,25 @@ export default function Results({
 
   return (
     <>
-      {count > 0 && (
-        <p className="mt-1 text-textLight">
-          {count} publish{count === 1 ? "" : "es"}
-        </p>
-      )}
-      <div className="my-5">
+      <div className="px-2 sm:px-4">
+        {count > 0 && (
+          <p className="mt-1 text-textLight">
+            {count} publish{count === 1 ? "" : "es"}
+          </p>
+        )}
+      </div>
+      <div className="my-5 px-2 sm:px-4">
         <Tabs tag={tag} />
       </div>
-      <DisplayedResults
-        isAuthenticated={isAuthenticated}
-        profile={profile}
-        fetchResult={fetchResult}
-        playlistsResult={playlistsResult}
-        fetchMore={fetchMore}
-      />
+      <div className="sm:px-4">
+        <DisplayedResults
+          isAuthenticated={isAuthenticated}
+          profile={profile}
+          fetchResult={fetchResult}
+          playlistsResult={playlistsResult}
+          fetchMore={fetchMore}
+        />
+      </div>
     </>
   )
 }

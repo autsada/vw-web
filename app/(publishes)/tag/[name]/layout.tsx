@@ -23,8 +23,11 @@ export default function layout({
   const tag = params.name
 
   return (
-    <div className="px-2 sm:px-4 py-2 sm:ml-[100px]">
-      <h6>#{tag}</h6>
+    <div className="py-2 sm:ml-[100px]">
+      <div className="px-2 sm:px-4">
+        <h6>#{tag}</h6>
+      </div>
+
       <>{children}</>
     </div>
   )

@@ -160,7 +160,7 @@ export default function DisplayedResults({
             No results found.
           </div>
         ) : (
-          <div className="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-y-2 sm:gap-y-4 md:gap-y-2 md:gap-x-4 justify-items-center bg-white divide-y-[4px] sm:divide-y-0 divide-neutral-200">
+          <div className="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-y-2 sm:gap-y-4 md:gap-y-2 md:gap-x-4 justify-items-center bg-white">
             {edges.map((edge, i) =>
               !edge.node ? null : edge.node.publishType === "Blog" ? (
                 <BlogItem
