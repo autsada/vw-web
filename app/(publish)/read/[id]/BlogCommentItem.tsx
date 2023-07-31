@@ -6,21 +6,20 @@ import {
   AiOutlineLike,
   AiOutlineFlag,
 } from "react-icons/ai"
-import _ from "lodash"
 import { HiDotsHorizontal } from "react-icons/hi"
+import _ from "lodash"
+import parse from "html-react-parser"
 
 import Avatar from "@/components/Avatar"
 import CommentBox from "./CommentBox"
 import ProfileName from "@/components/ProfileName"
-import Mask from "@/components/Mask"
-import { useExpandContent } from "@/hooks/useExpandContent"
 import { useAuthContext } from "@/context/AuthContext"
 import { calculateTimeElapsed } from "@/lib/client"
 import {
-  commentOnVideoComment,
-  likePublishComment,
-  disLikePublishComment,
+  commentOnBlogComment,
   deletePublishComment,
+  disLikePublishComment,
+  likePublishComment,
 } from "@/app/actions/publish-actions"
 import { wait } from "@/lib/helpers"
 import type { Comment, Maybe, Profile } from "@/graphql/codegen/graphql"
@@ -35,37 +34,29 @@ interface Props {
   avatarSize?: number
   isSub?: boolean
   openReportModal: (c: Comment) => void
-  reloadSubComments?: (stateHandling?: "combine" | "no-combine") => void
   reloadComments?: (
     publishId: string,
     orderBy?: CommentsOrderBy,
     stateHandling?: "combine" | "no-combine"
   ) => void
-  fetchCommentsSortBy?: CommentsOrderBy
+  reloadSubComments?: (stateHandling?: "combine" | "no-combine") => void
 }
 
 export default function CommentItem({
   isAuthenticated,
   profile,
+  publishId,
   parentComment,
   comment,
-  publishId,
-  avatarSize = 40,
+  avatarSize,
   isSub = false,
-  reloadComments,
-  fetchCommentsSortBy,
-  reloadSubComments,
   openReportModal,
+  reloadComments,
+  reloadSubComments,
 }: Props) {
   const parentCommentId = parentComment?.id
   const commentId = comment?.id || ""
-  const content = comment?.content || ""
-  const initialDisplayed = 200
-  const { displayedContent, expandContent, shrinkContent } = useExpandContent(
-    content,
-    initialDisplayed
-  )
-
+  const content = comment?.htmlContentBlog
   const liked = !!comment?.liked
   const likesCount = comment?.likesCount || 0
   const disLiked = !!comment?.disLiked
@@ -87,69 +78,11 @@ export default function CommentItem({
     }
   }, [isAuthenticated, openAuthModal])
 
-  const confirmReply = useCallback(async () => {
-    if (!publishId || !commentId) return null
-    const el = document.getElementById(
-      `${commentId}-comment-box`
-    ) as HTMLTextAreaElement
-    if (!el) return null
-
-    const content = el.value
-    if (!content) return null
-
-    if (parentCommentId) {
-      // Commenting on a sub-comment, we need to pass the id of the parent of the sub-comment.
-      startTransition(() =>
-        commentOnVideoComment(content, publishId, parentCommentId)
-      )
-    } else {
-      // Commenting to a comment
-      startTransition(() =>
-        commentOnVideoComment(content, publishId, commentId)
-      )
-    }
-    // Close input box
-    setIsReplying(false)
-    // Clear text input
-    el.value = ""
-
-    // Reload comments
-    // Wait 1000 ms before loading
-    if (reloadComments) {
-      await wait(1000)
-      reloadComments(publishId, fetchCommentsSortBy)
-    }
-
-    if (reloadSubComments) {
-      await wait(1000)
-      reloadSubComments()
-    }
-
-    return "Ok"
-  }, [
-    publishId,
-    parentCommentId,
-    commentId,
-    reloadComments,
-    fetchCommentsSortBy,
-    reloadSubComments,
-  ])
-
-  const clearComment = useCallback(() => {
-    if (!commentId) return
-    const el = document.getElementById(
-      `${commentId}-comment-box`
-    ) as HTMLTextAreaElement
-    if (!el) return
-
-    el.value = ""
-  }, [commentId])
-
   const handleLikeComment = useCallback(async () => {
     if (!publishId || !commentId) return
 
     if (!isAuthenticated) {
-      openAuthModal()
+      openAuthModal("Sign in to react to comments.")
     } else {
       setOptimisticLiked(!liked)
       if (!liked && disLiked) {
@@ -159,11 +92,10 @@ export default function CommentItem({
         liked ? (likesCount > 0 ? likesCount - 1 : likesCount) : likesCount + 1
       )
       startTransition(() => likePublishComment(publishId, commentId))
-      // Reload comments
-      // Wait 1000 ms before loading
+
       if (reloadComments) {
         await wait(1000)
-        reloadComments(publishId, fetchCommentsSortBy)
+        reloadComments(publishId)
       }
 
       if (reloadSubComments) {
@@ -180,7 +112,6 @@ export default function CommentItem({
     likesCount,
     disLiked,
     reloadComments,
-    fetchCommentsSortBy,
     reloadSubComments,
   ])
 
@@ -193,7 +124,7 @@ export default function CommentItem({
     if (!publishId || !commentId) return
 
     if (!isAuthenticated) {
-      openAuthModal()
+      openAuthModal("Sign in to react to comments.")
     } else {
       setOptimisticDisLiked(!disLiked)
       if (!disLiked && liked) {
@@ -201,11 +132,10 @@ export default function CommentItem({
         setOptimisticLikesCount(likesCount > 0 ? likesCount - 1 : likesCount)
       }
       startTransition(() => disLikePublishComment(publishId, commentId))
-      // Reload comments
-      // Wait 1000 ms before loading
+
       if (reloadComments) {
         await wait(1000)
-        reloadComments(publishId, fetchCommentsSortBy)
+        reloadComments(publishId)
       }
 
       if (reloadSubComments) {
@@ -222,7 +152,6 @@ export default function CommentItem({
     liked,
     likesCount,
     reloadComments,
-    fetchCommentsSortBy,
     reloadSubComments,
   ])
 
@@ -251,36 +180,71 @@ export default function CommentItem({
           await wait(1000)
           reloadSubComments("no-combine")
         }
+      }
+    },
+    [isAuthenticated, openAuthModal, toggleDeleteModal, reloadSubComments]
+  )
+
+  const replyComment = useCallback(
+    async (content: string, htmlContent: string) => {
+      if (!publishId || !commentId || !content || !htmlContent) return
+
+      if (!isAuthenticated) {
+        openAuthModal("Sign in to reply.")
+      } else {
+        if (parentCommentId) {
+          // Commenting on a sub-comment, we need to pass the id of the parent of the sub-comment.
+          startTransition(() =>
+            commentOnBlogComment({
+              publishId: publishId,
+              commentId: parentCommentId,
+              contentBlog: content,
+              htmlContentBlog: htmlContent,
+            })
+          )
+        } else {
+          // Commenting to a comment
+          startTransition(() =>
+            commentOnBlogComment({
+              publishId: publishId,
+              commentId,
+              contentBlog: content,
+              htmlContentBlog: htmlContent,
+            })
+          )
+        }
 
         if (reloadComments) {
           await wait(1000)
-          reloadComments(publishId, fetchCommentsSortBy, "no-combine")
+          reloadComments(publishId)
+        }
+
+        if (reloadSubComments) {
+          await wait(1000)
+          reloadSubComments()
         }
       }
     },
     [
       isAuthenticated,
       openAuthModal,
-      toggleDeleteModal,
-      reloadSubComments,
       publishId,
+      parentCommentId,
+      commentId,
       reloadComments,
-      fetchCommentsSortBy,
+      reloadSubComments,
     ]
   )
 
   return (
-    <div className="relative w-full flex items-start gap-x-4">
-      <div>
+    <div className="relative">
+      <div className="flex gap-x-4">
         <Avatar
           profile={comment.creator}
           width={avatarSize}
           height={avatarSize}
         />
-      </div>
-
-      <div className="flex-grow">
-        {/* Comment owner */}
+        {/* Owner info */}
         <div className="flex items-center gap-x-4">
           <ProfileName
             profile={comment.creator}
@@ -290,89 +254,70 @@ export default function CommentItem({
             {calculateTimeElapsed(comment.createdAt)}
           </p>
         </div>
+      </div>
 
+      <div className="mt-5">
         {/* Content */}
-        <div
-          className={`mt-1 ${
-            isSub ? "text-xs sm:text-sm" : "text-sm sm:text-base"
-          }`}
-        >
-          {displayedContent}{" "}
-          {comment.content &&
-            comment?.content.length > displayedContent.length && (
-              <span
-                className="ml-1 font-semibold cursor-pointer"
-                onClick={expandContent}
-              >
-                Show more
-              </span>
-            )}
-          {content.length > initialDisplayed &&
-            content.length === displayedContent.length && (
-              <p
-                className="mt-2 font-semibold cursor-pointer text-sm"
-                onClick={shrinkContent}
-              >
-                Show less
-              </p>
-            )}
-        </div>
+        {content && (
+          <article className="max-w-none prose prose-a:text-blue-500 prose-blockquote:font-light prose-blockquote:italic">
+            {parse(content)}
+          </article>
+        )}
+      </div>
 
-        {/* Like/Dislike */}
-        <div className="mt-2 flex items-center gap-x-8">
-          <div className="flex items-center gap-x-2">
-            <div
-              className="cursor-pointer w-[70px] py-1 flex items-center justify-center gap-x-2 rounded-full hover:bg-neutral-100"
-              onClick={likeDebounce}
-            >
-              {optimisticLiked ? (
-                <AiFillLike size={20} />
-              ) : (
-                <AiOutlineLike size={20} />
-              )}
-              <p className="text-sm text-textLight">
-                {optimisticLikesCount > 0 ? optimisticLikesCount : <>&nbsp;</>}
-              </p>
-            </div>
-            <div
-              className="w-[40px] cursor-pointer p-1 flex items-center justify-center rounded-full hover:bg-neutral-100"
-              onClick={disLikeDebounce}
-            >
-              {optimisticDisLiked ? (
-                <AiFillDislike size={20} />
-              ) : (
-                <AiOutlineDislike size={20} />
-              )}
-            </div>
+      {/* Like/Dislike */}
+      <div className="mt-4 flex items-center gap-x-8">
+        <div className="flex items-center gap-x-2">
+          <div
+            className="cursor-pointer w-[70px] py-1 flex items-center justify-center gap-x-2 rounded-full hover:bg-neutral-100"
+            onClick={likeDebounce}
+          >
+            {optimisticLiked ? (
+              <AiFillLike size={20} />
+            ) : (
+              <AiOutlineLike size={20} />
+            )}
+            <p className="text-sm text-textLight">
+              {optimisticLikesCount > 0 ? optimisticLikesCount : null}
+            </p>
           </div>
-
           <div
             className="w-[40px] cursor-pointer p-1 flex items-center justify-center rounded-full hover:bg-neutral-100"
-            onClick={openReportModal.bind(undefined, comment)}
+            onClick={disLikeDebounce}
           >
-            <AiOutlineFlag size={20} />
+            {optimisticDisLiked ? (
+              <AiFillDislike size={20} />
+            ) : (
+              <AiOutlineDislike size={20} />
+            )}
           </div>
-
-          <button
-            className={`mx-0 font-semibold ${
-              isSub ? "text-xs" : "text-sm"
-            } hover:bg-neutral-100 px-3 h-8 rounded-full`}
-            onClick={toggleCommentBox}
-          >
-            Reply
-          </button>
         </div>
 
-        {/* Reply box */}
-        {isAuthenticated && isReplying && (
+        <div
+          className="w-[40px] cursor-pointer p-1 flex items-center justify-center rounded-full hover:bg-neutral-100"
+          onClick={openReportModal.bind(undefined, comment)}
+        >
+          <AiOutlineFlag size={20} />
+        </div>
+
+        <button
+          className={`mx-0 font-semibold ${
+            isSub ? "text-xs" : "text-sm"
+          } hover:bg-neutral-100 px-3 h-8 rounded-full`}
+          onClick={toggleCommentBox}
+        >
+          Reply
+        </button>
+      </div>
+
+      <div className="mt-5 pl-5 sm:pl-8 md:pl-12">
+        {isReplying && isAuthenticated && (
           <CommentBox
-            inputId={`${commentId}-comment-box`}
             profile={profile}
-            avatarSize={avatarSize}
-            replyTo={parentComment ? `@${comment.creator?.name}` : undefined}
-            onSubmit={confirmReply}
-            fontSize="sm"
-            clearComment={clearComment}
+            placeholder="Your reply..."
+            avatarSize={30}
+            submitComment={replyComment}
+            cancelEdit={toggleCommentBox}
           />
         )}
       </div>
@@ -400,8 +345,6 @@ export default function CommentItem({
             )}
           </>
         )}
-
-      {isPending && <Mask />}
     </div>
   )
 }

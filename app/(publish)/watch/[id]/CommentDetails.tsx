@@ -107,7 +107,7 @@ export default function CommentDetails({
 
     try {
       setCommentsLoading(true)
-      const res = await fetch(`/comments`, {
+      const res = await fetch(`/api/comments`, {
         method: "POST",
         headers: {
           "Content-Type": "application/json",

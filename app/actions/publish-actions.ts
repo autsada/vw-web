@@ -316,6 +316,7 @@ export async function likePublishComment(publishId: string, commentId: string) {
 
     // Revalidate the watch page
     revalidatePath(`/watch/[id]`)
+    revalidatePath(`/read/[id]`)
   } catch (error) {
     console.error(error)
   }
@@ -353,6 +354,7 @@ export async function disLikePublishComment(
 
     // Revalidate the watch page
     revalidatePath(`/watch/[id]`)
+    revalidatePath(`/read/[id]`)
   } catch (error) {
     console.error(error)
   }
