@@ -97,7 +97,7 @@ export default function ActionsModal({
       } else {
         // Call the api route to check if the publish already add to any user's playlists
         setLoadingPublishPlaylistsData(true)
-        const res = await fetch(`/library/playlists/publish`, {
+        const res = await fetch(`/api/playlist/publish`, {
           method: "POST",
           headers: {
             "Content-Type": "application/json",

@@ -1,54 +1,49 @@
 "use client"
 
 import React, { useState, useCallback } from "react"
+import Link from "next/link"
+import { AiOutlineClockCircle } from "react-icons/ai"
 
-import PublishTabs from "./PublishTabs"
-import Mask from "@/components/Mask"
-import ActionsModal from "@/components/ActionsModal"
+import WatchLaterItem from "./WatchLaterItem"
 import AddToPlaylistsModal from "@/components/AddToPlaylistsModal"
 import ShareModal from "@/components/ShareModal"
-import ReportModal from "@/components/ReportModal"
-import VideosByCat from "./VideosByCat"
-import Shorts from "./Shorts"
-import { contentCategories } from "@/lib/helpers"
+import Mask from "@/components/Mask"
+import WLActionsModal from "./WL/WLActionsModal"
 import { useAuthContext } from "@/context/AuthContext"
 import { BASE_URL } from "@/lib/constants"
-import type { PublishCategory } from "@/graphql/types"
 import type {
+  Maybe,
   Publish,
   Profile,
-  FetchPublishesResponse,
   FetchPlaylistsResponse,
   CheckPublishPlaylistsResponse,
-  Maybe,
 } from "@/graphql/codegen/graphql"
 
 interface Props {
   isAuthenticated: boolean
   profile: Profile | undefined
-  videosResult: Maybe<FetchPublishesResponse> | undefined
-  shortsResult: Maybe<FetchPublishesResponse> | undefined
+  items: Publish[]
+  itemsCount: number
   playlistsResult: Maybe<FetchPlaylistsResponse> | undefined
 }
 
-export default function Videos({
+export default function WatchLater({
   isAuthenticated,
   profile,
-  videosResult,
-  shortsResult,
+  items,
+  itemsCount,
   playlistsResult,
 }: Props) {
-  const [loading, setLoading] = useState(false)
-  const [selectedCat, setSelectedCat] = useState<PublishCategory | "All">("All")
-
   const [targetPublish, setTargetPublish] = useState<Publish>()
   const [actionsModalVisible, setActionsModalVisible] = useState(false)
   const [positionX, setPositionX] = useState(0)
   const [positionY, setPositionY] = useState(0)
   const [screenHeight, setScreenHeight] = useState(0)
+  const [screenWidth, setScreenWidth] = useState(0)
 
   const [addToPlaylistsModalVisible, setAddToPlaylistsModalVisible] =
     useState(false)
+
   const [prevPlaylists, setPrevPlaylists] = useState(playlistsResult?.edges)
   const [playlists, setPlaylists] = useState(playlistsResult?.edges || [])
   // When playlists result changed
@@ -75,13 +70,8 @@ export default function Videos({
     useState(false)
 
   const [shareModalVisible, setShareModalVisible] = useState(false)
-  const [reportModalVisible, setReportModalVisible] = useState(false)
 
   const { onVisible: openAuthModal } = useAuthContext()
-
-  const onSelectTab = useCallback(async (t: PublishCategory | "All") => {
-    setSelectedCat(t)
-  }, [])
 
   const onOpenActions = useCallback((p: Publish) => {
     setTargetPublish(p)
@@ -94,10 +84,11 @@ export default function Videos({
   }, [])
 
   const setPOS = useCallback(
-    (posX: number, posY: number, screenHeight: number) => {
+    (posX: number, posY: number, screenHeight: number, screenWidth: number) => {
       setPositionX(posX)
       setPositionY(posY)
       setScreenHeight(screenHeight)
+      setScreenWidth(screenWidth)
     },
     []
   )
@@ -126,83 +117,70 @@ export default function Videos({
     setTargetPublish(undefined)
   }, [])
 
-  const openReportModal = useCallback(() => {
-    setReportModalVisible(true)
-    setActionsModalVisible(false)
-  }, [])
-
-  const closeReportModal = useCallback(() => {
-    setReportModalVisible(false)
-    setTargetPublish(undefined)
-  }, [])
-
   return (
     <>
-      <div className="fixed z-10 top-[70px] left-0 sm:left-[116px] right-0 h-[40px] bg-white">
-        <div className="h-full py-4 px-2 w-full overflow-x-auto scrollbar-hide">
-          <div className="h-full w-max flex items-center gap-x-2 sm:gap-x-4">
-            <PublishTabs
-              category={selectedCat}
-              onSelectTab={onSelectTab}
-              loading={loading}
-            />
+      <div className="w-full pb-5">
+        <div className="flex items-center gap-x-8">
+          <Link href="/library/WL">
+            <div className="flex items-start gap-x-4 cursor-pointer">
+              <AiOutlineClockCircle size={22} />
+              <div className="flex items-center gap-x-2">
+                <h6 className="text-lg sm:text-xl">Watch later</h6>
+                {itemsCount > 0 && (
+                  <p className="sm:text-lg text-textLight">{itemsCount}</p>
+                )}
+              </div>
+            </div>
+            {itemsCount === 0 && (
+              <p className="mt-1 text-textLight">
+                No videos in your watch later yet.
+              </p>
+            )}
+          </Link>
+
+          {itemsCount > 0 && (
+            <Link href="/library/WL">
+              <p className="text-blueBase rounded-full cursor-pointer sm:text-lg">
+                See all
+              </p>
+            </Link>
+          )}
+        </div>
+
+        <div className="mt-5 w-full overflow-x-auto scrollbar-hide">
+          <div className="w-max flex gap-x-2 sm:gap-x-4">
+            {items.map((item) => (
+              <WatchLaterItem
+                key={item.id}
+                publish={item}
+                onOpenActions={onOpenActions}
+                setPOS={setPOS}
+              />
+            ))}
           </div>
         </div>
       </div>
 
-      <div className="py-1 pb-20 md:py-5 md:px-10 lg:px-24 xl:px-14">
-        {/* Short videos */}
-        <Shorts fetchResult={shortsResult} selectedTab={selectedCat} />
-
-        {shortsResult?.edges?.length && shortsResult?.edges?.length > 0 && (
-          <div className="w-full h-[4px] bg-neutral-200 my-10" />
-        )}
-
-        {/* Render videos by category */}
-        <VideosByCat
-          tab="All"
-          selectedTab={selectedCat}
-          fetchResult={videosResult}
-          loading={loading}
-          setLoading={setLoading}
-          onOpenActions={onOpenActions}
-          setPOS={setPOS}
-        />
-
-        {contentCategories.map((cat) => (
-          <VideosByCat
-            key={cat}
-            tab={cat}
-            selectedTab={selectedCat}
-            loading={loading}
-            setLoading={setLoading}
-            onOpenActions={onOpenActions}
-            setPOS={setPOS}
-          />
-        ))}
-      </div>
-
       {/* Actions modal */}
-      {actionsModalVisible && (
-        <ActionsModal
+      {actionsModalVisible && targetPublish && (
+        <WLActionsModal
           isAuthenticated={isAuthenticated}
           profile={profile}
           publish={targetPublish}
           closeModal={oncloseActions}
-          top={
-            screenHeight - positionY <
-            (profile?.id === targetPublish?.creator?.id ? 200 : 280)
-              ? positionY -
-                (profile?.id === targetPublish?.creator?.id ? 200 : 280)
-              : positionY
-          } // 280 is modal height
-          left={positionX - 300} // 300 is modal width
+          top={screenHeight - positionY < 280 ? positionY - 280 : positionY} // 280 is modal height
+          left={
+            positionX > 300
+              ? positionX - 300
+              : screenWidth - positionX > 300
+              ? positionX
+              : positionX / 2
+          } // 300 is modal width
           openAddToPlaylistsModal={openAddToPlaylistsModal}
           loadingPublishPlaylistsData={loadingPublishPlaylistsData}
           setLoadingPublishPlaylistsData={setLoadingPublishPlaylistsData}
           setPublishPlaylistsData={setPublishPlaylistsData}
           openShareModal={openShareModal}
-          openReportModal={openReportModal}
         />
       )}
 
@@ -225,14 +203,6 @@ export default function Videos({
           title={targetPublish.title!}
           closeModal={closeShareModal}
           shareUrl={`${BASE_URL}/watch/${targetPublish.id}`}
-        />
-      )}
-
-      {/* Report modal */}
-      {reportModalVisible && targetPublish && (
-        <ReportModal
-          closeModal={closeReportModal}
-          publishId={targetPublish.id}
         />
       )}
 
