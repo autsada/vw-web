@@ -15,12 +15,9 @@ import ModalWrapper from "@/components/ModalWrapper"
 import Mask from "@/components/Mask"
 import InformModal from "./InformModal"
 import { useAuthContext } from "@/context/AuthContext"
-import {
-  saveToWatchLater,
-  dontRecommendProfile,
-  bookmarkPost,
-  removeOneBookmark,
-} from "@/app/actions/publish-actions"
+import { bookmarkPost, removeOneBookmark } from "@/app/actions/publish-actions"
+import { dontRecommendProfile } from "@/app/actions/profile-actions"
+import { saveToWatchLater } from "@/app/actions/library-actions"
 import { BASE_URL } from "@/lib/constants"
 import type {
   Maybe,

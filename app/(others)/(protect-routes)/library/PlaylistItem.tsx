@@ -1,5 +1,6 @@
 import React from "react"
 import Link from "next/link"
+import Image from "next/image"
 import { MdPlayCircleOutline } from "react-icons/md"
 import { HiDotsVertical } from "react-icons/hi"
 
@@ -30,17 +31,17 @@ export default function PlaylistItem({ item, onOpenActions, setPOS }: Props) {
       <Link href={`/library/${item.id}`}>
         <div className="relative z-0 h-[110px] sm:h-[150px] md:h-[140px] rounded-lg overflow-hidden bg-neutral-500">
           {pl ? (
-            // eslint-disable-next-line @next/next/no-img-element
-            <img
+            <Image
               src={
                 pl.thumbnailType === "custom" && pl.thumbnail
                   ? pl.thumbnail!
                   : pl.playback?.thumbnail!
               }
               alt={item.lastItem?.title!}
-              className={`w-full h-full ${
-                pl.publishType === "Short" ? "object-contain" : "object-cover"
-              }`}
+              fill
+              style={{
+                objectFit: pl.publishType === "Short" ? "contain" : "cover",
+              }}
             />
           ) : (
             <div className="w-full h-full flex items-center justify-center">

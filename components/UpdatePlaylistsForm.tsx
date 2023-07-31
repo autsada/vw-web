@@ -1,7 +1,7 @@
 import React, { useRef, useCallback, useState, useMemo } from "react"
 import { useRouter } from "next/navigation"
 
-import { saveToPlaylist } from "@/app/actions/publish-actions"
+import { saveToPlaylist } from "@/app/actions/library-actions"
 import ButtonLoader from "@/components/ButtonLoader"
 import Mask from "@/components/Mask"
 import { transformPlaylists } from "@/lib/client"

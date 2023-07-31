@@ -10,6 +10,7 @@ import {
   follow,
   updateWatchPreferences,
   updateReadPreferences,
+  dontRecommend,
 } from "@/graphql"
 import { getAccount } from "@/lib/server"
 import type { PublishCategory } from "@/graphql/types"
@@ -226,6 +227,40 @@ export async function followProfile(followerId: string) {
     // Revalidate
     revalidatePath(`/[profile]`)
     revalidatePath(`/watch/[id]`)
+  } catch (error) {
+    console.error(error)
+  }
+}
+
+/**
+ * @param targetId A profile id to be added to don't recommend list
+ */
+export async function dontRecommendProfile(targetId: string) {
+  try {
+    const data = await getAccount()
+    const account = data?.account
+    const idToken = data?.idToken
+    const signature = data?.signature
+    if (!account || !account?.defaultProfile || !idToken)
+      throw new Error("Please sign in to proceed.")
+
+    if (!targetId) throw new Error("Bad input")
+    // If user added their own profile to the list, just return
+    if (account.defaultProfile.id === targetId) return
+
+    await dontRecommend({
+      idToken,
+      signature,
+      input: {
+        accountId: account.id,
+        owner: account.owner,
+        profileId: account.defaultProfile?.id,
+        targetId,
+      },
+    })
+
+    // Revalidate page
+    revalidatePath(`/`)
   } catch (error) {
     console.error(error)
   }
