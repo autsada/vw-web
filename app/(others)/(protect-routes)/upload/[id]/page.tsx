@@ -36,7 +36,11 @@ export default async function Page({ params }: { params: { id: string } }) {
   })
 
   // If no publish found, or user is not the owner of the publish
-  if (!publish || !publish.creator?.isOwner) {
+  if (
+    !publish ||
+    !publish.creator?.isOwner ||
+    profile.id !== publish?.creatorId
+  ) {
     redirect("/upload")
   }
 

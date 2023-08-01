@@ -18,7 +18,7 @@ export default function ProfileName({
   withLink = true,
 }: Props) {
   return !withLink ? (
-    <div className="flex items-center gap-x-2">
+    <div className="flex items-center">
       <h6
         className={
           fontSize === "sm"
@@ -28,9 +28,8 @@ export default function ProfileName({
             : "text-base sm:text-lg"
         }
       >
-        {getPostExcerpt(profile?.displayName || "", 8)}
+        {getPostExcerpt(profile?.displayName || "", 15)}
       </h6>
-      <span className="text-thin text-xs">|</span>
       <p
         className={`font-light text-textLight ${
           fontSize === "sm"
@@ -40,12 +39,12 @@ export default function ProfileName({
             : "text-lg"
         }`}
       >
-        @{getPostExcerpt(profile?.name || "", 8)}
+        @{getPostExcerpt(profile?.name || "", 15)}
       </p>
     </div>
   ) : (
     <Link href={`/@${profile.name}`}>
-      <div className="flex items-center gap-x-2">
+      <div className="flex items-center">
         <h6
           className={
             fontSize === "sm"
@@ -55,9 +54,8 @@ export default function ProfileName({
               : "text-base sm:text-lg"
           }
         >
-          {getPostExcerpt(profile?.displayName || "", 8)}
+          {getPostExcerpt(profile?.displayName || "", 15)}
         </h6>
-        <span className="text-thin text-xs">|</span>
         <p
           className={`font-light text-textLight ${
             fontSize === "sm"
@@ -67,7 +65,7 @@ export default function ProfileName({
               : "text-lg"
           }`}
         >
-          @{getPostExcerpt(profile?.name || "", 8)}
+          @{getPostExcerpt(profile?.name || "", 15)}
         </p>
       </div>
     </Link>

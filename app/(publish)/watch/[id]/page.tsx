@@ -212,7 +212,7 @@ export default async function Watch({ params }: Props) {
                 isAuthenticated={!!account}
                 follow={publish.creator}
                 ownerHref={`/upload/${publish.id}`}
-                ownerLinkText="Edit publish"
+                ownerLinkText="Edit"
               />
             </div>
           </div>
