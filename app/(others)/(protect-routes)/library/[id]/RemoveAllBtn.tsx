@@ -2,7 +2,7 @@ import React, { useTransition, useCallback, useState } from "react"
 
 import ConfirmModal from "@/components/ConfirmModal"
 import Mask from "@/components/Mask"
-import { removeAllItemsInPlaylist } from "@/app/actions/playlist-actions"
+import { removeAllItemsInPlaylist } from "@/app/actions/library-actions"
 import type { PlaylistItemEdge } from "@/graphql/codegen/graphql"
 
 interface Props {

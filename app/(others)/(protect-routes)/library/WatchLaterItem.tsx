@@ -83,11 +83,10 @@ export default function WatchLaterItem({
             </h6>
           </Link>
           <Link href={`/@${publish.creator?.name}`}>
-            <div className="flex items-center gap-x-2">
+            <div className="flex items-center">
               <h6 className="text-sm sm:text-base">
                 {publish.creator?.displayName || ""}
               </h6>
-              <span className="text-thin text-xs">|</span>
               <p className="font-light text-textLight text-sm sm:text-base">
                 @{publish.creator?.name || ""}
               </p>

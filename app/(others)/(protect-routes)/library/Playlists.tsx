@@ -182,29 +182,31 @@ export default function Playlists({
           )}
         </div>
 
-        {playlists.length > 0 && (
-          <div className="mt-5 w-full grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 justify-items-center gap-y-2 sm:gap-y-6 sm:gap-x-2 sm:px-10 md:px-5 lg:px-10 xl:px-20">
-            {playlists.map((edge) =>
-              !edge.node ? null : (
-                <PlaylistItem
-                  key={edge.node?.id}
-                  item={edge.node}
-                  onOpenActions={onOpenActions}
-                  setPOS={setPOS}
-                />
-              )
-            )}
-
-            <div
-              ref={observedRef}
-              className="w-full h-4 flex items-center justify-center"
-            >
-              {loading && (
-                <ButtonLoader loading={loading} size={8} color="#d4d4d4" />
+        <div className="mt-5 w-full overflow-x-auto scrollbar-hide">
+          {playlists.length > 0 && (
+            <div className="w-full flex gap-x-2 sm:gap-x-4 gap-y-4 flex-wrap">
+              {playlists.map((edge) =>
+                !edge.node ? null : (
+                  <PlaylistItem
+                    key={edge.node?.id}
+                    item={edge.node}
+                    onOpenActions={onOpenActions}
+                    setPOS={setPOS}
+                  />
+                )
               )}
+
+              <div
+                ref={observedRef}
+                className="w-full h-4 flex items-center justify-center"
+              >
+                {loading && (
+                  <ButtonLoader loading={loading} size={8} color="#d4d4d4" />
+                )}
+              </div>
             </div>
-          </div>
-        )}
+          )}
+        </div>
       </div>
 
       {/* Actions modal */}

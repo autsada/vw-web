@@ -27,9 +27,9 @@ export default function PlaylistItem({ item, onOpenActions, setPOS }: Props) {
   }
 
   return (
-    <div className="w-full grid grid-cols-2 gap-x-1 sm:grid-cols-1 sm:gap-y-2 cursor-pointer">
+    <div className="w-full sm:w-[240px] flex sm:flex-col gap-x-2 sm:gap-x-0 cursor-pointer">
       <Link href={`/library/${item.id}`}>
-        <div className="relative z-0 h-[110px] sm:h-[150px] md:h-[140px] rounded-lg overflow-hidden bg-neutral-500">
+        <div className="relative w-[180px] sm:w-full h-[100px] sm:h-[140px] bg-neutral-700 rounded-lg overflow-hidden">
           {pl ? (
             <Image
               src={
@@ -56,14 +56,13 @@ export default function PlaylistItem({ item, onOpenActions, setPOS }: Props) {
           </div>
         </div>
       </Link>
-      <div className="relative py-1 sm:py-0 px-1">
+
+      <div className="relative mt-1 sm:mt-2 flex-grow sm:flex-grow-0 sm:w-full">
         <Link href={`/library/${item.id}`}>
-          <div className="h-full mr-5">
-            <h6 className="text-sm sm:text-base">{item.name}</h6>
-          </div>
+          <h6 className="text-sm sm:text-base">{item.name}</h6>
         </Link>
 
-        <div className="absolute top-0 right-0 px-1" onClick={onClick}>
+        <div className="absolute top-0 right-0 px-[2px]" onClick={onClick}>
           <HiDotsVertical />
         </div>
       </div>
