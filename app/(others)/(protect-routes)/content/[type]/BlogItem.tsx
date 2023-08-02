@@ -38,7 +38,9 @@ export default function BlogItem({ blog }: Props) {
 
   return (
     <tr
-      className="relative text-sm cursor-pointer hover:bg-gray-50"
+      className={`relative text-sm hover:bg-gray-50 ${
+        isDeleting ? "opacity-30" : "opacity-100 cursor-pointer"
+      }`}
       onClick={isDeleting ? undefined : onClickItem.bind(undefined, blog.id)}
     >
       <th className="w-[30%] sm:w-[20%] lg:w-[15%] xl:w-[12%] font-normal py-2 break-words">

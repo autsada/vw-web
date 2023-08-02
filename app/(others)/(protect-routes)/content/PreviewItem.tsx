@@ -40,8 +40,12 @@ export default function PreviewItem({ publish }: Props) {
 
   return (
     <tr
-      className="h-[70px] sm:h-[55px] xl:h-[70px] text-sm cursor-pointer hover:bg-gray-50"
-      onClick={onClickItem.bind(undefined, publish.id)}
+      className={`h-[70px] sm:h-[55px] xl:h-[70px] text-sm hover:bg-gray-50 ${
+        publish.deleting ? "opacity-30" : "opacity-100 cursor-pointer"
+      }`}
+      onClick={
+        publish.deleting ? undefined : onClickItem.bind(undefined, publish.id)
+      }
     >
       <th className="w-[40%] sm:w-[15%] lg:w-[10%] font-normal py-2 break-words">
         <div className="relative w-full h-full">

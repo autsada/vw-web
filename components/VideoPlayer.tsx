@@ -8,6 +8,7 @@ import type { Maybe, Playback } from "@/graphql/codegen/graphql"
 interface Props {
   playback: Maybe<Playback> | undefined
   playing?: boolean
+  muted?: boolean
   controls?: boolean
   thumbnail?: string
   playIcon?: ReactElement<any, string | JSXElementConstructor<any>> | undefined
@@ -18,6 +19,7 @@ interface Props {
 export default function VideoPlayer({
   playback,
   playing = false,
+  muted = true,
   controls = true,
   thumbnail,
   playIcon,
@@ -35,7 +37,7 @@ export default function VideoPlayer({
       height="100%"
       pip={true}
       playsinline={true}
-      muted={true}
+      muted={muted}
       playing={playing}
       playIcon={playIcon}
       onReady={onReady}

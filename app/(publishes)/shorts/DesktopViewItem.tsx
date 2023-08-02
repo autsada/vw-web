@@ -100,6 +100,7 @@ export default function DesktopViewItem({
         <VideoPlayer
           playback={playback}
           playing={isSelected}
+          muted={!isSelected}
           loop={isSelected}
           onReady={onReady}
         />

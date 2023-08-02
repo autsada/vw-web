@@ -38,7 +38,9 @@ export default function VideoItem({ video }: Props) {
 
   return (
     <tr
-      className="text-sm cursor-pointer hover:bg-gray-50"
+      className={`text-sm hover:bg-gray-50 ${
+        isDeleting ? "opacity-30" : "opacity-100 cursor-pointer"
+      }`}
       onClick={isDeleting ? undefined : onClickItem.bind(undefined, video.id)}
     >
       <th className="w-[30%] sm:w-[20%] lg:w-[15%] xl:w-[10%] font-normal py-2 break-words">

@@ -98,6 +98,7 @@ export default function MobileViewItem({
           <VideoPlayer
             playback={playback}
             playing={isSelected}
+            muted={!isSelected}
             loop={isSelected}
             onReady={onReady}
           />

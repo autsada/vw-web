@@ -172,22 +172,18 @@ export default function DesktopViewModal({
         <MdKeyboardBackspace color="white" size={25} />
       </div>
       <div className="fixed z-20 top-4 bottom-20 left-[450px] md:left-[550px] lg:left-[650px] xl:left-[750px] flex flex-col items-center justify-center gap-y-20">
-        {activeIndex === items.length - 1 && items.length > 1 && (
-          <AiFillCaretUp
-            color="white"
-            size={28}
-            className="cursor-pointer"
-            onClick={goPrevShort}
-          />
-        )}
-        {activeIndex < items.length - 1 && (
-          <AiFillCaretDown
-            color="white"
-            size={28}
-            className="cursor-pointer"
-            onClick={goNextShort}
-          />
-        )}
+        <AiFillCaretUp
+          color="white"
+          size={28}
+          className="cursor-pointer"
+          onClick={goPrevShort}
+        />
+        <AiFillCaretDown
+          color="white"
+          size={28}
+          className="cursor-pointer"
+          onClick={goNextShort}
+        />
       </div>
       {/* <div ref={containerRef} className="relative h-full z-40 w-full"> */}
       {items.length > 0 && (
@@ -234,6 +230,7 @@ export default function DesktopViewModal({
               <DesktopViewItem
                 key={edge.node?.id}
                 publish={edge.node!}
+                isSelected={targetPublish?.id === edge.node?.id}
                 isAuthenticated={isAuthenticated}
                 profile={profile}
                 onPrev={goPrevShort}
