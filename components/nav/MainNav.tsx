@@ -2,7 +2,11 @@ import React, { useCallback, useState, useRef } from "react"
 import Link from "next/link"
 import { usePathname, useRouter, useSearchParams } from "next/navigation"
 import { RxHamburgerMenu } from "react-icons/rx"
-import { IoSearchOutline, IoCloseOutline } from "react-icons/io5"
+import {
+  IoSearchOutline,
+  IoCloseOutline,
+  IoNotificationsOutline,
+} from "react-icons/io5"
 
 import Logo from "./Logo"
 import Avatar from "../Avatar"
@@ -140,7 +144,7 @@ export default function MainNav({
           </div>
         </div>
       </div>
-      <div className={`hidden sm:block sm:mr-4`}>
+      <div className={`hidden sm:block sm:mr-6`}>
         <UploadBtn
           isAuthenticated={!!account}
           onClick={openAuthModal.bind(undefined, "Sign in to upload content.")}
@@ -148,7 +152,10 @@ export default function MainNav({
           size={30}
         />
       </div>
-      <div className="h-full w-[80px] flex items-center justify-end pr-2">
+      <div className={`mr-3 sm:mr-6`}>
+        <IoNotificationsOutline className="text-2xl md:text-3xl text-textExtraLight" />
+      </div>
+      <div className="h-full w-max flex items-center justify-end pr-2">
         {account ? (
           <div onClick={openRightDrawer}>
             <Avatar profile={account?.defaultProfile} withLink={false} />
