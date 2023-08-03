@@ -43,12 +43,13 @@ export default async function Page({
       owner: account.owner,
       creatorId: profile.id,
       publishType,
+      cursor: null,
     },
   })
 
   return publishType === "blogs" ? (
     <Blogs fetchResult={fetchResult} />
   ) : (
-    <Videos fetchResult={fetchResult} />
+    <Videos publishType={publishType} fetchResult={fetchResult} />
   )
 }

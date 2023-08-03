@@ -1,10 +1,9 @@
 import React, { useCallback } from "react"
 import { useRouter } from "next/navigation"
 import { BsEye, BsEyeSlash } from "react-icons/bs"
-// import { onSnapshot, doc } from "firebase/firestore"
 
 import { formatDate, getPostExcerpt } from "@/lib/client"
-// import { db, uploadsCollection } from "@/firebase/config"
+import { useSubscribeToFirestore } from "@/hooks/useSubscribeToUpdate"
 import type { Publish } from "@/graphql/codegen/graphql"
 
 interface Props {
@@ -15,19 +14,8 @@ export default function BlogItem({ blog }: Props) {
   const isDeleting = blog.deleting
 
   const router = useRouter()
-
-  // // Listen to upload finished update in Firestore
-  // useEffect(() => {
-  //   const unsubscribe = onSnapshot(
-  //     doc(db, uploadsCollection, blog?.id),
-  //     (doc) => {
-  //       // Reload data to get the most updated blog
-  //       router.refresh()
-  //     }
-  //   )
-
-  //   return unsubscribe
-  // }, [router, blog?.id])
+  // Subscribe to update on Firestore
+  useSubscribeToFirestore(blog?.id)
 
   const onClickItem = useCallback(
     (id: string) => {

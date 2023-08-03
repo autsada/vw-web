@@ -1,13 +1,12 @@
-import React, { useCallback, useEffect } from "react"
+import React, { useCallback } from "react"
 import { useRouter } from "next/navigation"
 import { BsEye, BsEyeSlash } from "react-icons/bs"
-import { onSnapshot, doc } from "firebase/firestore"
 import Image from "next/image"
 
 import ButtonLoader from "@/components/ButtonLoader"
 import { formatDate, getPostExcerpt, secondsToHourFormat } from "@/lib/client"
-import { db, uploadsCollection } from "@/firebase/config"
 import type { Publish } from "@/graphql/codegen/graphql"
+import { useSubscribeToFirestore } from "@/hooks/useSubscribeToUpdate"
 
 interface Props {
   publish: Publish
@@ -15,21 +14,11 @@ interface Props {
 
 export default function PreviewItem({ publish }: Props) {
   const isDeleting = publish?.deleting
+  const isUploading = publish?.uploading
 
   const router = useRouter()
-
-  // Listen to upload finished update in Firestore
-  useEffect(() => {
-    const unsubscribe = onSnapshot(
-      doc(db, uploadsCollection, publish?.id),
-      (doc) => {
-        // Reload data to get the most updated publish
-        router.refresh()
-      }
-    )
-
-    return unsubscribe
-  }, [router, publish?.id])
+  // Subscribe to update on Firestore
+  useSubscribeToFirestore(publish?.id)
 
   const onClickItem = useCallback(
     (id: string) => {
@@ -41,10 +30,14 @@ export default function PreviewItem({ publish }: Props) {
   return (
     <tr
       className={`h-[70px] sm:h-[55px] xl:h-[70px] text-sm hover:bg-gray-50 ${
-        publish.deleting ? "opacity-30" : "opacity-100 cursor-pointer"
+        publish.deleting || isUploading
+          ? "opacity-30"
+          : "opacity-100 cursor-pointer"
       }`}
       onClick={
-        publish.deleting ? undefined : onClickItem.bind(undefined, publish.id)
+        publish.deleting || isUploading
+          ? undefined
+          : onClickItem.bind(undefined, publish.id)
       }
     >
       <th className="w-[40%] sm:w-[15%] lg:w-[10%] font-normal py-2 break-words">

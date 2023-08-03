@@ -2,9 +2,7 @@
 
 "use client"
 
-import React, { useEffect } from "react"
-// import { useRouter } from "next/navigation"
-// import { onSnapshot, doc } from "firebase/firestore"
+import React from "react"
 
 import LikeReaction from "@/components/LikeReaction"
 import TipReaction from "@/components/TipReaction"
@@ -12,8 +10,7 @@ import ShareReaction from "@/components/ShareReaction"
 import SaveReaction from "@/components/SaveReaction"
 import ReportReaction from "@/components/ReportReaction"
 import CommentsReaction from "./CommentReaction"
-
-// import { db, publishesCollection } from "@/firebase/config"
+import { useSubscribeToFirestore } from "@/hooks/useSubscribeToUpdate"
 import type {
   CheckPublishPlaylistsResponse,
   FetchPlaylistsResponse,
@@ -40,22 +37,8 @@ export default function VerticalReactions({
   buttonHeight = "h-[35px]",
   buttonDescriptionColor,
 }: Props) {
-  // const router = useRouter()
-
-  // // Listen to update in Firestore
-  // useEffect(() => {
-  //   if (!publish?.id) return
-
-  //   const unsubscribe = onSnapshot(
-  //     doc(db, publishesCollection, publish?.id),
-  //     (doc) => {
-  //       // Reload data to get the most updated publish
-  //       router.refresh()
-  //     }
-  //   )
-
-  //   return unsubscribe
-  // }, [router, publish?.id])
+  // Subscribe to update on Firestore
+  useSubscribeToFirestore(publish?.id)
 
   return (
     <div className="w-full flex flex-col items-center justify-end gap-y-5">

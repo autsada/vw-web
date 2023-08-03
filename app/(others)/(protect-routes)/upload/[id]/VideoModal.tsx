@@ -1,14 +1,7 @@
 "use client"
 
-import React, {
-  useCallback,
-  useEffect,
-  useState,
-  useRef,
-  useTransition,
-} from "react"
+import React, { useCallback, useState, useRef, useTransition } from "react"
 import { useRouter } from "next/navigation"
-import { doc, onSnapshot } from "firebase/firestore"
 import { MdFileUpload, MdOutlineWarning } from "react-icons/md"
 import { HiDotsVertical } from "react-icons/hi"
 import { IoCaretDownSharp, IoTrash } from "react-icons/io5"
@@ -26,7 +19,8 @@ import Tag from "../Tag"
 import Mask from "@/components/Mask"
 import ConfirmDeleteModal from "./ConfirmDeleteModal"
 import { contentCategories } from "@/lib/helpers"
-import { db, publishesFolder, uploadsCollection } from "@/firebase/config"
+import { publishesFolder } from "@/firebase/config"
+import { useSubscribeToFirestore } from "@/hooks/useSubscribeToUpdate"
 import { deleteFile, uploadFile } from "@/firebase/helpers"
 import { saveVideo } from "@/app/actions/publish-actions"
 import type {
@@ -84,18 +78,8 @@ export default function VideoModal({ publish, profileName }: Props) {
   } = useForm<FormData>()
   const watchPrimary = watch("primaryCat")
 
-  // Listen to upload finished update in Firestore
-  useEffect(() => {
-    const unsubscribe = onSnapshot(
-      doc(db, uploadsCollection, publish?.id),
-      (doc) => {
-        // Reload data to get the most updated publish
-        router.refresh()
-      }
-    )
-
-    return unsubscribe
-  }, [router, publish?.id])
+  // Subscribe to update on Firestore
+  useSubscribeToFirestore(publish?.id)
 
   const onDrop = useCallback((acceptedFiles: File[]) => {
     // Do something with the files

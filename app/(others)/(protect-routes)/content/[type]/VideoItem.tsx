@@ -1,11 +1,10 @@
-import React, { useCallback, useEffect } from "react"
+import React, { useCallback } from "react"
 import { useRouter } from "next/navigation"
 import { BsEye, BsEyeSlash } from "react-icons/bs"
-// import { onSnapshot, doc } from "firebase/firestore"
 
 import ButtonLoader from "@/components/ButtonLoader"
 import { formatDate, getPostExcerpt, secondsToHourFormat } from "@/lib/client"
-// import { db, uploadsCollection } from "@/firebase/config"
+import { useSubscribeToFirestore } from "@/hooks/useSubscribeToUpdate"
 import type { Publish } from "@/graphql/codegen/graphql"
 
 interface Props {
@@ -14,20 +13,10 @@ interface Props {
 
 export default function VideoItem({ video }: Props) {
   const isDeleting = video.deleting
+
   const router = useRouter()
-
-  // // Listen to upload finished update in Firestore
-  // useEffect(() => {
-  //   const unsubscribe = onSnapshot(
-  //     doc(db, uploadsCollection, video?.id),
-  //     (doc) => {
-  //       // Reload data to get the most updated video
-  //       router.refresh()
-  //     }
-  //   )
-
-  //   return unsubscribe
-  // }, [router, video?.id])
+  // Subscribe to update on Firestore
+  useSubscribeToFirestore(video?.id)
 
   const onClickItem = useCallback(
     (id: string) => {

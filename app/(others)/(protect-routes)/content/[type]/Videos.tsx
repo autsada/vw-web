@@ -9,15 +9,21 @@ import Mask from "@/components/Mask"
 import { useInfiniteScroll } from "@/hooks/useInfiniteScroll"
 import { combineEdges } from "@/lib/helpers"
 import type { FetchPublishesResponse, Maybe } from "@/graphql/codegen/graphql"
+import type { QueryPublishType } from "@/graphql/types"
 
 interface Props {
+  publishType: QueryPublishType
   fetchResult: Maybe<FetchPublishesResponse> | undefined
 }
 
-export default function Videos({ fetchResult }: Props) {
+export default function Videos({ publishType, fetchResult }: Props) {
   const [loading, setLoading] = useState(false)
   const [prevEdges, setPrevEdges] = useState(fetchResult?.edges)
   const [edges, setEdges] = useState(fetchResult?.edges || [])
+  const isDeleting = edges.map((edge) => !!edge?.node?.deleting).includes(true)
+  const isUploading = edges
+    .map((edge) => !!edge?.node?.uploading)
+    .includes(true)
   const isEdgesEqual = useMemo(
     () => _.isEqual(fetchResult?.edges, prevEdges),
     [fetchResult?.edges, prevEdges]
@@ -51,7 +57,7 @@ export default function Videos({ fetchResult }: Props) {
           "Content-Type": "application/json",
         },
         body: JSON.stringify({
-          publishType: "videos",
+          publishType,
           cursor: pageInfo.endCursor,
         }),
       })
@@ -64,7 +70,7 @@ export default function Videos({ fetchResult }: Props) {
     } catch (error) {
       setLoading(false)
     }
-  }, [pageInfo])
+  }, [pageInfo, publishType])
   const { observedRef } = useInfiniteScroll(0.5, fetchMore)
 
   return edges?.length === 0 ? (
@@ -72,7 +78,12 @@ export default function Videos({ fetchResult }: Props) {
       <h6>No results found.</h6>
     </div>
   ) : (
-    <div className="px-0 sm:px-4 overflow-y-auto">
+    <div className="relative px-0 sm:px-4 overflow-y-auto">
+      {(isUploading || isDeleting) && (
+        <div className="absolute top-0 right-[2px] bg-white px-4 py-2 font-semibold text-lg">
+          While processing you can savely leave this page.
+        </div>
+      )}
       <table className="table-fixed w-full border-collapse border border-gray-200">
         <thead>
           <tr className="text-sm font-semibold bg-gray-100">

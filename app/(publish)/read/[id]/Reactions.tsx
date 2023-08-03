@@ -1,16 +1,13 @@
 "use client"
 
-import React, { useEffect } from "react"
-// import { useRouter } from "next/navigation"
-// import { onSnapshot, doc } from "firebase/firestore"
+import React from "react"
 
 import LikeReaction from "@/components/LikeReaction"
 import TipReaction from "@/components/TipReaction"
 import ShareReaction from "@/components/ShareReaction"
 import BookmarkReaction from "./BookmarkReaction"
 import ReportReaction from "@/components/ReportReaction"
-
-// import { db, publishesCollection } from "@/firebase/config"
+import { useSubscribeToFirestore } from "@/hooks/useSubscribeToUpdate"
 import type { Publish } from "@/graphql/codegen/graphql"
 
 interface Props {
@@ -19,22 +16,8 @@ interface Props {
 }
 
 export default function Reactions({ publish, isAuthenticated }: Props) {
-  // const router = useRouter()
-
-  // // Listen to update in Firestore
-  // useEffect(() => {
-  //   if (!publish?.id) return
-
-  //   const unsubscribe = onSnapshot(
-  //     doc(db, publishesCollection, publish?.id),
-  //     (doc) => {
-  //       // Reload data to get the most updated publish
-  //       router.refresh()
-  //     }
-  //   )
-
-  //   return unsubscribe
-  // }, [router, publish?.id])
+  // Subscribe to update on Firestore
+  useSubscribeToFirestore(publish?.id)
 
   return (
     <div className="w-max flex items-center gap-x-2">

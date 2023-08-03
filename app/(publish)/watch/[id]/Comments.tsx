@@ -3,17 +3,15 @@
 import React, { useState, useCallback, useEffect } from "react"
 import { isMobile } from "react-device-detect"
 import { BsCaretDown } from "react-icons/bs"
-import { useRouter } from "next/navigation"
-import { onSnapshot, doc } from "firebase/firestore"
 
 import CommentDetails from "./CommentDetails"
 import CommentsModal from "./CommentsModal"
 import CommentsHeader from "@/components/CommentsHeader"
 import Avatar from "@/components/Avatar"
 import ReportModal from "@/components/ReportModal"
-import { db, publishesCollection } from "@/firebase/config"
 import { getPostExcerpt } from "@/lib/client"
 import { combineEdges } from "@/lib/helpers"
+import { useSubscribeToFirestore } from "@/hooks/useSubscribeToUpdate"
 import type {
   Maybe,
   Publish,
@@ -64,22 +62,8 @@ export default function Comments({
   // 310px is from 270 for video player height plus 70 for navbar height
   const [modalPOS, setModalPOS] = useState(310)
 
-  const router = useRouter()
-
-  // Listen to update in Firestore
-  useEffect(() => {
-    if (!publish?.id) return
-
-    const unsubscribe = onSnapshot(
-      doc(db, publishesCollection, publish?.id),
-      (doc) => {
-        // Reload data to get the most updated publish
-        router.refresh()
-      }
-    )
-
-    return unsubscribe
-  }, [router, publish?.id])
+  // Subscribe to update on Firestore
+  useSubscribeToFirestore(publish?.id)
 
   const openCommentsModal = useCallback(() => {
     if (!isMobile) return

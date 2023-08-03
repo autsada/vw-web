@@ -154,7 +154,7 @@ export default function Videos({
         {/* Short videos */}
         <Shorts fetchResult={shortsResult} selectedTab={selectedCat} />
 
-        {shortsResult?.edges?.length && shortsResult?.edges?.length > 0 && (
+        {!!shortsResult?.edges?.length && (
           <div className="w-full h-[4px] bg-neutral-200 my-10" />
         )}
 
