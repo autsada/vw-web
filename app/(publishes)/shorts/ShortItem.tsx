@@ -134,21 +134,13 @@ export default function ShortItem({
               {calculateTimeElapsed(publish.createdAt)}
             </p>
           </div>
-          <div className="relative h-[430px] sm:h-[400px] rounded-xl overflow-hidden bg-black">
+          <div className="relative h-[430px] sm:h-[480px] rounded-xl overflow-hidden bg-black">
             <div className="absolute top-0 w-full py-1 px-2">
               <h6 className="text-base sm:text-lg text-white">
                 {getPostExcerpt(publish.title || "", 40)}
               </h6>
             </div>
             <Link href={`/shorts?id=${publish.id}`}>
-              {/* eslint-disable-next-line @next/next/no-img-element */}
-              {/* <img
-                src={thumbnail || ""}
-                alt={publish.title || ""}
-                className={`${
-                  playing || !thumbnail ? "hidden" : "block"
-                } w-full h-full object-cover`}
-              /> */}
               <div
                 className={`${
                   playing || !thumbnail ? "hidden" : "block"
