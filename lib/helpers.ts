@@ -8,6 +8,7 @@ import type {
   PlaylistItemEdge,
   WatchLaterEdge,
   BookmarkEdge,
+  NotificationEdge,
 } from "@/graphql/codegen/graphql"
 
 export function getCountryNames() {
@@ -66,6 +67,7 @@ export function combineEdges<
     | PlaylistItemEdge
     | WatchLaterEdge
     | BookmarkEdge
+    | NotificationEdge
 >(
   initialEdges: T[],
   newEdges: T[],

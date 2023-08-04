@@ -6,7 +6,7 @@ import Image from "next/image"
 import ButtonLoader from "@/components/ButtonLoader"
 import { formatDate, getPostExcerpt, secondsToHourFormat } from "@/lib/client"
 import type { Publish } from "@/graphql/codegen/graphql"
-import { useSubscribeToFirestore } from "@/hooks/useSubscribeToUpdate"
+import { useSubscribeToUpdates } from "@/hooks/useSubscribe"
 
 interface Props {
   publish: Publish
@@ -18,7 +18,7 @@ export default function PreviewItem({ publish }: Props) {
 
   const router = useRouter()
   // Subscribe to update on Firestore
-  useSubscribeToFirestore(publish?.id)
+  useSubscribeToUpdates(publish?.id)
 
   const onClickItem = useCallback(
     (id: string) => {

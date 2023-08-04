@@ -2,29 +2,36 @@ import React, { useCallback, useState, useRef } from "react"
 import Link from "next/link"
 import { usePathname, useRouter, useSearchParams } from "next/navigation"
 import { RxHamburgerMenu } from "react-icons/rx"
-import {
-  IoSearchOutline,
-  IoCloseOutline,
-  IoNotificationsOutline,
-} from "react-icons/io5"
+import { IoSearchOutline, IoCloseOutline } from "react-icons/io5"
 
 import Logo from "./Logo"
 import Avatar from "../Avatar"
 import UploadBtn from "../UploadBtn"
 import { useAuthContext } from "@/context/AuthContext"
 import { SIGN_IN_HEADER } from "@/lib/constants"
-import type { Account } from "@/graphql/codegen/graphql"
+import type {
+  Account,
+  GetUnReadNotificationsResponse,
+  Maybe,
+} from "@/graphql/codegen/graphql"
+import Notification from "./Notification"
 
 interface Props {
+  isAuthenticated: boolean
   account: Account | null
   openLeftDrawer: () => void
   openRightDrawer: () => void
+  unReadCount: Maybe<GetUnReadNotificationsResponse> | undefined
+  openNotificationsModal: () => void
 }
 
 export default function MainNav({
+  isAuthenticated,
   account,
   openLeftDrawer,
   openRightDrawer,
+  unReadCount,
+  openNotificationsModal,
 }: Props) {
   const searchParams = useSearchParams()
   const searchQuery = searchParams.get("query")
@@ -152,9 +159,16 @@ export default function MainNav({
           size={30}
         />
       </div>
-      <div className={`mr-3 sm:mr-6`}>
-        <IoNotificationsOutline className="text-2xl md:text-3xl text-textExtraLight" />
-      </div>
+      {isAuthenticated && (
+        <div className={`mr-3 sm:mr-6`}>
+          <Notification
+            profile={account?.defaultProfile}
+            isWatchPage={isWatchPage}
+            onClick={openNotificationsModal}
+            unReadCount={unReadCount}
+          />
+        </div>
+      )}
       <div className="h-full w-max flex items-center justify-end pr-2">
         {account ? (
           <div onClick={openRightDrawer}>

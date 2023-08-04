@@ -7,7 +7,7 @@ import TipReaction from "@/components/TipReaction"
 import ShareReaction from "@/components/ShareReaction"
 import SaveReaction from "@/components/SaveReaction"
 import ReportReaction from "@/components/ReportReaction"
-import { useSubscribeToFirestore } from "@/hooks/useSubscribeToUpdate"
+import { useSubscribeToUpdates } from "@/hooks/useSubscribe"
 import type {
   CheckPublishPlaylistsResponse,
   FetchPlaylistsResponse,
@@ -29,7 +29,7 @@ export default function Reactions({
   publishPlaylistsData,
 }: Props) {
   // Subscribe to update on Firestore
-  useSubscribeToFirestore(publish?.id)
+  useSubscribeToUpdates(publish?.id)
 
   return (
     <div className="w-max flex items-center gap-x-2">

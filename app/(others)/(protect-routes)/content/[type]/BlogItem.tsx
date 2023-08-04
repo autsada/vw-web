@@ -3,7 +3,7 @@ import { useRouter } from "next/navigation"
 import { BsEye, BsEyeSlash } from "react-icons/bs"
 
 import { formatDate, getPostExcerpt } from "@/lib/client"
-import { useSubscribeToFirestore } from "@/hooks/useSubscribeToUpdate"
+import { useSubscribeToUpdates } from "@/hooks/useSubscribe"
 import type { Publish } from "@/graphql/codegen/graphql"
 
 interface Props {
@@ -15,7 +15,7 @@ export default function BlogItem({ blog }: Props) {
 
   const router = useRouter()
   // Subscribe to update on Firestore
-  useSubscribeToFirestore(blog?.id)
+  useSubscribeToUpdates(blog?.id)
 
   const onClickItem = useCallback(
     (id: string) => {

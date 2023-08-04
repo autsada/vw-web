@@ -166,6 +166,13 @@ export interface NexusGenInputs {
     owner: string // String!
     publishType?: NexusGenEnums["QueryPublishType"] | null // QueryPublishType
   }
+  FetchNotificationsInput: {
+    // input type
+    accountId: string // String!
+    cursor?: string | null // String
+    owner: string // String!
+    profileId: string // String!
+  }
   FetchPlaylistItemsInput: {
     // input type
     accountId: string // String!
@@ -240,6 +247,12 @@ export interface NexusGenInputs {
   GetMyAccountInput: {
     // input type
     accountType: NexusGenEnums["AccountType"] // AccountType!
+  }
+  GetUnReadNotificationsInput: {
+    // input type
+    accountId: string // String!
+    owner: string // String!
+    profileId: string // String!
   }
   LikeCommentInput: {
     // input type
@@ -349,6 +362,13 @@ export interface NexusGenInputs {
     owner: string // String!
     profileId: string // String!
   }
+  UpdateNotificationsInput: {
+    // input type
+    accountId: string // String!
+    ids: string[] // [String!]!
+    owner: string // String!
+    profileId: string // String!
+  }
   UpdatePlaylistDescriptionInput: {
     // input type
     accountId: string // String!
@@ -413,10 +433,13 @@ export interface NexusGenEnums {
     | "Animals"
     | "Blockchain"
     | "Children"
+    | "Drinks"
     | "Education"
     | "Entertainment"
     | "Food"
     | "Gaming"
+    | "Health"
+    | "History"
     | "LifeStyle"
     | "Men"
     | "Movies"
@@ -432,10 +455,12 @@ export interface NexusGenEnums {
     | "Women"
   CommentType: "COMMENT" | "PUBLISH"
   CommentsOrderBy: "counts" | "newest"
+  NotificationType: "FOLLOW" | "LIKE" | "NEW_RELEASE" | "OTHER" | "TIP"
   PlaylistOrderBy: "newest" | "oldest"
   PublishOrderBy: "latest" | "popular"
   PublishType: "Ads" | "Blog" | "Podcast" | "Short" | "Video"
   QueryPublishType: "ads" | "all" | "blogs" | "shorts" | "videos"
+  ReadStatus: "read" | "unread"
   ReportReason:
     | "abuse"
     | "adult"
@@ -571,6 +596,11 @@ export interface NexusGenObjects {
     edges: NexusGenRootTypes["DontRecommendEdge"][] // [DontRecommendEdge!]!
     pageInfo: NexusGenRootTypes["PageInfo"] // PageInfo!
   }
+  FetchNotificationsResponse: {
+    // root type
+    edges: NexusGenRootTypes["NotificationEdge"][] // [NotificationEdge!]!
+    pageInfo: NexusGenRootTypes["PageInfo"] // PageInfo!
+  }
   FetchPlaylistItemsResponse: {
     // root type
     edges: NexusGenRootTypes["PlaylistItemEdge"][] // [PlaylistItemEdge!]!
@@ -603,6 +633,10 @@ export interface NexusGenObjects {
     followerId: string // String!
     followingId: string // String!
   }
+  GetUnReadNotificationsResponse: {
+    // root type
+    unread: number // Int!
+  }
   Like: {
     // root type
     createdAt: NexusGenScalars["DateTime"] // DateTime!
@@ -610,6 +644,20 @@ export interface NexusGenObjects {
     publishId: string // String!
   }
   Mutation: {}
+  Notification: {
+    // root type
+    content: string // String!
+    createdAt: NexusGenScalars["DateTime"] // DateTime!
+    id: string // ID!
+    profileId: string // String!
+    receiverId: string // String!
+    status: NexusGenEnums["ReadStatus"] // ReadStatus!
+  }
+  NotificationEdge: {
+    // root type
+    cursor?: string | null // String
+    node?: NexusGenRootTypes["Notification"] | null // Notification
+  }
   PageInfo: {
     // root type
     count?: number | null // Int
@@ -907,6 +955,11 @@ export interface NexusGenFieldTypes {
     edges: NexusGenRootTypes["DontRecommendEdge"][] // [DontRecommendEdge!]!
     pageInfo: NexusGenRootTypes["PageInfo"] // PageInfo!
   }
+  FetchNotificationsResponse: {
+    // field return type
+    edges: NexusGenRootTypes["NotificationEdge"][] // [NotificationEdge!]!
+    pageInfo: NexusGenRootTypes["PageInfo"] // PageInfo!
+  }
   FetchPlaylistItemsResponse: {
     // field return type
     edges: NexusGenRootTypes["PlaylistItemEdge"][] // [PlaylistItemEdge!]!
@@ -940,6 +993,10 @@ export interface NexusGenFieldTypes {
     followerId: string // String!
     following: NexusGenRootTypes["Profile"] // Profile!
     followingId: string // String!
+  }
+  GetUnReadNotificationsResponse: {
+    // field return type
+    unread: number // Int!
   }
   Like: {
     // field return type
@@ -985,6 +1042,7 @@ export interface NexusGenFieldTypes {
     updateBlog: NexusGenRootTypes["WriteResult"] | null // WriteResult
     updateDisplayName: NexusGenRootTypes["WriteResult"] | null // WriteResult
     updateName: NexusGenRootTypes["WriteResult"] | null // WriteResult
+    updateNotificationsStatus: NexusGenRootTypes["WriteResult"] | null // WriteResult
     updatePlaylistDescription: NexusGenRootTypes["WriteResult"] | null // WriteResult
     updatePlaylistName: NexusGenRootTypes["WriteResult"] | null // WriteResult
     updatePlaylists: NexusGenRootTypes["WriteResult"] | null // WriteResult
@@ -994,6 +1052,22 @@ export interface NexusGenFieldTypes {
     updateWatchPreferences: NexusGenRootTypes["WriteResult"] | null // WriteResult
     validateAuth: NexusGenRootTypes["ValidateAuthResult"] | null // ValidateAuthResult
     validateName: boolean | null // Boolean
+  }
+  Notification: {
+    // field return type
+    content: string // String!
+    createdAt: NexusGenScalars["DateTime"] // DateTime!
+    id: string // ID!
+    profile: NexusGenRootTypes["Profile"] // Profile!
+    profileId: string // String!
+    receiver: NexusGenRootTypes["Profile"] // Profile!
+    receiverId: string // String!
+    status: NexusGenEnums["ReadStatus"] // ReadStatus!
+  }
+  NotificationEdge: {
+    // field return type
+    cursor: string | null // String
+    node: NexusGenRootTypes["Notification"] | null // Notification
   }
   PageInfo: {
     // field return type
@@ -1135,6 +1209,7 @@ export interface NexusGenFieldTypes {
     fetchBookmarks: NexusGenRootTypes["FetchBookmarkResponse"] | null // FetchBookmarkResponse
     fetchCommentsByPublishId: NexusGenRootTypes["FetchCommentsResponse"] | null // FetchCommentsResponse
     fetchDontRecommends: NexusGenRootTypes["FetchDontRecommendsResponse"] | null // FetchDontRecommendsResponse
+    fetchMyNotifications: NexusGenRootTypes["FetchNotificationsResponse"] | null // FetchNotificationsResponse
     fetchMyPlaylists: NexusGenRootTypes["FetchPlaylistsResponse"] | null // FetchPlaylistsResponse
     fetchMyPublishes: NexusGenRootTypes["FetchPublishesResponse"] | null // FetchPublishesResponse
     fetchPlaylistItems: NexusGenRootTypes["FetchPlaylistItemsResponse"] | null // FetchPlaylistItemsResponse
@@ -1160,6 +1235,9 @@ export interface NexusGenFieldTypes {
     getProfileByName: NexusGenRootTypes["Profile"] | null // Profile
     getPublishById: NexusGenRootTypes["Publish"] | null // Publish
     getShort: NexusGenRootTypes["Publish"] | null // Publish
+    getUnReadNotifications:
+      | NexusGenRootTypes["GetUnReadNotificationsResponse"]
+      | null // GetUnReadNotificationsResponse
   }
   Report: {
     // field return type
@@ -1351,6 +1429,11 @@ export interface NexusGenFieldTypeNames {
     edges: "DontRecommendEdge"
     pageInfo: "PageInfo"
   }
+  FetchNotificationsResponse: {
+    // field return type name
+    edges: "NotificationEdge"
+    pageInfo: "PageInfo"
+  }
   FetchPlaylistItemsResponse: {
     // field return type name
     edges: "PlaylistItemEdge"
@@ -1384,6 +1467,10 @@ export interface NexusGenFieldTypeNames {
     followerId: "String"
     following: "Profile"
     followingId: "String"
+  }
+  GetUnReadNotificationsResponse: {
+    // field return type name
+    unread: "Int"
   }
   Like: {
     // field return type name
@@ -1429,6 +1516,7 @@ export interface NexusGenFieldTypeNames {
     updateBlog: "WriteResult"
     updateDisplayName: "WriteResult"
     updateName: "WriteResult"
+    updateNotificationsStatus: "WriteResult"
     updatePlaylistDescription: "WriteResult"
     updatePlaylistName: "WriteResult"
     updatePlaylists: "WriteResult"
@@ -1438,6 +1526,22 @@ export interface NexusGenFieldTypeNames {
     updateWatchPreferences: "WriteResult"
     validateAuth: "ValidateAuthResult"
     validateName: "Boolean"
+  }
+  Notification: {
+    // field return type name
+    content: "String"
+    createdAt: "DateTime"
+    id: "ID"
+    profile: "Profile"
+    profileId: "String"
+    receiver: "Profile"
+    receiverId: "String"
+    status: "ReadStatus"
+  }
+  NotificationEdge: {
+    // field return type name
+    cursor: "String"
+    node: "Notification"
   }
   PageInfo: {
     // field return type name
@@ -1577,6 +1681,7 @@ export interface NexusGenFieldTypeNames {
     fetchBookmarks: "FetchBookmarkResponse"
     fetchCommentsByPublishId: "FetchCommentsResponse"
     fetchDontRecommends: "FetchDontRecommendsResponse"
+    fetchMyNotifications: "FetchNotificationsResponse"
     fetchMyPlaylists: "FetchPlaylistsResponse"
     fetchMyPublishes: "FetchPublishesResponse"
     fetchPlaylistItems: "FetchPlaylistItemsResponse"
@@ -1598,6 +1703,7 @@ export interface NexusGenFieldTypeNames {
     getProfileByName: "Profile"
     getPublishById: "Publish"
     getShort: "Publish"
+    getUnReadNotifications: "GetUnReadNotificationsResponse"
   }
   Report: {
     // field return type name
@@ -1793,6 +1899,10 @@ export interface NexusGenArgTypes {
       // args
       input: NexusGenInputs["UpdateNameInput"] // UpdateNameInput!
     }
+    updateNotificationsStatus: {
+      // args
+      input: NexusGenInputs["UpdateNotificationsInput"] // UpdateNotificationsInput!
+    }
     updatePlaylistDescription: {
       // args
       input: NexusGenInputs["UpdatePlaylistDescriptionInput"] // UpdatePlaylistDescriptionInput!
@@ -1846,6 +1956,10 @@ export interface NexusGenArgTypes {
     fetchDontRecommends: {
       // args
       input: NexusGenInputs["FetchDontRecommendsInput"] // FetchDontRecommendsInput!
+    }
+    fetchMyNotifications: {
+      // args
+      input: NexusGenInputs["FetchNotificationsInput"] // FetchNotificationsInput!
     }
     fetchMyPlaylists: {
       // args
@@ -1930,6 +2044,10 @@ export interface NexusGenArgTypes {
     getShort: {
       // args
       input: NexusGenInputs["QueryByIdInput"] // QueryByIdInput!
+    }
+    getUnReadNotifications: {
+      // args
+      input: NexusGenInputs["GetUnReadNotificationsInput"] // GetUnReadNotificationsInput!
     }
   }
 }

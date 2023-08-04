@@ -4,7 +4,7 @@ import { BsEye, BsEyeSlash } from "react-icons/bs"
 
 import ButtonLoader from "@/components/ButtonLoader"
 import { formatDate, getPostExcerpt, secondsToHourFormat } from "@/lib/client"
-import { useSubscribeToFirestore } from "@/hooks/useSubscribeToUpdate"
+import { useSubscribeToUpdates } from "@/hooks/useSubscribe"
 import type { Publish } from "@/graphql/codegen/graphql"
 
 interface Props {
@@ -16,7 +16,7 @@ export default function VideoItem({ video }: Props) {
 
   const router = useRouter()
   // Subscribe to update on Firestore
-  useSubscribeToFirestore(video?.id)
+  useSubscribeToUpdates(video?.id)
 
   const onClickItem = useCallback(
     (id: string) => {

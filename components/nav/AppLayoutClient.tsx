@@ -10,20 +10,30 @@ import AuthModal from "../auth/AuthModal"
 import LeftDrawer from "./LeftDrawer"
 import RightDrawer from "./RightDrawer"
 import BottomTabs from "./BottomTabs"
+import NotificationsModal from "./NotificationsModal"
 import { useAuthContext } from "@/context/AuthContext"
 import { useIdTokenChanged } from "@/hooks/useIdTokenChanged"
-import type { Account } from "@/graphql/codegen/graphql"
+import type {
+  Account,
+  Maybe,
+  GetUnReadNotificationsResponse,
+} from "@/graphql/codegen/graphql"
 
 interface Props {
   account: Account | null
   isAuthenticated: boolean // True when account is not null
+  unReadCount: Maybe<GetUnReadNotificationsResponse> | undefined
 }
 
-export default function AppLayoutClient({ account, isAuthenticated }: Props) {
+export default function AppLayoutClient({
+  account,
+  isAuthenticated,
+  unReadCount,
+}: Props) {
   const [leftDrawerVisible, setLeftDrawerVisible] = useState(false)
   const [rightDrawerVisible, setRightDrawerVisible] = useState(false)
-  // const [createProfileModalVisible, setCreateProfileModalVisible] =
-  //   useState<boolean>(false)
+  const [notificationsModalVisible, setNotificationsModalVisible] =
+    useState(false)
 
   const { visible: authModalVisible, offVisible, headerText } = useAuthContext()
 
@@ -40,10 +50,6 @@ export default function AppLayoutClient({ account, isAuthenticated }: Props) {
       // Close right drawer when user signed out
       setRightDrawerVisible(false)
     }
-    // else {
-    //   // Close auth modal when user signed in
-    //   setAuthModalVisible(false)
-    // }
   }, [idToken, router])
 
   // Close auth modal when user is authenticated (account not null)
@@ -80,13 +86,24 @@ export default function AppLayoutClient({ account, isAuthenticated }: Props) {
     setRightDrawerVisible(false)
   }, [])
 
+  const openNotificationsModal = useCallback(() => {
+    setNotificationsModalVisible(true)
+  }, [])
+
+  const closeNotificationsModal = useCallback(() => {
+    setNotificationsModalVisible(false)
+  }, [])
+
   return (
     <>
       <div className="fixed z-20 top-0 left-0 right-0">
         <MainNav
+          isAuthenticated={isAuthenticated}
           account={account}
           openLeftDrawer={openLeftDrawer}
           openRightDrawer={openRightDrawer}
+          unReadCount={unReadCount}
+          openNotificationsModal={openNotificationsModal}
         />
       </div>
 
@@ -126,6 +143,12 @@ export default function AppLayoutClient({ account, isAuthenticated }: Props) {
       <div className="sm:hidden fixed z-20 bottom-0 left-0 right-0">
         <BottomTabs isAuthenticated={isAuthenticated} />
       </div>
+
+      <NotificationsModal
+        modalVisible={notificationsModalVisible}
+        profile={account?.defaultProfile}
+        closeModal={closeNotificationsModal}
+      />
     </>
   )
 }

@@ -103,3 +103,12 @@ export type ReportPublishInput = NexusGenInputs["ReportPublishInput"]
 export type FetchDontRecommendsInput =
   NexusGenInputs["FetchDontRecommendsInput"]
 export type DontRecommendInput = NexusGenInputs["DontRecommendInput"]
+
+// Notification
+export type NotificationType = NexusGenEnums["NotificationType"]
+export type ReadStatus = NexusGenEnums["ReadStatus"]
+export type FetchNotificationsInput = NexusGenInputs["FetchNotificationsInput"]
+export type GetUnReadNotificationsInput =
+  NexusGenInputs["GetUnReadNotificationsInput"]
+export type UpdateNotificationsInput =
+  NexusGenInputs["UpdateNotificationsInput"]

@@ -20,7 +20,7 @@ import Mask from "@/components/Mask"
 import ConfirmDeleteModal from "./ConfirmDeleteModal"
 import { contentCategories } from "@/lib/helpers"
 import { publishesFolder } from "@/firebase/config"
-import { useSubscribeToFirestore } from "@/hooks/useSubscribeToUpdate"
+import { useSubscribeToUpdates } from "@/hooks/useSubscribe"
 import { deleteFile, uploadFile } from "@/firebase/helpers"
 import { saveVideo } from "@/app/actions/publish-actions"
 import type {
@@ -79,7 +79,7 @@ export default function VideoModal({ publish, profileName }: Props) {
   const watchPrimary = watch("primaryCat")
 
   // Subscribe to update on Firestore
-  useSubscribeToFirestore(publish?.id)
+  useSubscribeToUpdates(publish?.id)
 
   const onDrop = useCallback((acceptedFiles: File[]) => {
     // Do something with the files

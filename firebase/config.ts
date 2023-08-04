@@ -22,4 +22,4 @@ export const db = getFirestore(app)
 export const profilesFolder = "profiles"
 export const publishesFolder = "publishes"
 export const updatesCollection = "updates"
-export const publishesCollection = "publishes"
+export const notificationsCollection = "notifications"

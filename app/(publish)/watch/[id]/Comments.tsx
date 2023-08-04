@@ -11,7 +11,7 @@ import Avatar from "@/components/Avatar"
 import ReportModal from "@/components/ReportModal"
 import { getPostExcerpt } from "@/lib/client"
 import { combineEdges } from "@/lib/helpers"
-import { useSubscribeToFirestore } from "@/hooks/useSubscribeToUpdate"
+import { useSubscribeToUpdates } from "@/hooks/useSubscribe"
 import type {
   Maybe,
   Publish,
@@ -63,7 +63,7 @@ export default function Comments({
   const [modalPOS, setModalPOS] = useState(310)
 
   // Subscribe to update on Firestore
-  useSubscribeToFirestore(publish?.id)
+  useSubscribeToUpdates(publish?.id)
 
   const openCommentsModal = useCallback(() => {
     if (!isMobile) return

@@ -10,7 +10,7 @@ import ShareReaction from "@/components/ShareReaction"
 import SaveReaction from "@/components/SaveReaction"
 import ReportReaction from "@/components/ReportReaction"
 import CommentsReaction from "./CommentReaction"
-import { useSubscribeToFirestore } from "@/hooks/useSubscribeToUpdate"
+import { useSubscribeToUpdates } from "@/hooks/useSubscribe"
 import type {
   CheckPublishPlaylistsResponse,
   FetchPlaylistsResponse,
@@ -38,7 +38,7 @@ export default function VerticalReactions({
   buttonDescriptionColor,
 }: Props) {
   // Subscribe to update on Firestore
-  useSubscribeToFirestore(publish?.id)
+  useSubscribeToUpdates(publish?.id)
 
   return (
     <div className="w-full flex flex-col items-center justify-end gap-y-5">

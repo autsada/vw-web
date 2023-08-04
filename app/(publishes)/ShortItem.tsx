@@ -33,7 +33,7 @@ export default function ShortItem({ publish }: Props) {
       scroll={false}
     >
       <div
-        className="relative h-[280px] w-[160px] sm:h-[300px] sm:w-[180px] md:h-[380px] md:w-[220px] flex items-center justify-center rounded-xl overflow-hidden bg-neutral-700 cursor-pointer"
+        className="relative h-[280px] w-[160px] sm:h-[300px] sm:w-[180px] md:h-[380px] md:w-[220px] flex items-center justify-center rounded-xl overflow-hidden bg-neutral-300 cursor-pointer"
         onMouseOver={onMouseOn}
         onMouseLeave={onMouseLeave}
       >

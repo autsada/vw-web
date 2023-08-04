@@ -7,7 +7,7 @@ import TipReaction from "@/components/TipReaction"
 import ShareReaction from "@/components/ShareReaction"
 import BookmarkReaction from "./BookmarkReaction"
 import ReportReaction from "@/components/ReportReaction"
-import { useSubscribeToFirestore } from "@/hooks/useSubscribeToUpdate"
+import { useSubscribeToUpdates } from "@/hooks/useSubscribe"
 import type { Publish } from "@/graphql/codegen/graphql"
 
 interface Props {
@@ -17,7 +17,7 @@ interface Props {
 
 export default function Reactions({ publish, isAuthenticated }: Props) {
   // Subscribe to update on Firestore
-  useSubscribeToFirestore(publish?.id)
+  useSubscribeToUpdates(publish?.id)
 
   return (
     <div className="w-max flex items-center gap-x-2">

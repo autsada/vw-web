@@ -101,10 +101,13 @@ export enum Category {
   Animals = 'Animals',
   Blockchain = 'Blockchain',
   Children = 'Children',
+  Drinks = 'Drinks',
   Education = 'Education',
   Entertainment = 'Entertainment',
   Food = 'Food',
   Gaming = 'Gaming',
+  Health = 'Health',
+  History = 'History',
   LifeStyle = 'LifeStyle',
   Men = 'Men',
   Movies = 'Movies',
@@ -347,6 +350,19 @@ export type FetchMyPublishesInput = {
   publishType?: InputMaybe<QueryPublishType>;
 };
 
+export type FetchNotificationsInput = {
+  accountId: Scalars['String']['input'];
+  cursor?: InputMaybe<Scalars['String']['input']>;
+  owner: Scalars['String']['input'];
+  profileId: Scalars['String']['input'];
+};
+
+export type FetchNotificationsResponse = {
+  __typename?: 'FetchNotificationsResponse';
+  edges: Array<NotificationEdge>;
+  pageInfo: PageInfo;
+};
+
 export type FetchPlaylistItemsInput = {
   accountId: Scalars['String']['input'];
   cursor?: InputMaybe<Scalars['String']['input']>;
@@ -462,6 +478,17 @@ export type GetMyAccountInput = {
   accountType: AccountType;
 };
 
+export type GetUnReadNotificationsInput = {
+  accountId: Scalars['String']['input'];
+  owner: Scalars['String']['input'];
+  profileId: Scalars['String']['input'];
+};
+
+export type GetUnReadNotificationsResponse = {
+  __typename?: 'GetUnReadNotificationsResponse';
+  unread: Scalars['Int']['output'];
+};
+
 export type Like = {
   __typename?: 'Like';
   createdAt: Scalars['DateTime']['output'];
@@ -522,6 +549,7 @@ export type Mutation = {
   updateBlog?: Maybe<WriteResult>;
   updateDisplayName?: Maybe<WriteResult>;
   updateName?: Maybe<WriteResult>;
+  updateNotificationsStatus?: Maybe<WriteResult>;
   updatePlaylistDescription?: Maybe<WriteResult>;
   updatePlaylistName?: Maybe<WriteResult>;
   updatePlaylists?: Maybe<WriteResult>;
@@ -704,6 +732,11 @@ export type MutationUpdateNameArgs = {
 };
 
 
+export type MutationUpdateNotificationsStatusArgs = {
+  input: UpdateNotificationsInput;
+};
+
+
 export type MutationUpdatePlaylistDescriptionArgs = {
   input: UpdatePlaylistDescriptionInput;
 };
@@ -747,6 +780,32 @@ export type MutationValidateAuthArgs = {
 export type MutationValidateNameArgs = {
   name: Scalars['String']['input'];
 };
+
+export type Notification = {
+  __typename?: 'Notification';
+  content: Scalars['String']['output'];
+  createdAt: Scalars['DateTime']['output'];
+  id: Scalars['ID']['output'];
+  profile: Profile;
+  profileId: Scalars['String']['output'];
+  receiver: Profile;
+  receiverId: Scalars['String']['output'];
+  status: ReadStatus;
+};
+
+export type NotificationEdge = {
+  __typename?: 'NotificationEdge';
+  cursor?: Maybe<Scalars['String']['output']>;
+  node?: Maybe<Notification>;
+};
+
+export enum NotificationType {
+  Follow = 'FOLLOW',
+  Like = 'LIKE',
+  NewRelease = 'NEW_RELEASE',
+  Other = 'OTHER',
+  Tip = 'TIP'
+}
 
 export type PageInfo = {
   __typename?: 'PageInfo';
@@ -920,6 +979,7 @@ export type Query = {
   fetchBookmarks?: Maybe<FetchBookmarkResponse>;
   fetchCommentsByPublishId?: Maybe<FetchCommentsResponse>;
   fetchDontRecommends?: Maybe<FetchDontRecommendsResponse>;
+  fetchMyNotifications?: Maybe<FetchNotificationsResponse>;
   fetchMyPlaylists?: Maybe<FetchPlaylistsResponse>;
   fetchMyPublishes?: Maybe<FetchPublishesResponse>;
   fetchPlaylistItems?: Maybe<FetchPlaylistItemsResponse>;
@@ -941,6 +1001,7 @@ export type Query = {
   getProfileByName?: Maybe<Profile>;
   getPublishById?: Maybe<Publish>;
   getShort?: Maybe<Publish>;
+  getUnReadNotifications?: Maybe<GetUnReadNotificationsResponse>;
 };
 
 
@@ -961,6 +1022,11 @@ export type QueryFetchCommentsByPublishIdArgs = {
 
 export type QueryFetchDontRecommendsArgs = {
   input: FetchDontRecommendsInput;
+};
+
+
+export type QueryFetchMyNotificationsArgs = {
+  input: FetchNotificationsInput;
 };
 
 
@@ -1068,6 +1134,11 @@ export type QueryGetShortArgs = {
   input: QueryByIdInput;
 };
 
+
+export type QueryGetUnReadNotificationsArgs = {
+  input: GetUnReadNotificationsInput;
+};
+
 export type QueryByIdInput = {
   requestorId?: InputMaybe<Scalars['String']['input']>;
   targetId: Scalars['String']['input'];
@@ -1084,6 +1155,11 @@ export enum QueryPublishType {
   Blogs = 'blogs',
   Shorts = 'shorts',
   Videos = 'videos'
+}
+
+export enum ReadStatus {
+  Read = 'read',
+  Unread = 'unread'
 }
 
 export type RemoveAllBookmarksInput = {
@@ -1212,6 +1288,13 @@ export type UpdateImageInput = {
 export type UpdateNameInput = {
   accountId: Scalars['String']['input'];
   newName: Scalars['String']['input'];
+  owner: Scalars['String']['input'];
+  profileId: Scalars['String']['input'];
+};
+
+export type UpdateNotificationsInput = {
+  accountId: Scalars['String']['input'];
+  ids: Array<Scalars['String']['input']>;
   owner: Scalars['String']['input'];
   profileId: Scalars['String']['input'];
 };

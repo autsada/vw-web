@@ -29,7 +29,7 @@ import { uploadFile, deleteFile } from "@/firebase/helpers"
 import { publishesFolder } from "@/firebase/config"
 import { saveBlogPost } from "@/app/actions/publish-actions"
 import { contentCategories } from "@/lib/helpers"
-import { useSubscribeToFirestore } from "@/hooks/useSubscribeToUpdate"
+import { useSubscribeToUpdates } from "@/hooks/useSubscribe"
 import type { FileWithPrview } from "@/types"
 import type { Publish, Profile } from "@/graphql/codegen/graphql"
 import type { PublishVisibility, PublishCategory } from "@/graphql/types"
@@ -104,7 +104,7 @@ export default function BlogModal({ profile, publish }: Props) {
   const router = useRouter()
 
   // Subscribe to update on Firestore
-  useSubscribeToFirestore(publish?.id)
+  useSubscribeToUpdates(publish?.id)
 
   const goBack = useCallback(() => {
     router.back()
