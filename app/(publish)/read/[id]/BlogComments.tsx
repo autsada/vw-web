@@ -11,6 +11,7 @@ import Mask from "@/components/Mask"
 import ButtonLoader from "@/components/ButtonLoader"
 import { useAuthContext } from "@/context/AuthContext"
 import { useInfiniteScroll } from "@/hooks/useInfiniteScroll"
+import { useSubscribeToUpdates } from "@/hooks/useSubscribe"
 import { commentOnBlog } from "@/app/actions/publish-actions"
 import { combineEdges } from "@/lib/helpers"
 import type { CommentsOrderBy } from "@/graphql/types"
@@ -60,6 +61,9 @@ export default function Comments({
 
   const { onVisible: openAuthModal } = useAuthContext()
   const [isPending, startTransition] = useTransition()
+
+  // Subscribe to update on Firestore
+  useSubscribeToUpdates(publish?.id)
 
   const fetchMoreComments = useCallback(async () => {
     if (!publish?.id || !pageInfo?.endCursor || !pageInfo?.hasNextPage) return

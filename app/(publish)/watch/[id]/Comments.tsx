@@ -11,7 +11,6 @@ import Avatar from "@/components/Avatar"
 import ReportModal from "@/components/ReportModal"
 import { getPostExcerpt } from "@/lib/client"
 import { combineEdges } from "@/lib/helpers"
-import { useSubscribeToUpdates } from "@/hooks/useSubscribe"
 import type {
   Maybe,
   Publish,
@@ -61,9 +60,6 @@ export default function Comments({
   const [commentToBeReported, setCommentToBeReported] = useState<Comment>()
   // 310px is from 270 for video player height plus 70 for navbar height
   const [modalPOS, setModalPOS] = useState(310)
-
-  // Subscribe to update on Firestore
-  useSubscribeToUpdates(publish?.id)
 
   const openCommentsModal = useCallback(() => {
     if (!isMobile) return

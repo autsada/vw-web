@@ -7,6 +7,7 @@ import SubComments from "@/components/SubComments"
 import Mask from "@/components/Mask"
 import { useAuthContext } from "@/context/AuthContext"
 import { useInfiniteScroll } from "@/hooks/useInfiniteScroll"
+import { useSubscribeToUpdates } from "@/hooks/useSubscribe"
 import { combineEdges, wait } from "@/lib/helpers"
 import { commentOnVideo } from "@/app/actions/publish-actions"
 import type {
@@ -68,6 +69,9 @@ export default function CommentDetails({
 
   const { onVisible: openAuthModal } = useAuthContext()
   const [isPending, startTransition] = useTransition()
+
+  // Subscribe to update on Firestore
+  useSubscribeToUpdates(publishId)
 
   const confirmComment = useCallback(async () => {
     if (!publishId) return null

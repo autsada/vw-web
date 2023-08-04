@@ -124,18 +124,18 @@ export default function NotificationsModal({
             </button>
           </div>
         </div>
-        <div className="flex-grow h-full flex items-center justify-center">
+        <div className="flex-grow h-full w-full flex items-center justify-center">
           {loading ? (
             <ButtonLoader loading={loading} color="#d4d4d4" />
           ) : edges.length === 0 ? (
             <h6 className="text-lg text-textLight">{`You don't have notifications.`}</h6>
           ) : (
-            <div className="h-full flex flex-col gap-y-2 px-2 pt-2 pb-20 overflow-y-auto">
+            <div className="h-full w-full flex flex-col gap-y-2 px-2 pt-2 pb-20 overflow-y-auto">
               {edges.map((edge) =>
                 !edge?.node ? null : (
                   <div
                     key={edge.node.id}
-                    className={`py-2 px-4 cursor-pointer ${
+                    className={`w-full p-2 cursor-pointer ${
                       edge.node.status === "read"
                         ? "bg-neutral-50 hover:bg-neutral-100"
                         : "bg-neutral-200 hover:bg-neutral-100"
@@ -144,7 +144,7 @@ export default function NotificationsModal({
                     <div className="h-full w-full flex items-center text-sm">
                       {edge.node.content}
                     </div>
-                    <div className="h-full w-[100px] flex items-center text-xs text-textLight">
+                    <div className="h-full w-[120px] flex items-center text-xs text-textLight">
                       {calculateTimeElapsed(edge.node.createdAt)}
                     </div>
                   </div>
