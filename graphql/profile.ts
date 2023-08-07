@@ -11,6 +11,7 @@ import type {
   UpdateImageInput,
   FollowInput,
   UpdatePreferencesInput,
+  FetchFollowsInput,
 } from "./types"
 
 /**
@@ -102,6 +103,122 @@ export async function getProfileByName(name: string, requestorId?: string) {
     })
 
     return data?.getProfileByName
+  } catch (error) {
+    throw error
+  }
+}
+
+/**
+ * Fetch profile's followers
+ */
+export const FETCH_MY_FOLLOWERS_QUERY = gql`
+  query FetchMyFollowers($input: FetchFollowsInput!) {
+    fetchMyFollowers(input: $input) {
+      pageInfo {
+        count
+        endCursor
+        hasNextPage
+      }
+      edges {
+        cursor
+        node {
+          id
+          followerId
+          followingId
+          following {
+            id
+            name
+            displayName
+            image
+            isFollowing
+          }
+        }
+      }
+    }
+  }
+`
+export async function fetchMyFollowers({
+  idToken,
+  signature,
+  input,
+}: {
+  idToken: string
+  signature?: string
+  input: FetchFollowsInput
+}) {
+  try {
+    const data = await client
+      .setHeaders({
+        "Content-Type": "application/json",
+        Authorization: `Bearer ${idToken}`,
+        "auth-wallet-signature": signature || "",
+      })
+      .request<
+        QueryReturnType<"fetchMyFollowers">,
+        QueryArgsType<"fetchMyFollowers">
+      >(FETCH_MY_FOLLOWERS_QUERY, {
+        input,
+      })
+
+    return data?.fetchMyFollowers
+  } catch (error) {
+    throw error
+  }
+}
+
+/**
+ * Fetch profile's following
+ */
+export const FETCH_MY_FOLLOWING_QUERY = gql`
+  query FetchMyFollowing($input: FetchFollowsInput!) {
+    fetchMyFollowing(input: $input) {
+      pageInfo {
+        count
+        endCursor
+        hasNextPage
+      }
+      edges {
+        cursor
+        node {
+          id
+          followerId
+          followingId
+          follower {
+            id
+            name
+            displayName
+            image
+            isFollowing
+          }
+        }
+      }
+    }
+  }
+`
+export async function fetchMyFollowing({
+  idToken,
+  signature,
+  input,
+}: {
+  idToken: string
+  signature?: string
+  input: FetchFollowsInput
+}) {
+  try {
+    const data = await client
+      .setHeaders({
+        "Content-Type": "application/json",
+        Authorization: `Bearer ${idToken}`,
+        "auth-wallet-signature": signature || "",
+      })
+      .request<
+        QueryReturnType<"fetchMyFollowing">,
+        QueryArgsType<"fetchMyFollowing">
+      >(FETCH_MY_FOLLOWING_QUERY, {
+        input,
+      })
+
+    return data?.fetchMyFollowing
   } catch (error) {
     throw error
   }

@@ -20,23 +20,6 @@ export default function BlogItem({ publish }: Props) {
     <div className="w-full sm:w-[220px] cursor-pointer flex sm:flex-col gap-x-2 sm:gap-x-0 sm:gap-y-2">
       <Link href={`/read/${publish.id}`}>
         <div className="relative w-[180px] sm:w-full h-[100px] sm:h-[120px] bg-neutral-700 hover:bg-neutral-800 rounded-none sm:rounded-xl overflow-hidden">
-          {/* <div className="w-full h-full px-2 flex items-center">
-            <div className="flex-grow h-full">
-              {publish.blog?.excerpt && (
-                <p className="mt-1 text-sm">
-                  {getPostExcerpt(publish.blog.excerpt, 120)}
-                </p>
-              )}
-            </div>
-            {thumbnail && (
-              // eslint-disable-next-line @next/next/no-img-element
-              <img
-                src={thumbnail || ""}
-                alt={publish.title || ""}
-                className="h-[30px] w-[30px] object-cover"
-              />
-            )}
-          </div> */}
           <div className="relative h-[60%] min-h-[60%]">
             {thumbnail && (
               <Image

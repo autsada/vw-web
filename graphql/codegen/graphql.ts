@@ -335,6 +335,19 @@ export type FetchDontRecommendsResponse = {
   pageInfo: PageInfo;
 };
 
+export type FetchFollowsInput = {
+  accountId: Scalars['String']['input'];
+  cursor?: InputMaybe<Scalars['String']['input']>;
+  owner: Scalars['String']['input'];
+  requestorId: Scalars['String']['input'];
+};
+
+export type FetchFollowsResponse = {
+  __typename?: 'FetchFollowsResponse';
+  edges: Array<FollowEdge>;
+  pageInfo: PageInfo;
+};
+
 export type FetchMyPlaylistsInput = {
   accountId: Scalars['String']['input'];
   cursor?: InputMaybe<Scalars['String']['input']>;
@@ -465,6 +478,13 @@ export type Follow = {
   followerId: Scalars['String']['output'];
   following: Profile;
   followingId: Scalars['String']['output'];
+  id: Scalars['String']['output'];
+};
+
+export type FollowEdge = {
+  __typename?: 'FollowEdge';
+  cursor?: Maybe<Scalars['String']['output']>;
+  node?: Maybe<Follow>;
 };
 
 export type FollowInput = {
@@ -800,6 +820,7 @@ export type NotificationEdge = {
 };
 
 export enum NotificationType {
+  Comment = 'COMMENT',
   Follow = 'FOLLOW',
   Like = 'LIKE',
   NewRelease = 'NEW_RELEASE',
@@ -979,6 +1000,8 @@ export type Query = {
   fetchBookmarks?: Maybe<FetchBookmarkResponse>;
   fetchCommentsByPublishId?: Maybe<FetchCommentsResponse>;
   fetchDontRecommends?: Maybe<FetchDontRecommendsResponse>;
+  fetchMyFollowers?: Maybe<FetchFollowsResponse>;
+  fetchMyFollowing?: Maybe<FetchFollowsResponse>;
   fetchMyNotifications?: Maybe<FetchNotificationsResponse>;
   fetchMyPlaylists?: Maybe<FetchPlaylistsResponse>;
   fetchMyPublishes?: Maybe<FetchPublishesResponse>;
@@ -1022,6 +1045,16 @@ export type QueryFetchCommentsByPublishIdArgs = {
 
 export type QueryFetchDontRecommendsArgs = {
   input: FetchDontRecommendsInput;
+};
+
+
+export type QueryFetchMyFollowersArgs = {
+  input: FetchFollowsInput;
+};
+
+
+export type QueryFetchMyFollowingArgs = {
+  input: FetchFollowsInput;
 };
 
 

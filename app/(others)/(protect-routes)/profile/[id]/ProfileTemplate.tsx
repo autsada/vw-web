@@ -2,7 +2,9 @@ import React from "react"
 import Image from "next/image"
 
 import ContentTabs from "./ContentTabs"
+import ProfileName from "@/components/ProfileName"
 import ManageFollow from "@/components/ManageFollow"
+import FollowsLink from "./FollowsLink"
 import type { Profile } from "@/graphql/codegen/graphql"
 
 interface Props {
@@ -53,35 +55,25 @@ export default function ProfileTemplate({ isAuthenticated, profile }: Props) {
             )}
           </div>
 
-          <div className="relative ml-2 sm:ml-6 flex-grow">
-            <h4 className="font-semibold text-lg sm:text-xl">
-              {profile?.displayName}
-            </h4>
-            <p className="text-textLight">@{profile?.name}</p>
-            <div className="mt-2 flex gap-x-2 sm:gap-x-4">
-              <p className="text-sm sm:text-base font-light text-textExtraLight">
-                <span className="text-textRegular">
-                  {profile?.followersCount}
-                </span>{" "}
-                Followers
-              </p>
-              {profile?.isOwner && (
-                <p className="text-sm sm:text-base font-light text-textExtraLight">
+          <div className="relative ml-2 sm:ml-6 flex-grow flex">
+            <div className="flex-grow">
+              <ProfileName profile={profile} />
+              {/* <h4 className="font-semibold text-lg sm:text-xl">
+                {profile?.displayName}
+              </h4>
+              <p className="text-textLight">@{profile?.name}</p> */}
+              <div className="mt-2 flex gap-x-2 sm:gap-x-4">
+                <FollowsLink profile={profile} />
+                <p className="text-sm sm:text-base font-light text-textLight">
                   <span className="text-textRegular">
-                    {profile?.followingCount}
+                    {profile?.publishesCount}
                   </span>{" "}
-                  Following
+                  Publishes
                 </p>
-              )}
-              <p className="text-sm sm:text-base font-light text-textExtraLight">
-                <span className="text-textRegular">
-                  {profile?.publishesCount}
-                </span>{" "}
-                Publishes
-              </p>
+              </div>
             </div>
 
-            <div className="absolute inset-0 pr-0 sm:pr-5 lg:pr-10 flex items-start sm:items-center justify-end">
+            <div className="w-max flex items-center justify-end">
               <ManageFollow
                 isAuthenticated={isAuthenticated}
                 follow={profile}

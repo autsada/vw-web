@@ -7,6 +7,7 @@ import ItemsHeader from "./ItemsHeader"
 import ActionsModal from "@/components/ActionsModal"
 import AddToPlaylistsModal from "@/components/AddToPlaylistsModal"
 import ShareModal from "@/components/ShareModal"
+import ReportModal from "@/components/ReportModal"
 import ButtonLoader from "@/components/ButtonLoader"
 import Mask from "@/components/Mask"
 import BlogItem from "./BlogItem"
@@ -96,6 +97,7 @@ export default function ContentItems({
     useState(false)
 
   const [shareModalVisible, setShareModalVisible] = useState(false)
+  const [reportModalVisible, setReportModalVisible] = useState(false)
 
   const { onVisible: openAuthModal } = useAuthContext()
 
@@ -140,6 +142,16 @@ export default function ContentItems({
 
   const closeShareModal = useCallback(() => {
     setShareModalVisible(false)
+    setTargetPublish(undefined)
+  }, [])
+
+  const openReportModal = useCallback(() => {
+    setReportModalVisible(true)
+    setActionsModalVisible(false)
+  }, [])
+
+  const closeReportModal = useCallback(() => {
+    setReportModalVisible(false)
     setTargetPublish(undefined)
   }, [])
 
@@ -291,7 +303,14 @@ export default function ContentItems({
           profile={profile}
           publish={targetPublish}
           closeModal={oncloseActions}
-          top={screenHeight - positionY < 200 ? positionY - 200 : positionY} // 200 is modal height
+          // top={screenHeight - positionY < 200 ? positionY - 200 : positionY} // 200 is modal height
+          top={
+            screenHeight - positionY <
+            (profile?.id === targetPublish?.creator?.id ? 200 : 280)
+              ? positionY -
+                (profile?.id === targetPublish?.creator?.id ? 200 : 280)
+              : positionY
+          } // 280 is modal height
           left={
             positionX > 300
               ? positionX - 300
@@ -304,7 +323,7 @@ export default function ContentItems({
           loadingPublishPlaylistsData={loadingPublishPlaylistsData}
           setLoadingPublishPlaylistsData={setLoadingPublishPlaylistsData}
           openShareModal={openShareModal}
-          setItems={setItems}
+          openReportModal={openReportModal}
         />
       )}
 
@@ -327,6 +346,14 @@ export default function ContentItems({
           title={targetPublish.title!}
           closeModal={closeShareModal}
           shareUrl={`${BASE_URL}/watch/${targetPublish.id}`}
+        />
+      )}
+
+      {/* Report modal */}
+      {reportModalVisible && targetPublish && (
+        <ReportModal
+          closeModal={closeReportModal}
+          publishId={targetPublish.id}
         />
       )}
 

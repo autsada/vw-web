@@ -227,6 +227,8 @@ export async function followProfile(followerId: string) {
     // Revalidate
     revalidatePath(`/[profile]`)
     revalidatePath(`/watch/[id]`)
+    revalidatePath(`/profile/[id]/followers`)
+    revalidatePath(`/profile/[id]/following`)
   } catch (error) {
     console.error(error)
   }

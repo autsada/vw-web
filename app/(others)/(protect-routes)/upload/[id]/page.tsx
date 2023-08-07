@@ -25,6 +25,11 @@ export default async function Page({ params }: { params: { id: string } }) {
     redirect("/settings")
   }
 
+  // Check ownership of the profile
+  if (account.owner?.toLowerCase() !== profile.owner?.toLowerCase()) {
+    redirect("/")
+  }
+
   // Get publish from the database
   const publish = await getUploadedPublish({
     idToken,

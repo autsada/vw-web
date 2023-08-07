@@ -9,6 +9,7 @@ import type {
   WatchLaterEdge,
   BookmarkEdge,
   NotificationEdge,
+  FollowEdge,
 } from "@/graphql/codegen/graphql"
 
 export function getCountryNames() {
@@ -68,6 +69,7 @@ export function combineEdges<
     | WatchLaterEdge
     | BookmarkEdge
     | NotificationEdge
+    | FollowEdge
 >(
   initialEdges: T[],
   newEdges: T[],

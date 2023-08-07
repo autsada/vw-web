@@ -132,8 +132,12 @@ export const FETCH_MY_PUBLISHES_QUERY = gql`
           tags
           playback {
             id
+            videoId
             thumbnail
+            preview
             duration
+            dash
+            hls
           }
           blog {
             createdAt
@@ -219,10 +223,11 @@ export const FETCH_PUBLISHES_QUERY = gql`
           playback {
             id
             videoId
-            duration
-            hls
-            dash
             thumbnail
+            preview
+            duration
+            dash
+            hls
           }
           blog {
             createdAt
@@ -287,10 +292,11 @@ export const FETCH_VIDEOS_BY_CAT_QUERY = gql`
           playback {
             id
             videoId
-            duration
-            hls
-            dash
             thumbnail
+            preview
+            duration
+            dash
+            hls
           }
         }
       }
@@ -341,10 +347,11 @@ export const GET_WATCHING_PUBLISH_QUERY = gql`
       playback {
         id
         videoId
-        duration
-        hls
-        dash
         thumbnail
+        preview
+        duration
+        dash
+        hls
       }
       liked
       disLiked
@@ -535,12 +542,20 @@ export const FETCH_PROFILE_PUBLISHES_QUERY = gql`
           thumbnail
           publishType
           commentsCount
+          creator {
+            id
+            name
+            displayName
+            image
+            defaultColor
+          }
           playback {
             id
             duration
             hls
             dash
             preview
+            thumbnail
           }
           blog {
             createdAt

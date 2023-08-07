@@ -1,6 +1,5 @@
 import React from "react"
 
-import PublishTabs from "./PublishTabs"
 import { getAccount } from "@/lib/server"
 import { getProfileById } from "@/graphql"
 import { redirect } from "next/navigation"
@@ -31,10 +30,5 @@ export default async function Layout({
     redirect("/")
   }
 
-  return (
-    <div className="px-5">
-      <PublishTabs profile={profile} />
-      <div className="mt-4">{children}</div>
-    </div>
-  )
+  return <>{children}</>
 }

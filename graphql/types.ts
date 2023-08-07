@@ -30,6 +30,7 @@ export type UpdateNameInput = NexusGenInputs["UpdateNameInput"]
 export type UpdateImageInput = NexusGenInputs["UpdateImageInput"]
 export type FollowInput = NexusGenInputs["FollowInput"]
 export type UpdatePreferencesInput = NexusGenInputs["UpdatePreferencesInput"]
+export type FetchFollowsInput = NexusGenInputs["FetchFollowsInput"]
 
 // Publish
 export type PublishType = NexusGenEnums["PublishType"]
