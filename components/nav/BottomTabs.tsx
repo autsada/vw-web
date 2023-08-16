@@ -1,4 +1,4 @@
-import React from "react"
+import React, { useCallback } from "react"
 import { AiFillRead, AiOutlineRead } from "react-icons/ai"
 import {
   RiHome4Fill,
@@ -9,15 +9,27 @@ import {
 import { MdVideoLibrary, MdOutlineVideoLibrary } from "react-icons/md"
 
 import ActiveLink from "./ActiveLink"
-import UploadBtn from "../UploadBtn"
+import UploadBtn from "./UploadBtn"
 import { useAuthContext } from "@/context/AuthContext"
 
 interface Props {
   isAuthenticated: boolean
+  openStartUploadModal: () => void
 }
 
-export default function BottomTabs({ isAuthenticated }: Props) {
+export default function BottomTabs({
+  isAuthenticated,
+  openStartUploadModal,
+}: Props) {
   const { onVisible: openAuthModal } = useAuthContext()
+
+  const onStartUpload = useCallback(() => {
+    if (!isAuthenticated) {
+      openAuthModal('"Sign in to upload content."')
+    } else {
+      openStartUploadModal()
+    }
+  }, [isAuthenticated, openStartUploadModal, openAuthModal])
 
   return (
     <div className="w-full grid grid-cols-5 bg-white shadow-xl border-t border-neutral-100">
@@ -40,12 +52,7 @@ export default function BottomTabs({ isAuthenticated }: Props) {
         />
       </div>
       <div className="flex items-start justify-center pt-2">
-        <UploadBtn
-          isAuthenticated={isAuthenticated}
-          onClick={openAuthModal.bind(undefined, "Sign in to upload content.")}
-          color="#2096F3"
-          size={40}
-        />
+        <UploadBtn onClick={onStartUpload} color="#2096F3" size={40} />
       </div>
       <div className="">
         <ActiveLink

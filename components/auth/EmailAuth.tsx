@@ -24,7 +24,7 @@ export default function EmailAuth() {
     const url = process.env.NEXT_PUBLIC_VW_URL_TEST || "http://localhost:3000"
     // const url =
     //   process.env.NEXT_PUBLIC_VW_URL_TEST ||
-    //   "${BASE_URL}"
+    //   "https://a2df-27-55-71-6.ngrok-free.app"
 
     const actionCodeSettings = {
       url: `${url}/auth/email/verify`,

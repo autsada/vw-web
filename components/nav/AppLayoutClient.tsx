@@ -18,6 +18,7 @@ import type {
   Maybe,
   GetUnReadNotificationsResponse,
 } from "@/graphql/codegen/graphql"
+import StartUploadModal from "./StartUploadModal"
 
 interface Props {
   account: Account | null
@@ -34,11 +35,13 @@ export default function AppLayoutClient({
   const [rightDrawerVisible, setRightDrawerVisible] = useState(false)
   const [notificationsModalVisible, setNotificationsModalVisible] =
     useState(false)
+  const [startUploadModalVisible, setStartUploadModalVisible] = useState(false)
 
   const { visible: authModalVisible, offVisible, headerText } = useAuthContext()
 
   const router = useRouter()
   const pathname = usePathname()
+  const isLivePage = pathname.startsWith("/live")
   const searchParams = useSearchParams()
   const { idToken } = useIdTokenChanged()
 
@@ -59,7 +62,7 @@ export default function AppLayoutClient({
     }
   }, [isAuthenticated, authModalVisible, offVisible])
 
-  // Close drawers when navigate finished
+  // Close drawers and modals when navigate finished
   useEffect(() => {
     const url = pathname + searchParams.toString()
 
@@ -67,6 +70,7 @@ export default function AppLayoutClient({
     if (url) {
       setLeftDrawerVisible(false)
       setRightDrawerVisible(false)
+      setStartUploadModalVisible(false)
     }
   }, [pathname, searchParams])
 
@@ -94,6 +98,14 @@ export default function AppLayoutClient({
     setNotificationsModalVisible(false)
   }, [])
 
+  const openStartUploadModal = useCallback(() => {
+    setStartUploadModalVisible(true)
+  }, [])
+
+  const closeStartUploadModal = useCallback(() => {
+    setStartUploadModalVisible(false)
+  }, [])
+
   return (
     <>
       <div className="fixed z-20 top-0 left-0 right-0">
@@ -104,14 +116,11 @@ export default function AppLayoutClient({
           openRightDrawer={openRightDrawer}
           unReadCount={unReadCount}
           openNotificationsModal={openNotificationsModal}
+          openStartUploadModal={openStartUploadModal}
         />
       </div>
 
-      <LeftDrawer
-        isAuthenticated={!!account}
-        isOpen={leftDrawerVisible}
-        closeDrawer={closeLeftDrawer}
-      />
+      <LeftDrawer isOpen={leftDrawerVisible} closeDrawer={closeLeftDrawer} />
 
       <RightDrawer
         profile={account?.defaultProfile}
@@ -140,14 +149,24 @@ export default function AppLayoutClient({
         icon={false}
       />
 
-      <div className="sm:hidden fixed z-20 bottom-0 left-0 right-0">
-        <BottomTabs isAuthenticated={isAuthenticated} />
-      </div>
+      {!isLivePage && (
+        <div className="sm:hidden fixed z-20 bottom-0 left-0 right-0">
+          <BottomTabs
+            isAuthenticated={isAuthenticated}
+            openStartUploadModal={openStartUploadModal}
+          />
+        </div>
+      )}
 
       <NotificationsModal
         modalVisible={notificationsModalVisible}
         profile={account?.defaultProfile}
         closeModal={closeNotificationsModal}
+      />
+
+      <StartUploadModal
+        visible={startUploadModalVisible}
+        closeModal={closeStartUploadModal}
       />
     </>
   )

@@ -5,7 +5,11 @@ import Upload from "./Upload"
 import { getAccount } from "@/lib/server"
 import { getProfileById } from "@/graphql"
 
-export default async function Page() {
+type Props = {
+  searchParams: { t?: "video" | "blog" }
+}
+
+export default async function Page({ searchParams }: Props) {
   const data = await getAccount()
   const account = data?.account
 
@@ -14,12 +18,19 @@ export default async function Page() {
     ? null
     : await getProfileById(account?.defaultProfile?.id)
 
+  const uploadType = searchParams.t
+
+  if (!uploadType) {
+    redirect("/upload?t=video")
+  }
+
   return (
     <>
       <h5>Upload content</h5>
 
       <Suspense fallback={<div>Loading...</div>}>
         <Upload
+          uploadType={uploadType || "video"}
           isAuthenticated={!!account}
           profile={profile}
           idToken={data?.idToken || ""}

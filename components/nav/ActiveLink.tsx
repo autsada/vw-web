@@ -15,6 +15,7 @@ interface Props {
   requiredAuthText?: string
   withLink?: boolean
   isSubLink?: boolean
+  isDarkMode?: boolean
 }
 
 export default function ActiveLink({
@@ -27,6 +28,7 @@ export default function ActiveLink({
   requiredAuthText,
   withLink = true,
   isSubLink,
+  isDarkMode,
 }: Props) {
   const { onVisible: openAuthModal } = useAuthContext()
 
@@ -39,6 +41,7 @@ export default function ActiveLink({
       isVertical={isVertical}
       onClick={openAuthModal.bind(undefined, requiredAuthText)}
       isSubLink={isSubLink}
+      isDarkMode={isDarkMode}
     />
   ) : !withLink ? (
     <Body
@@ -48,6 +51,7 @@ export default function ActiveLink({
       InActiveIcon={InActiveIcon}
       isVertical={isVertical}
       isSubLink={isSubLink}
+      isDarkMode={isDarkMode}
     />
   ) : (
     <Link href={href}>
@@ -58,6 +62,7 @@ export default function ActiveLink({
         InActiveIcon={InActiveIcon}
         isVertical={isVertical}
         isSubLink={isSubLink}
+        isDarkMode={isDarkMode}
       />
     </Link>
   )
@@ -71,6 +76,7 @@ interface BodyProps {
   isVertical?: boolean // If true the icon is above the name, default to false
   onClick?: () => void
   isSubLink?: boolean
+  isDarkMode?: boolean
 }
 
 function Body({
@@ -81,17 +87,28 @@ function Body({
   isVertical = false,
   onClick,
   isSubLink = false,
+  isDarkMode = false,
 }: BodyProps) {
   const pathname = usePathname()
   const isActive = pathname === href
 
   return (
     <div
-      className={`flex cursor-pointer items-center hover:bg-neutral-100 rounded-md ${
+      className={`flex cursor-pointer items-center ${
+        isDarkMode ? "hover:bg-black" : "hover:bg-neutral-100"
+      } rounded-md ${
         isVertical
           ? "flex-col justify-center h-[70px]"
           : "flex-row px-2 h-[50px]"
-      } ${isActive ? "bg-neutral-100" : "bg-white"}`}
+      } ${
+        isActive
+          ? isDarkMode
+            ? "bg-black"
+            : "bg-neutral-100"
+          : isDarkMode
+          ? "bg-neutral-900"
+          : "bg-white"
+      }`}
       onClick={onClick}
     >
       {ActiveIcon && InActiveIcon && (
@@ -118,12 +135,32 @@ function Body({
       <div className={`flex items-center ${isVertical ? "h-[50%]" : "h-full"}`}>
         {isVertical ? (
           isActive ? (
-            <h6 className={isSubLink ? "text-xs" : "text-sm"}>{name}</h6>
+            <h6
+              className={
+                isSubLink
+                  ? "text-xs"
+                  : isDarkMode
+                  ? "text-sm text-white"
+                  : "text-sm"
+              }
+            >
+              {name}
+            </h6>
           ) : (
             <p className={isSubLink ? "text-xs" : "text-sm"}>{name}</p>
           )
         ) : isActive ? (
-          <h6 className={isSubLink ? "text-base" : "text-lg"}>{name}</h6>
+          <h6
+            className={
+              isSubLink
+                ? "text-base"
+                : isDarkMode
+                ? "text-lg text-white"
+                : "text-lg"
+            }
+          >
+            {name}
+          </h6>
         ) : (
           <p className={isSubLink ? "text-base" : "text-lg"}>{name}</p>
         )}
