@@ -39,6 +39,8 @@ export type PublishCategory = NexusGenEnums["Category"]
 export type PublishVisibility = NexusGenEnums["Visibility"]
 export type QueryPublishType = NexusGenEnums["QueryPublishType"]
 export type PublishOrderBy = NexusGenEnums["PublishOrderBy"]
+export type StreamType = NexusGenEnums["StreamType"]
+export type BroadcastType = NexusGenEnums["BroadcastType"]
 export type FetchMyPublishesInput = NexusGenInputs["FetchMyPublishesInput"]
 export type FetchPublishesInput = NexusGenInputs["FetchPublishesInput"]
 export type FetchSuggestedPublishesInput =
@@ -57,6 +59,9 @@ export type UpdateVideoInput = NexusGenInputs["UpdateVideoInput"]
 export type UpdateBlogInput = NexusGenInputs["UpdateBlogInput"]
 export type LikePublishInput = NexusGenInputs["LikePublishInput"]
 export type DeletePublishInput = NexusGenInputs["DeletePublishInput"]
+export type RequestLiveStreamInput = NexusGenInputs["RequestLiveStreamInput"]
+export type GetLiveStreamPublishInput =
+  NexusGenInputs["GetLiveStreamPublishInput"]
 export type SendTipsInput = NexusGenInputs["SendTipsInput"]
 export type TipAmount = 1 | 2 | 5 | 10 | 25 | 50 | 100 | 1000 | 2000
 

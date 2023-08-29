@@ -15,7 +15,7 @@ import type {
 } from "./types"
 
 /**
- * @dev This function will query a profile by its id
+ * @dev Get a profile for general purpose
  */
 export const GET_PROFILE_BY_ID_QUERY = gql`
   query GetProfileById($input: QueryByIdInput!) {

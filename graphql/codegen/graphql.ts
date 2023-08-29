@@ -85,6 +85,11 @@ export type BookmarkPostInput = {
   publishId: Scalars['String']['input'];
 };
 
+export enum BroadcastType {
+  Software = 'software',
+  Webcam = 'webcam'
+}
+
 export type CacheSessionInput = {
   accountId: Scalars['String']['input'];
   address: Scalars['String']['input'];
@@ -228,6 +233,32 @@ export type CreateDraftVideoResult = {
   __typename?: 'CreateDraftVideoResult';
   filename?: Maybe<Scalars['String']['output']>;
   id: Scalars['String']['output'];
+};
+
+export type CreateLiveInputMessage = {
+  __typename?: 'CreateLiveInputMessage';
+  code: Scalars['Int']['output'];
+  message: Scalars['String']['output'];
+};
+
+export type CreateLiveInputResponse = {
+  __typename?: 'CreateLiveInputResponse';
+  errors: Array<CreateLiveInputMessage>;
+  messages: Array<CreateLiveInputMessage>;
+  result: CreateLiveInputResult;
+  success: Scalars['Boolean']['output'];
+};
+
+export type CreateLiveInputResult = {
+  __typename?: 'CreateLiveInputResult';
+  rtmps: Rtmps;
+  rtmpsPlayback: Rtmps;
+  srt: Srt;
+  srtPlayback: Srt;
+  status?: Maybe<LiveStatus>;
+  uid: Scalars['String']['output'];
+  webRTC: WebRtc;
+  webRTCPlayback: WebRtc;
 };
 
 export type CreatePlayListInput = {
@@ -494,6 +525,19 @@ export type FollowInput = {
   profileId: Scalars['String']['input'];
 };
 
+export type GetLiveStreamPublishInput = {
+  accountId: Scalars['String']['input'];
+  owner: Scalars['String']['input'];
+  profileId: Scalars['String']['input'];
+  publishId: Scalars['String']['input'];
+};
+
+export type GetLiveStreamPublishRespnse = {
+  __typename?: 'GetLiveStreamPublishRespnse';
+  liveInput?: Maybe<CreateLiveInputResponse>;
+  publish?: Maybe<Publish>;
+};
+
 export type GetMyAccountInput = {
   accountType: AccountType;
 };
@@ -533,6 +577,11 @@ export type LikePublishInput = {
   publishId: Scalars['String']['input'];
 };
 
+export enum LiveStatus {
+  Inprogress = 'inprogress',
+  Ready = 'ready'
+}
+
 export type Mutation = {
   __typename?: 'Mutation';
   addToNewPlaylist?: Maybe<WriteResult>;
@@ -564,6 +613,7 @@ export type Mutation = {
   removeFromPlaylist?: Maybe<WriteResult>;
   removeFromWatchLater?: Maybe<WriteResult>;
   reportPublish?: Maybe<WriteResult>;
+  requestLiveStream?: Maybe<RequestLiveStreamResult>;
   sendTips?: Maybe<SendTipsResult>;
   updateBannerImage?: Maybe<WriteResult>;
   updateBlog?: Maybe<WriteResult>;
@@ -727,6 +777,11 @@ export type MutationReportPublishArgs = {
 };
 
 
+export type MutationRequestLiveStreamArgs = {
+  input: RequestLiveStreamInput;
+};
+
+
 export type MutationSendTipsArgs = {
   input: SendTipsInput;
 };
@@ -842,6 +897,7 @@ export type Playback = {
   duration: Scalars['Float']['output'];
   hls: Scalars['String']['output'];
   id: Scalars['ID']['output'];
+  liveStatus?: Maybe<LiveStatus>;
   preview: Scalars['String']['output'];
   publish?: Maybe<Publish>;
   publishId: Scalars['String']['output'];
@@ -938,6 +994,7 @@ export type Publish = {
   __typename?: 'Publish';
   blog?: Maybe<Blog>;
   bookmarked?: Maybe<Scalars['Boolean']['output']>;
+  broadcastType?: Maybe<BroadcastType>;
   comments: Array<Comment>;
   commentsCount: Scalars['Int']['output'];
   contentRef?: Maybe<Scalars['String']['output']>;
@@ -956,10 +1013,12 @@ export type Publish = {
   liked?: Maybe<Scalars['Boolean']['output']>;
   likes: Array<Like>;
   likesCount: Scalars['Int']['output'];
+  liveInputUID?: Maybe<Scalars['String']['output']>;
   playback?: Maybe<Playback>;
   primaryCategory?: Maybe<Category>;
   publishType?: Maybe<PublishType>;
   secondaryCategory?: Maybe<Category>;
+  streamType: StreamType;
   tags?: Maybe<Scalars['String']['output']>;
   thumbnail?: Maybe<Scalars['String']['output']>;
   thumbnailRef?: Maybe<Scalars['String']['output']>;
@@ -1002,6 +1061,7 @@ export type Query = {
   fetchDontRecommends?: Maybe<FetchDontRecommendsResponse>;
   fetchMyFollowers?: Maybe<FetchFollowsResponse>;
   fetchMyFollowing?: Maybe<FetchFollowsResponse>;
+  fetchMyLiveStream?: Maybe<FetchPublishesResponse>;
   fetchMyNotifications?: Maybe<FetchNotificationsResponse>;
   fetchMyPlaylists?: Maybe<FetchPlaylistsResponse>;
   fetchMyPublishes?: Maybe<FetchPublishesResponse>;
@@ -1019,6 +1079,7 @@ export type Query = {
   fetchVideosByCategory?: Maybe<FetchPublishesResponse>;
   fetchWatchLater?: Maybe<FetchWatchLaterResponse>;
   getBalance: Scalars['String']['output'];
+  getLiveStreamPublish?: Maybe<GetLiveStreamPublishRespnse>;
   getMyAccount?: Maybe<Account>;
   getProfileById?: Maybe<Profile>;
   getProfileByName?: Maybe<Profile>;
@@ -1055,6 +1116,11 @@ export type QueryFetchMyFollowersArgs = {
 
 export type QueryFetchMyFollowingArgs = {
   input: FetchFollowsInput;
+};
+
+
+export type QueryFetchMyLiveStreamArgs = {
+  input: FetchMyPublishesInput;
 };
 
 
@@ -1143,6 +1209,11 @@ export type QueryGetBalanceArgs = {
 };
 
 
+export type QueryGetLiveStreamPublishArgs = {
+  input: GetLiveStreamPublishInput;
+};
+
+
 export type QueryGetMyAccountArgs = {
   input: GetMyAccountInput;
 };
@@ -1189,6 +1260,12 @@ export enum QueryPublishType {
   Shorts = 'shorts',
   Videos = 'videos'
 }
+
+export type Rtmps = {
+  __typename?: 'RTMPS';
+  streamKey: Scalars['String']['output'];
+  url: Scalars['String']['output'];
+};
 
 export enum ReadStatus {
   Read = 'read',
@@ -1254,6 +1331,33 @@ export enum ReportReason {
   Violent = 'violent'
 }
 
+export type RequestLiveStreamInput = {
+  accountId: Scalars['String']['input'];
+  broadcastType: BroadcastType;
+  description?: InputMaybe<Scalars['String']['input']>;
+  owner: Scalars['String']['input'];
+  primaryCategory: Category;
+  profileId: Scalars['String']['input'];
+  secondaryCategory?: InputMaybe<Category>;
+  tags?: InputMaybe<Scalars['String']['input']>;
+  thumbnail?: InputMaybe<Scalars['String']['input']>;
+  thumbnailRef?: InputMaybe<Scalars['String']['input']>;
+  title: Scalars['String']['input'];
+  visibility: Visibility;
+};
+
+export type RequestLiveStreamResult = {
+  __typename?: 'RequestLiveStreamResult';
+  id: Scalars['String']['output'];
+};
+
+export type Srt = {
+  __typename?: 'SRT';
+  passphrase: Scalars['String']['output'];
+  streamId: Scalars['String']['output'];
+  url: Scalars['String']['output'];
+};
+
 export type SendTipsInput = {
   accountId: Scalars['String']['input'];
   owner: Scalars['String']['input'];
@@ -1270,6 +1374,11 @@ export type SendTipsResult = {
   from: Scalars['String']['output'];
   to: Scalars['String']['output'];
 };
+
+export enum StreamType {
+  Live = 'Live',
+  OnDemand = 'onDemand'
+}
 
 export enum ThumbnailType {
   Custom = 'custom',
@@ -1365,6 +1474,7 @@ export type UpdatePreferencesInput = {
 
 export type UpdateVideoInput = {
   accountId: Scalars['String']['input'];
+  broadcastType?: InputMaybe<BroadcastType>;
   contentRef?: InputMaybe<Scalars['String']['input']>;
   contentURI?: InputMaybe<Scalars['String']['input']>;
   creatorId: Scalars['String']['input'];
@@ -1412,6 +1522,11 @@ export type WatchLaterEdge = {
   __typename?: 'WatchLaterEdge';
   cursor?: Maybe<Scalars['String']['output']>;
   node?: Maybe<WatchLater>;
+};
+
+export type WebRtc = {
+  __typename?: 'WebRTC';
+  url: Scalars['String']['output'];
 };
 
 export type WriteResult = {

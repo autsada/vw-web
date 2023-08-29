@@ -10,6 +10,7 @@ interface Props {
   confirmText?: string
   onConfirm: () => void
   loading?: boolean
+  info?: string
   error?: string
   disabled?: boolean
   useRedBgForConfirm?: boolean
@@ -22,6 +23,7 @@ export default function ConfirmModal({
   confirmText = "Confirm",
   onConfirm,
   loading,
+  info,
   error,
   disabled,
   useRedBgForConfirm = false,
@@ -56,9 +58,10 @@ export default function ConfirmModal({
             {loading ? <ButtonLoader loading size={8} /> : confirmText}
           </button>
         </div>
-        {error && (
+        {(error || info) && (
           <div className="absolute left-0 right-0 bottom-2">
-            <p className="error">{error}</p>
+            {error && <p className="error">{error}</p>}
+            {info && <p className="error text-blueBase">{info}</p>}
           </div>
         )}
       </div>

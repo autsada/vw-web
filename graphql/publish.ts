@@ -46,6 +46,7 @@ export const GET_UPLOADED_PUBLISH_QUERY = gql`
       transcodeError
       publishType
       tags
+      streamType
       creator {
         isOwner
       }
@@ -57,6 +58,7 @@ export const GET_UPLOADED_PUBLISH_QUERY = gql`
         duration
         dash
         hls
+        liveStatus
       }
       blog {
         createdAt
@@ -130,6 +132,7 @@ export const FETCH_MY_PUBLISHES_QUERY = gql`
           visibility
           publishType
           tags
+          streamType
           playback {
             id
             videoId
@@ -138,6 +141,7 @@ export const FETCH_MY_PUBLISHES_QUERY = gql`
             duration
             dash
             hls
+            liveStatus
           }
           blog {
             createdAt
@@ -210,6 +214,7 @@ export const FETCH_PUBLISHES_QUERY = gql`
           likesCount
           commentsCount
           bookmarked
+          streamType
           creator {
             id
             name
@@ -228,6 +233,7 @@ export const FETCH_PUBLISHES_QUERY = gql`
             duration
             dash
             hls
+            liveStatus
           }
           blog {
             createdAt
@@ -282,6 +288,7 @@ export const FETCH_VIDEOS_BY_CAT_QUERY = gql`
           secondaryCategory
           publishType
           tags
+          streamType
           creator {
             id
             name
@@ -297,6 +304,7 @@ export const FETCH_VIDEOS_BY_CAT_QUERY = gql`
             duration
             dash
             hls
+            liveStatus
           }
         }
       }
@@ -334,6 +342,7 @@ export const GET_WATCHING_PUBLISH_QUERY = gql`
       thumbnailType
       views
       tags
+      streamType
       creator {
         id
         name
@@ -352,6 +361,7 @@ export const GET_WATCHING_PUBLISH_QUERY = gql`
         duration
         dash
         hls
+        liveStatus
       }
       liked
       disLiked
@@ -423,6 +433,7 @@ export const FETCH_SUGGESTED_VIDEOS_QUERY = gql`
           secondaryCategory
           publishType
           tags
+          streamType
           creator {
             id
             name
@@ -437,6 +448,7 @@ export const FETCH_SUGGESTED_VIDEOS_QUERY = gql`
             hls
             dash
             thumbnail
+            liveStatus
           }
         }
       }
@@ -556,6 +568,7 @@ export const FETCH_PROFILE_PUBLISHES_QUERY = gql`
             dash
             preview
             thumbnail
+            liveStatus
           }
           blog {
             createdAt
@@ -664,6 +677,7 @@ export const FETCH_BY_TAG_QUERY = gql`
             hls
             dash
             thumbnail
+            liveStatus
           }
           blog {
             createdAt

@@ -78,8 +78,8 @@ export default function Preview({ fetchResult }: Props) {
   ) : (
     <div className="relative overflow-y-auto pb-10">
       {(isUploading || isDeleting) && (
-        <div className="absolute top-0 right-[2px] bg-white px-4 py-2 font-semibold text-lg">
-          While processing you can savely leave this page.
+        <div className="absolute top-0 right-[2px] bg-white text-blueBase px-4 py-2 font-semibold text-lg">
+          While processing you can safely leave this page.
         </div>
       )}
       <table className="table-fixed w-full border-collapse border border-gray-200">

@@ -7,7 +7,6 @@ import {
   RiSignalWifiFill,
   RiSignalWifiLine,
 } from "react-icons/ri"
-import { BsWebcamFill, BsWebcam } from "react-icons/bs"
 
 import ActiveLink from "@/components/nav/ActiveLink"
 
@@ -18,8 +17,8 @@ export default function LiveSideBar() {
     <>
       <div className="mb-3">
         <ActiveLink
-          name="Stream"
-          href="/live/stream"
+          name="Streaming"
+          href="/livestreaming"
           ActiveIcon={RiSignalWifiFill}
           InActiveIcon={RiSignalWifiLine}
           isVertical={true}
@@ -28,18 +27,8 @@ export default function LiveSideBar() {
       </div>
       <div className="mb-3">
         <ActiveLink
-          name="Webcam"
-          href="/live/webcam"
-          ActiveIcon={BsWebcamFill}
-          InActiveIcon={BsWebcam}
-          isVertical={true}
-          isDarkMode
-        />
-      </div>
-      <div className="mb-3">
-        <ActiveLink
           name="Manage"
-          href="/live/manage"
+          href="/livestreaming/manage"
           ActiveIcon={RiFileListFill}
           InActiveIcon={RiFileListLine}
           isVertical={true}

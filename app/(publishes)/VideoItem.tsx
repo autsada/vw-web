@@ -72,6 +72,7 @@ export default function VideoItem({ publish, onOpenActions, setPOS }: Props) {
             } w-full h-full`}
           >
             <VideoPlayer
+              streamType={publish.streamType}
               playback={publish.playback || undefined}
               controls={playing}
               playing={playing}

@@ -80,8 +80,8 @@ export default function Videos({ publishType, fetchResult }: Props) {
   ) : (
     <div className="relative px-0 sm:px-4 overflow-y-auto">
       {(isUploading || isDeleting) && (
-        <div className="absolute top-0 right-[2px] bg-white px-4 py-2 font-semibold text-lg">
-          While processing you can savely leave this page.
+        <div className="absolute top-0 right-[2px] bg-white text-blueBase px-4 py-2 font-semibold text-lg">
+          While processing you can safely leave this page.
         </div>
       )}
       <table className="table-fixed w-full border-collapse border border-gray-200">

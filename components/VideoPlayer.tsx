@@ -4,8 +4,10 @@ import type { JSXElementConstructor, ReactElement } from "react"
 import Player from "react-player"
 
 import type { Maybe, Playback } from "@/graphql/codegen/graphql"
+import type { StreamType } from "@/graphql/types"
 
 interface Props {
+  streamType?: StreamType
   playback: Maybe<Playback> | undefined
   playing?: boolean
   muted?: boolean
@@ -17,6 +19,7 @@ interface Props {
 }
 
 export default function VideoPlayer({
+  streamType = "onDemand",
   playback,
   playing = false,
   muted = true,
@@ -30,7 +33,7 @@ export default function VideoPlayer({
 
   return (
     <Player
-      url={playback?.hls}
+      url={streamType === "Live" ? playback?.dash : playback?.hls}
       controls={controls}
       light={playing ? undefined : thumbnail || undefined}
       width="100%"

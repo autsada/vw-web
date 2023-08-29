@@ -284,10 +284,12 @@ export default function VideoModal({ publish, profileName }: Props) {
             </h6>
             <div className="flex items-center gap-x-10">
               {publish.uploading && (
-                <h6 className="text-base">You can savely leave this page.</h6>
+                <h6 className="text-base text-blueBase">
+                  You can safely leave this page.
+                </h6>
               )}
               <CloseButton
-                onClick={() => router.back()}
+                onClick={() => router.push("/content")}
                 className="text-base"
               />
             </div>
@@ -665,7 +667,7 @@ export default function VideoModal({ publish, profileName }: Props) {
                     <p className="font-light text-textLight text-sm">
                       Tags can be useful in helping viewers find your video.
                     </p>
-                    <div className="w-full p-2 border border-neutral-200 rounded-md overflow-x-auto scrollbar-hide">
+                    <div className="w-full p-2 border border-neutral-200 rounded-sm overflow-x-auto scrollbar-hide">
                       <div
                         ref={tagInputRef}
                         className="w-max h-full flex items-center gap-2 cursor-pointer"

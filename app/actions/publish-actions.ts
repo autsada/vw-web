@@ -48,6 +48,7 @@ export async function saveVideo(
       secondaryCategory,
       visibility,
       tags,
+      broadcastType,
     } = input
 
     await updateVideo({
@@ -66,7 +67,8 @@ export async function saveVideo(
         primaryCategory: primaryCategory || null,
         secondaryCategory: secondaryCategory || null,
         visibility,
-        tags,
+        tags: tags || null,
+        broadcastType: broadcastType || null,
       },
     })
 

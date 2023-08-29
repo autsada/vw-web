@@ -33,7 +33,7 @@ export default function StartUploadModal({ visible, closeModal }: Props) {
           Icon={RiLiveLine}
           onClick={startUpload.bind(undefined, "video")}
         />
-        <Link href="/live">
+        <Link href="/livestreaming">
           <ActionItem name="Go live" Icon={CiStreamOn} />
         </Link>
         <ActionItem
