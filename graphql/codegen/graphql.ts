@@ -296,6 +296,13 @@ export type DeletePublishInput = {
   publishId: Scalars['String']['input'];
 };
 
+export type DeletePublishesInput = {
+  accountId: Scalars['String']['input'];
+  creatorId: Scalars['String']['input'];
+  owner: Scalars['String']['input'];
+  publishIds: Array<Scalars['String']['input']>;
+};
+
 export type DisLike = {
   __typename?: 'DisLike';
   createdAt: Scalars['DateTime']['output'];
@@ -600,6 +607,7 @@ export type Mutation = {
   deleteComment?: Maybe<WriteResult>;
   deletePlaylist?: Maybe<WriteResult>;
   deletePublish?: Maybe<WriteResult>;
+  deletePublishes?: Maybe<WriteResult>;
   disLikeComment?: Maybe<WriteResult>;
   disLikePublish?: Maybe<WriteResult>;
   dontRecommend?: Maybe<WriteResult>;
@@ -709,6 +717,11 @@ export type MutationDeletePlaylistArgs = {
 
 export type MutationDeletePublishArgs = {
   input: DeletePublishInput;
+};
+
+
+export type MutationDeletePublishesArgs = {
+  input: DeletePublishesInput;
 };
 
 
@@ -1257,6 +1270,7 @@ export enum QueryPublishType {
   Ads = 'ads',
   All = 'all',
   Blogs = 'blogs',
+  Live = 'live',
   Shorts = 'shorts',
   Videos = 'videos'
 }

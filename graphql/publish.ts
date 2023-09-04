@@ -21,6 +21,7 @@ import type {
   LikePublishInput,
   DeletePublishInput,
   SendTipsInput,
+  DeletePublishesInput,
 } from "./types"
 
 /**
@@ -1038,7 +1039,7 @@ export async function countViews(publishId: string) {
 }
 
 /**
- * Delete publish
+ * Delete one publish
  */
 export const DELETE_PUBLISH_MUTATION = gql`
   mutation DeletePublish($input: DeletePublishInput!) {
@@ -1071,6 +1072,45 @@ export async function deletePublish({
       })
 
     return data?.deletePublish
+  } catch (error) {
+    throw error
+  }
+}
+
+/**
+ * Delete many publishes
+ */
+export const DELETE_PUBLISHES_MUTATION = gql`
+  mutation DeletePublishes($input: DeletePublishesInput!) {
+    deletePublishes(input: $input) {
+      status
+    }
+  }
+`
+export async function deletePublishes({
+  idToken,
+  signature,
+  input,
+}: {
+  idToken: string
+  signature?: string
+  input: DeletePublishesInput
+}) {
+  try {
+    const data = await client
+      .setHeaders({
+        "Content-Type": "application/json",
+        Authorization: `Bearer ${idToken}`,
+        "auth-wallet-signature": signature || "",
+      })
+      .request<
+        MutationReturnType<"deletePublishes">,
+        MutationArgsType<"deletePublishes">
+      >(DELETE_PUBLISHES_MUTATION, {
+        input,
+      })
+
+    return data?.deletePublishes
   } catch (error) {
     throw error
   }

@@ -22,7 +22,7 @@ export default function ConfirmDeleteModal({
       confirmText="Delete"
     >
       <div className="text-lg">
-        This will permanently delete the publish and cannot be undone.
+        This will permanently delete and cannot be undone.
       </div>
     </ConfirmModal>
   )

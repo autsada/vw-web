@@ -1,15 +1,18 @@
 "use client"
 
-import React, { useState, useCallback, useMemo } from "react"
+import React, { useState, useCallback, useMemo, useTransition } from "react"
 import _ from "lodash"
+import { GrCheckboxSelected, GrCheckbox } from "react-icons/gr"
 
 import VideoItem from "./VideoItem"
 import ButtonLoader from "@/components/ButtonLoader"
 import Mask from "@/components/Mask"
+import ConfirmDeleteModal from "../../upload/[id]/ConfirmDeleteModal"
 import { useInfiniteScroll } from "@/hooks/useInfiniteScroll"
 import { combineEdges } from "@/lib/helpers"
 import type { FetchPublishesResponse, Maybe } from "@/graphql/codegen/graphql"
 import type { QueryPublishType } from "@/graphql/types"
+import { deleteManyPublishes } from "@/app/actions/publish-actions"
 
 interface Props {
   publishType: QueryPublishType
@@ -46,6 +49,11 @@ export default function Videos({ publishType, fetchResult }: Props) {
     setPageInfo(fetchResult?.pageInfo)
   }
 
+  const [selectedItems, setSelectedItems] = useState<string[]>([])
+  const [confirmModalVisible, setConfirmModalVisible] = useState(false)
+
+  const [isPending, startTransition] = useTransition()
+
   const fetchMore = useCallback(async () => {
     if (!pageInfo || !pageInfo.endCursor || !pageInfo.hasNextPage) return
 
@@ -73,6 +81,36 @@ export default function Videos({ publishType, fetchResult }: Props) {
   }, [pageInfo, publishType])
   const { observedRef } = useInfiniteScroll(0.5, fetchMore)
 
+  const selectItem = useCallback((id: string) => {
+    setSelectedItems((prev) =>
+      prev.includes(id) ? prev.filter((i) => i !== id) : [...prev, id]
+    )
+  }, [])
+
+  const selectAll = useCallback(() => {
+    setSelectedItems((prev) =>
+      prev.length === edges.length
+        ? []
+        : edges.filter((edge) => !!edge.node?.id).map((edge) => edge.node?.id!)
+    )
+  }, [edges])
+
+  const requestDeletion = useCallback(() => {
+    setConfirmModalVisible(true)
+  }, [])
+
+  const cancelDeletion = useCallback(() => {
+    setConfirmModalVisible(false)
+  }, [])
+
+  const confirmDeletePublishes = useCallback(() => {
+    if (selectedItems.length === 0) return
+
+    startTransition(() => deleteManyPublishes(selectedItems))
+    setConfirmModalVisible(false)
+    setSelectedItems([])
+  }, [selectedItems])
+
   return edges?.length === 0 ? (
     <div className="text-center px-4 py-10">
       <h6>No results found.</h6>
@@ -80,41 +118,62 @@ export default function Videos({ publishType, fetchResult }: Props) {
   ) : (
     <div className="relative px-0 sm:px-4 overflow-y-auto">
       {(isUploading || isDeleting) && (
-        <div className="absolute top-0 right-[2px] bg-white text-blueBase px-4 py-2 font-semibold text-lg">
+        <div className="absolute top-1 right-5 bg-white text-blueBase font-semibold text-lg">
           While processing you can safely leave this page.
         </div>
       )}
-      <table className="table-fixed w-full border-collapse border border-gray-200">
+      <table className="table-fixed w-full border-collapse">
         <thead>
-          <tr className="text-sm font-semibold bg-gray-100">
-            <th className="w-[30%] sm:w-[20%] lg:w-[15%] xl:w-[10%] font-normal py-2 border border-gray-200 break-words">
-              Video
+          <tr className="text-sm font-semibold border-t border-b border-neutral-200">
+            <th className="w-[5%] lg:w-[3%]">
+              {edges.length === selectedItems.length ? (
+                <GrCheckboxSelected
+                  size={18}
+                  onClick={selectAll}
+                  className="cursor-pointer"
+                />
+              ) : (
+                <GrCheckbox
+                  size={18}
+                  onClick={selectAll}
+                  className="cursor-pointer"
+                />
+              )}
             </th>
-            <th className="w-[40%] sm:w-[40%] lg:w-[35%] xl:w-[20%] font-normal py-2 border border-gray-200 break-words">
+            <th className="w-[30%] sm:w-[20%] lg:w-[15%] xl:w-[10%] font-normal py-2 break-words">
+              {selectedItems.length > 0 ? (
+                <button
+                  className="btn-cancel h-5 px-2 text-[10px]"
+                  onClick={requestDeletion}
+                >
+                  Delete? ({selectedItems.length})
+                </button>
+              ) : (
+                "Video"
+              )}
+            </th>
+            <th className="w-[40%] sm:w-[37%] lg:w-[32%] xl:w-[17%] font-normal py-2 break-words">
               Title
             </th>
-            <th className="hidden xl:table-cell xl:w-[20%] font-normal py-2 border border-gray-200 break-words">
-              Description
-            </th>
-            <th className="hidden sm:table-cell sm:w-[20%] lg:w-[10%] xl:w-[7%] font-normal py-2 border border-gray-200 break-words">
+            <th className="hidden sm:table-cell sm:w-[20%] lg:w-[10%] xl:w-[7%] font-normal py-2 break-words">
               Visibility
             </th>
-            <th className="w-[30%] sm:w-[20%] lg:w-[10%] xl:w-[8%] font-normal py-2 border border-gray-200 break-words">
+            <th className="w-[25%] sm:w-[20%] lg:w-[10%] xl:w-[8%] font-normal py-2 break-words">
               Date
             </th>
-            <th className="hidden lg:table-cell w-[20%] lg:w-[10%] xl:w-[7%] font-normal py-2 border border-gray-200 break-words">
+            <th className="hidden lg:table-cell w-[20%] lg:w-[10%] xl:w-[7%] font-normal py-2 break-words">
               Views
             </th>
-            <th className="hidden lg:table-cell w-[20%] lg:w-[10%] xl:w-[7%] font-normal py-2 border border-gray-200 break-words">
+            <th className="hidden lg:table-cell w-[20%] lg:w-[10%] xl:w-[7%] font-normal py-2 break-words">
               Tips
             </th>
-            <th className="hidden xl:table-cell w-[20%] xl:w-[7%] font-normal py-2 border border-gray-200 break-words">
+            <th className="hidden xl:table-cell w-[20%] xl:w-[7%] font-normal py-2 break-words">
               Comments
             </th>
-            <th className="hidden lg:table-cell w-[20%] lg:w-[10%] xl:w-[7%] font-normal py-2 border border-gray-200 break-words">
+            <th className="hidden lg:table-cell w-[20%] lg:w-[10%] xl:w-[7%] font-normal py-2 break-words">
               Likes
             </th>
-            <th className="hidden xl:table-cell xl:w-[7%] font-normal py-2 border border-gray-200 break-words">
+            <th className="hidden xl:table-cell xl:w-[7%] font-normal py-2 break-words">
               Dislikes
             </th>
           </tr>
@@ -122,7 +181,14 @@ export default function Videos({ publishType, fetchResult }: Props) {
 
         <tbody>
           {edges?.map(({ cursor, node: publish }) =>
-            !publish ? null : <VideoItem key={publish.id} video={publish} />
+            !publish ? null : (
+              <VideoItem
+                key={publish.id}
+                video={publish}
+                isSelected={selectedItems.includes(publish.id)}
+                selectItem={selectItem}
+              />
+            )
           )}
         </tbody>
       </table>
@@ -133,6 +199,15 @@ export default function Videos({ publishType, fetchResult }: Props) {
       >
         {loading && <ButtonLoader loading={loading} size={8} color="#d4d4d4" />}
       </div>
+
+      {/* Confirm delete */}
+      {confirmModalVisible && (
+        <ConfirmDeleteModal
+          loading={false}
+          onCancel={cancelDeletion}
+          onConfirm={confirmDeletePublishes}
+        />
+      )}
 
       {/* Prevent interaction while loading */}
       {loading && <Mask />}

@@ -16,6 +16,7 @@ import {
   bookmark,
   removeAllBookmarks,
   removeBookmark,
+  deletePublishes,
 } from "@/graphql"
 import { getAccount } from "@/lib/server"
 import type {
@@ -596,6 +597,34 @@ export async function removeBookmarks() {
     // Revalidate library page
     revalidatePath(`/library`)
     revalidatePath(`/library/readinglist`)
+  } catch (error) {
+    console.error(error)
+  }
+}
+
+export async function deleteManyPublishes(ids: string[]) {
+  try {
+    const data = await getAccount()
+    const account = data?.account
+    const idToken = data?.idToken
+    const signature = data?.signature
+    if (!account || !account?.defaultProfile || !idToken)
+      throw new Error("Please sign in to proceed.")
+
+    // Remove from watch later
+    await deletePublishes({
+      idToken,
+      signature,
+      input: {
+        accountId: account.id,
+        owner: account.owner,
+        creatorId: account.defaultProfile?.id,
+        publishIds: ids,
+      },
+    })
+
+    // Revalidate content page
+    revalidatePath(`/content`)
   } catch (error) {
     console.error(error)
   }

@@ -58,7 +58,13 @@ export const contentCategories = [
   "Other",
 ] as const
 
-export const publishTypes = ["videos", "shorts", "blogs", "ads"] as const
+export const publishTypes = [
+  "videos",
+  "shorts",
+  "live",
+  "blogs",
+  "ads",
+] as const
 
 export function combineEdges<
   T extends

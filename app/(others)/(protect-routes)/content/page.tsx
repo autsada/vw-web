@@ -1,6 +1,6 @@
 import React from "react"
 
-import Preview from "./Preview"
+import Videos from "./[type]/Videos"
 import { getAccount } from "@/lib/server"
 import { fetchMyPublishes, getProfileById } from "@/graphql"
 import { redirect } from "next/navigation"
@@ -34,10 +34,10 @@ export default async function AllPublishes() {
       accountId: account.id,
       owner: account.owner,
       creatorId: profile.id,
-      publishType: "all",
+      publishType: "videos",
       cursor: null,
     },
   })
 
-  return <Preview fetchResult={result || undefined} />
+  return <Videos publishType="videos" fetchResult={result} />
 }

@@ -20,14 +20,13 @@ export default function PublishTabs({ profile }: Props) {
     <>
       <h5 className="mb-4">Your {!tab ? "content" : tab}</h5>
       <div className="flex gap-x-4">
-        <LinkTab href={`/content`} name="HOME" isActive={!tab} />
         {publishTypes.map((k) =>
           k === "ads" && !isOwner ? null : (
             <LinkTab
               key={k}
-              href={`/content/${k.toLowerCase()}`}
+              href={k === "videos" ? `/content` : `/content/${k}`}
               name={k.toUpperCase()}
-              isActive={tab === k.toLowerCase()}
+              isActive={!tab ? k === "videos" : tab === k}
             />
           )
         )}

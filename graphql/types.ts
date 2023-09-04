@@ -59,6 +59,7 @@ export type UpdateVideoInput = NexusGenInputs["UpdateVideoInput"]
 export type UpdateBlogInput = NexusGenInputs["UpdateBlogInput"]
 export type LikePublishInput = NexusGenInputs["LikePublishInput"]
 export type DeletePublishInput = NexusGenInputs["DeletePublishInput"]
+export type DeletePublishesInput = NexusGenInputs["DeletePublishesInput"]
 export type RequestLiveStreamInput = NexusGenInputs["RequestLiveStreamInput"]
 export type GetLiveStreamPublishInput =
   NexusGenInputs["GetLiveStreamPublishInput"]
