@@ -46,16 +46,17 @@ export const FETCH_MY_LIVE_STREAM_QUERY = gql`
           publishType
           tags
           streamType
-          playback {
-            id
-            videoId
-            thumbnail
-            preview
-            duration
-            dash
-            hls
-            liveStatus
-          }
+          broadcastType
+          # playback {
+          #   id
+          #   videoId
+          #   thumbnail
+          #   preview
+          #   duration
+          #   dash
+          #   hls
+          #   liveStatus
+          # }
         }
       }
     }

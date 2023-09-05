@@ -21,7 +21,7 @@ export default function ConfirmDeleteModal({
       useRedBgForConfirm={true}
       confirmText="Delete"
     >
-      <div className="text-lg">
+      <div className="text-lg text-textRegular">
         This will permanently delete and cannot be undone.
       </div>
     </ConfirmModal>

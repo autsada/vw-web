@@ -2,7 +2,10 @@
 
 import React, { useState, useCallback, useMemo, useTransition } from "react"
 import _ from "lodash"
-import { GrCheckboxSelected, GrCheckbox } from "react-icons/gr"
+import {
+  MdOutlineCheckBox,
+  MdOutlineCheckBoxOutlineBlank,
+} from "react-icons/md"
 
 import VideoItem from "./VideoItem"
 import ButtonLoader from "@/components/ButtonLoader"
@@ -10,9 +13,9 @@ import Mask from "@/components/Mask"
 import ConfirmDeleteModal from "../../upload/[id]/ConfirmDeleteModal"
 import { useInfiniteScroll } from "@/hooks/useInfiniteScroll"
 import { combineEdges } from "@/lib/helpers"
+import { deleteManyPublishes } from "@/app/actions/publish-actions"
 import type { FetchPublishesResponse, Maybe } from "@/graphql/codegen/graphql"
 import type { QueryPublishType } from "@/graphql/types"
-import { deleteManyPublishes } from "@/app/actions/publish-actions"
 
 interface Props {
   publishType: QueryPublishType
@@ -31,7 +34,7 @@ export default function Videos({ publishType, fetchResult }: Props) {
     () => _.isEqual(fetchResult?.edges, prevEdges),
     [fetchResult?.edges, prevEdges]
   )
-  // When shorts changed
+  // When edges changed
   if (!isEdgesEqual) {
     setPrevEdges(fetchResult?.edges)
     setEdges(fetchResult?.edges || [])
@@ -125,16 +128,17 @@ export default function Videos({ publishType, fetchResult }: Props) {
       <table className="table-fixed w-full border-collapse">
         <thead>
           <tr className="text-sm font-semibold border-t border-b border-neutral-200">
-            <th className="w-[5%] lg:w-[3%]">
+            <th className="w-[6%] lg:w-[3%]">
               {edges.length === selectedItems.length ? (
-                <GrCheckboxSelected
-                  size={18}
+                <MdOutlineCheckBox
+                  size={24}
                   onClick={selectAll}
                   className="cursor-pointer"
+                  style={{ color: "red" }}
                 />
               ) : (
-                <GrCheckbox
-                  size={18}
+                <MdOutlineCheckBoxOutlineBlank
+                  size={24}
                   onClick={selectAll}
                   className="cursor-pointer"
                 />
@@ -158,7 +162,7 @@ export default function Videos({ publishType, fetchResult }: Props) {
             <th className="hidden sm:table-cell sm:w-[20%] lg:w-[10%] xl:w-[7%] font-normal py-2 break-words">
               Visibility
             </th>
-            <th className="w-[25%] sm:w-[20%] lg:w-[10%] xl:w-[8%] font-normal py-2 break-words">
+            <th className="w-[24%] sm:w-[20%] lg:w-[10%] xl:w-[8%] font-normal py-2 break-words">
               Date
             </th>
             <th className="hidden lg:table-cell w-[20%] lg:w-[10%] xl:w-[7%] font-normal py-2 break-words">
