@@ -1,4 +1,5 @@
 import React, { Suspense } from "react"
+import Link from "next/link"
 import { redirect } from "next/navigation"
 
 import { fetchMyLiveStream, getProfileById } from "@/graphql"
@@ -43,6 +44,13 @@ export default async function ManagePage() {
 
   return (
     <Suspense>
+      <div className="py-2 flex justify-end">
+        <Link href="/livestreaming">
+          <button className="mx-0 px-5 bg-blueBase hover:bg-blueLight text-white">
+            Create new stream
+          </button>
+        </Link>
+      </div>
       <ManageLiveStream fetchResult={result} />
     </Suspense>
   )

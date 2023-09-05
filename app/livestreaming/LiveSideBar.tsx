@@ -17,7 +17,7 @@ export default function LiveSideBar() {
     <>
       <div className="mb-3">
         <ActiveLink
-          name="Streaming"
+          name="Stream"
           href="/livestreaming"
           ActiveIcon={RiSignalWifiFill}
           InActiveIcon={RiSignalWifiLine}
