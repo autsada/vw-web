@@ -555,6 +555,7 @@ export const FETCH_PROFILE_PUBLISHES_QUERY = gql`
           thumbnail
           publishType
           commentsCount
+          streamType
           creator {
             id
             name
