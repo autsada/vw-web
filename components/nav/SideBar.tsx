@@ -6,8 +6,6 @@ import {
   RiHome4Line,
   RiVideoFill,
   RiVideoLine,
-  RiLiveFill,
-  RiLiveLine,
 } from "react-icons/ri"
 import { AiOutlineRead, AiFillRead } from "react-icons/ai"
 import { MdOutlineVideoLibrary, MdVideoLibrary } from "react-icons/md"
@@ -36,15 +34,6 @@ export default function SideBar({ isAuthenticated }: Props) {
           href="/shorts"
           ActiveIcon={RiVideoFill}
           InActiveIcon={RiVideoLine}
-          isVertical={true}
-        />
-      </div>
-      <div className="mb-3">
-        <ActiveLink
-          name="Live"
-          href="/live"
-          ActiveIcon={RiLiveFill}
-          InActiveIcon={RiLiveLine}
           isVertical={true}
         />
       </div>

@@ -1,4 +1,5 @@
 import React from "react"
+import Link from "next/link"
 
 import { contentCategories } from "@/lib/helpers"
 import type { PublishCategory } from "@/graphql/types"
@@ -18,6 +19,15 @@ export default function PublishTabs({ category, onSelectTab, loading }: Props) {
         onSelectTab={onSelectTab}
         loading={loading}
       />
+      <Link href="/live">
+        <button
+          type="button"
+          className={`btn-light text-sm sm:text-base px-5 h-8 rounded-full`}
+          disabled={loading}
+        >
+          Live
+        </button>
+      </Link>
       {contentCategories.map((cat) => (
         <Tab
           key={cat}
