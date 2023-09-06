@@ -6,6 +6,7 @@ import StreamModal from "../StreamModal"
 import WebCamLive, { Ref as WebCamLiveRef } from "./WebCamLive"
 import PreviewModal from "./PreviewModal"
 import Mask from "@/components/Mask"
+import Chats from "./Chats"
 import type {
   Maybe,
   Profile,
@@ -109,8 +110,8 @@ export default function Streaming({ profile, publish, liveInput }: Props) {
             />
           ) : null}
         </div>
-        <div className="h-full w-full sm:w-[200px] md:w-[280px] lg:w-[320px] xl:w-[380px] bg-blue-600">
-          Comments
+        <div className="h-full w-full sm:w-[200px] md:w-[280px] lg:w-[320px] xl:w-[380px] bg-black">
+          <Chats profile={profile} />
         </div>
       </div>
       {streaming && <Mask />}
