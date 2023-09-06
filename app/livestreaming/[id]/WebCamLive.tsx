@@ -326,6 +326,7 @@ const WebCamLive = forwardRef<Ref, Props>(function WebCamLive(
             ref={videoRef}
             autoPlay
             playsInline
+            muted={true} // Muted to remove echo sound
             className="absolute z-0 w-full h-full object-fill invisible"
           />
           <canvas ref={canvasRef} className="absolute z-10"></canvas>
