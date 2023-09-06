@@ -82,13 +82,19 @@ export default function VideoItem({ publish, onOpenActions, setPOS }: Props) {
               playIcon={<></>}
             />
           </div>
-          <div className="absolute bottom-2 right-2 px-[2px] rounded-sm bg-white text-xs flex items-center justify-center">
-            {publish.publishType === "Short"
-              ? "SHORT"
-              : publish.playback
-              ? secondsToHourFormat(publish.playback?.duration)
-              : null}
-          </div>
+          {publish.publishType === "Short" ? (
+            <div className="absolute bottom-2 right-2 px-[2px] rounded-sm bg-white text-xs flex items-center justify-center">
+              SHORT
+            </div>
+          ) : publish.streamType === "Live" ? (
+            <div className="absolute bottom-2 right-2 px-[2px] rounded-sm bg-error text-white text-xs flex items-center justify-center">
+              Live
+            </div>
+          ) : publish.playback ? (
+            <div className="absolute bottom-2 right-2 px-[2px] rounded-sm bg-white text-xs flex items-center justify-center">
+              {secondsToHourFormat(publish.playback?.duration)}
+            </div>
+          ) : null}
         </div>
       </Link>
 
@@ -101,17 +107,19 @@ export default function VideoItem({ publish, onOpenActions, setPOS }: Props) {
             </h6>
           </Link>
           <ProfileName profile={publish.creator} />
-          <Link href={`/watch/${publish.id}`}>
-            <div className="flex items-center gap-x-[2px]">
-              <p className="font-light text-textLight text-sm sm:text-base">
-                {publish.views || 0} view{publish.views === 1 ? "" : "s"}
-              </p>
-              <BsDot className="black" />
-              <p className="font-light text-textLight text-sm sm:text-base">
-                {calculateTimeElapsed(publish.createdAt)}
-              </p>
-            </div>
-          </Link>
+          {publish.streamType !== "Live" && (
+            <Link href={`/watch/${publish.id}`}>
+              <div className="flex items-center gap-x-[2px]">
+                <p className="font-light text-textLight text-sm sm:text-base">
+                  {publish.views || 0} view{publish.views === 1 ? "" : "s"}
+                </p>
+                <BsDot className="black" />
+                <p className="font-light text-textLight text-sm sm:text-base">
+                  {calculateTimeElapsed(publish.createdAt)}
+                </p>
+              </div>
+            </Link>
+          )}
         </div>
       </div>
 

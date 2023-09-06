@@ -9,6 +9,7 @@ import type {
   RequestLiveStreamInput,
   GetLiveStreamPublishInput,
   FetchMyPublishesInput,
+  GoLiveInput,
 } from "./types"
 
 /**
@@ -200,6 +201,45 @@ export async function requestLiveStream({
       })
 
     return data?.requestLiveStream
+  } catch (error) {
+    return null
+  }
+}
+
+/**
+ * Request to start live stream
+ */
+export const GO_LIVE_MUTATION = gql`
+  mutation GoLive($input: GoLiveInput!) {
+    goLive(input: $input) {
+      status
+    }
+  }
+`
+export async function goLive({
+  idToken,
+  signature,
+  input,
+}: {
+  idToken: string
+  signature?: string
+  input: GoLiveInput
+}) {
+  try {
+    const data = await client
+      .setHeaders({
+        "Content-Type": "application/json",
+        Authorization: `Bearer ${idToken}`,
+        "auth-wallet-signature": signature || "",
+      })
+      .request<MutationReturnType<"goLive">, MutationArgsType<"goLive">>(
+        GO_LIVE_MUTATION,
+        {
+          input,
+        }
+      )
+
+    return data?.goLive
   } catch (error) {
     return null
   }

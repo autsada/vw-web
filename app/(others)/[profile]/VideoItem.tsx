@@ -90,9 +90,15 @@ export default function VideoItem({ publish, onOpenActions, setPOS }: Props) {
                 SHORT
               </div>
             ) : publish.streamType === "Live" ? (
-              <div className="absolute bottom-2 right-2 px-[2px] rounded-sm bg-error text-white text-xs flex items-center justify-center">
-                Live
-              </div>
+              publish.playback?.liveStatus === "inprogress" ? (
+                <div className="absolute bottom-2 right-2 px-[2px] rounded-sm bg-error text-white text-xs flex items-center justify-center">
+                  Live
+                </div>
+              ) : (
+                <div className="absolute bottom-2 right-2 px-[2px] rounded-sm bg-orangeBase text-xs flex items-center justify-center">
+                  Schedule live
+                </div>
+              )
             ) : publish.playback ? (
               <div className="absolute bottom-2 right-2 px-[2px] rounded-sm bg-white text-xs flex items-center justify-center">
                 {secondsToHourFormat(publish.playback?.duration)}

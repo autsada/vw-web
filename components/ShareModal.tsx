@@ -64,7 +64,7 @@ export default function ShareModal({ title, closeModal, shareUrl }: Props) {
       <div className="fixed z-10 inset-0" onClick={closeModal}></div>
       <div className="relative z-20 py-5 w-[600px] max-w-[90%] text-center bg-white rounded-xl overflow-hidden">
         <div className="px-4 sm:px-10 flex items-center justify-between gap-x-5">
-          <p className="text-lg">Share via</p>
+          <p className="text-lg text-textDark">Share via</p>
           <div>
             <CloseButton onClick={closeModal} />
           </div>
@@ -170,7 +170,7 @@ export default function ShareModal({ title, closeModal, shareUrl }: Props) {
                 type="text"
                 value={shareUrl}
                 readOnly
-                className="block w-full text-left whitespace-nowrap"
+                className="block w-full text-left whitespace-nowrap text-textRegular"
               ></input>
             </div>
             <div className="relative">

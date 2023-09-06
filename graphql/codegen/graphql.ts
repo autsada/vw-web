@@ -560,6 +560,13 @@ export type GetUnReadNotificationsResponse = {
   unread: Scalars['Int']['output'];
 };
 
+export type GoLiveInput = {
+  accountId: Scalars['String']['input'];
+  owner: Scalars['String']['input'];
+  profileId: Scalars['String']['input'];
+  publishId: Scalars['String']['input'];
+};
+
 export type Like = {
   __typename?: 'Like';
   createdAt: Scalars['DateTime']['output'];
@@ -586,7 +593,8 @@ export type LikePublishInput = {
 
 export enum LiveStatus {
   Inprogress = 'inprogress',
-  Ready = 'ready'
+  Ready = 'ready',
+  Schedule = 'schedule'
 }
 
 export type Mutation = {
@@ -612,6 +620,7 @@ export type Mutation = {
   disLikePublish?: Maybe<WriteResult>;
   dontRecommend?: Maybe<WriteResult>;
   follow?: Maybe<WriteResult>;
+  goLive?: Maybe<WriteResult>;
   likeComment?: Maybe<WriteResult>;
   likePublish?: Maybe<WriteResult>;
   removeAllBookmarks?: Maybe<WriteResult>;
@@ -742,6 +751,11 @@ export type MutationDontRecommendArgs = {
 
 export type MutationFollowArgs = {
   input: FollowInput;
+};
+
+
+export type MutationGoLiveArgs = {
+  input: GoLiveInput;
 };
 
 

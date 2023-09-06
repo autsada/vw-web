@@ -275,6 +275,13 @@ export interface NexusGenInputs {
     owner: string // String!
     profileId: string // String!
   }
+  GoLiveInput: {
+    // input type
+    accountId: string // String!
+    owner: string // String!
+    profileId: string // String!
+    publishId: string // String!
+  }
   LikeCommentInput: {
     // input type
     accountId: string // String!
@@ -493,7 +500,7 @@ export interface NexusGenEnums {
     | "Women"
   CommentType: "COMMENT" | "PUBLISH"
   CommentsOrderBy: "counts" | "newest"
-  LiveStatus: "inprogress" | "ready"
+  LiveStatus: "inprogress" | "ready" | "schedule"
   NotificationType:
     | "COMMENT"
     | "FOLLOW"
@@ -1175,6 +1182,7 @@ export interface NexusGenFieldTypes {
     disLikePublish: NexusGenRootTypes["WriteResult"] | null // WriteResult
     dontRecommend: NexusGenRootTypes["WriteResult"] | null // WriteResult
     follow: NexusGenRootTypes["WriteResult"] | null // WriteResult
+    goLive: NexusGenRootTypes["WriteResult"] | null // WriteResult
     likeComment: NexusGenRootTypes["WriteResult"] | null // WriteResult
     likePublish: NexusGenRootTypes["WriteResult"] | null // WriteResult
     removeAllBookmarks: NexusGenRootTypes["WriteResult"] | null // WriteResult
@@ -1719,6 +1727,7 @@ export interface NexusGenFieldTypeNames {
     disLikePublish: "WriteResult"
     dontRecommend: "WriteResult"
     follow: "WriteResult"
+    goLive: "WriteResult"
     likeComment: "WriteResult"
     likePublish: "WriteResult"
     removeAllBookmarks: "WriteResult"
@@ -2091,6 +2100,10 @@ export interface NexusGenArgTypes {
     follow: {
       // args
       input: NexusGenInputs["FollowInput"] // FollowInput!
+    }
+    goLive: {
+      // args
+      input: NexusGenInputs["GoLiveInput"] // GoLiveInput!
     }
     likeComment: {
       // args

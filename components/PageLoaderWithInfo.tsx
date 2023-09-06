@@ -17,6 +17,8 @@ export default function PageLoaderWithInfo({
   loaderColor,
   zIndex = "z-50",
 }: Props) {
+  if (!loading) return null
+
   return (
     <div className={`fixed inset-0 flex justify-center items-center ${zIndex}`}>
       <Backdrop visible />

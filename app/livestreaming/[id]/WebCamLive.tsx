@@ -13,14 +13,15 @@ import { useRouter } from "next/navigation"
 
 import ConfirmModal from "@/components/ConfirmModal"
 import Mask from "@/components/Mask"
+import PageLoaderWithInfo from "@/components/PageLoaderWithInfo"
 import type { Maybe } from "@/graphql/codegen/graphql"
 import type { BroadcastType } from "@/graphql/types"
 
 interface Props {
-  publishId: string
   broadcastType: Maybe<BroadcastType> | undefined
   editStream: () => void
   streaming: boolean
+  loading: boolean
   setStreaming: React.Dispatch<React.SetStateAction<boolean>>
   setCameraDevices: React.Dispatch<React.SetStateAction<MediaDeviceInfo[]>>
   setAudioDevices: React.Dispatch<React.SetStateAction<MediaDeviceInfo[]>>
@@ -60,10 +61,10 @@ const getRecorderMimeType = () => {
 
 const WebCamLive = forwardRef<Ref, Props>(function WebCamLive(
   {
-    publishId,
     broadcastType,
     editStream,
     streaming,
+    loading,
     setStreaming,
     setCameraDevices,
     setAudioDevices,
@@ -376,6 +377,13 @@ const WebCamLive = forwardRef<Ref, Props>(function WebCamLive(
           </div>
         </ConfirmModal>
       )}
+
+      {/* Show spinner while preparing to go live */}
+      <PageLoaderWithInfo loading={loading} loaderColor="#a3a3a3">
+        <div className="w-full h-full flex items-center justify-center">
+          <h6>Going live...</h6>
+        </div>
+      </PageLoaderWithInfo>
 
       {/* Prevent user interaction while loading */}
       {stoping && <Mask />}

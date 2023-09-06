@@ -24,6 +24,7 @@ export default function Streaming({ profile, publish, liveInput }: Props) {
   const [streaming, setStreaming] = useState(false)
   const [cameraDevices, setCameraDevices] = useState<MediaDeviceInfo[]>([])
   const [audioDevices, setAudioDevices] = useState<MediaDeviceInfo[]>([])
+  const [loading, setLoading] = useState(false) // For use to set spinner before going live
 
   const webCamLiveRef = useRef<WebCamLiveRef>(null)
 
@@ -31,13 +32,34 @@ export default function Streaming({ profile, publish, liveInput }: Props) {
     setMode("edit")
   }, [])
 
-  const goLive = useCallback(() => {
-    if (webCamLiveRef.current?.startStreaming) {
-      setMode(undefined)
-      setStreaming(true)
-      webCamLiveRef.current.startStreaming()
+  const goLive = useCallback(async () => {
+    if (!publish?.id) return
+
+    try {
+      if (webCamLiveRef.current?.startStreaming) {
+        setLoading(true)
+        setMode(undefined)
+
+        const result = await fetch(`/api/stream/live`, {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify({
+            publishId: publish.id,
+          }),
+        })
+        const data = (await result.json()) as { status: string }
+        if (data.status === "Ok") {
+          setLoading(false)
+          setStreaming(true)
+          webCamLiveRef.current.startStreaming()
+        }
+      }
+    } catch (error) {
+      setLoading(false)
     }
-  }, [])
+  }, [publish?.id])
 
   const endEditStream = useCallback(() => {
     if (streaming) {
@@ -59,10 +81,10 @@ export default function Streaming({ profile, publish, liveInput }: Props) {
         >
           <WebCamLive
             ref={webCamLiveRef}
-            publishId={publish.id}
             broadcastType={publish?.broadcastType}
             editStream={changeToEdit}
             streaming={streaming}
+            loading={loading}
             setStreaming={setStreaming}
             setCameraDevices={setCameraDevices}
             setAudioDevices={setAudioDevices}
