@@ -42,6 +42,7 @@ export default function MainNav({
   const router = useRouter()
   const pathname = usePathname()
   const isWatchPage = pathname.startsWith("/watch")
+  const isStreamingPage = pathname.startsWith("/livestreaming")
   const { onVisible: openAuthModal } = useAuthContext()
   const searchBoxRef = useRef<HTMLInputElement>(null)
 
@@ -90,14 +91,16 @@ export default function MainNav({
   return (
     <div
       className={`h-[70px] px-2 flex items-center justify-between ${
-        isWatchPage ? "bg-neutral-900" : "bg-white"
+        isWatchPage || isStreamingPage ? "bg-neutral-900" : "bg-white"
       }`}
     >
       {isWatchPage && (
         <div className="hidden sm:flex h-full w-[50px] items-center">
           <div
             className={`cursor-pointer p-2 rounded-full ${
-              isWatchPage ? "hover:bg-gray-600" : "hover:bg-gray-100"
+              isWatchPage || isStreamingPage
+                ? "hover:bg-gray-600"
+                : "hover:bg-gray-100"
             }`}
           >
             <RxHamburgerMenu
@@ -110,68 +113,71 @@ export default function MainNav({
       )}
       <div className="h-full w-[100px] ml-2 flex items-center justify-start">
         <Link href="/">
-          <Logo theme={isWatchPage ? "dark" : "light"} />
+          <Logo theme={isWatchPage || isStreamingPage ? "dark" : "light"} />
         </Link>
       </div>
 
-      <div className="h-full flex-grow flex items-center justify-center">
-        <div
-          className={`relative h-[50px] w-full sm:max-w-[300px] md:max-w-[400px] lg:max-w-[500px] xl:max-w-[600px] flex items-center md:border ${
-            isWatchPage ? "md:border-neutral-500" : "md:border-neutral-200"
-          } md:rounded-full overflow-hidden`}
-        >
-          <div className="w-full">
-            <input
-              ref={searchBoxRef}
-              type="text"
-              className={`block w-full h-full max-w-full pl-5 bg-transparent ${
-                isWatchPage ? "text-white" : ""
-              }`}
-              value={query}
-              onChange={onChange}
-              onKeyDown={onEnter}
-            />
-          </div>
-          {query && (
-            <div className="absolute h-full top-0 bottom-0 right-[50px] flex items-center justify-center">
-              <IoCloseOutline
-                size={28}
-                className={`cursor-pointer ${
-                  isWatchPage
-                    ? "text-white hover:text-textExtraLight"
-                    : "text-textExtraLight hover:text-textRegular"
+      {!isStreamingPage && (
+        <div className="h-full flex-grow flex items-center justify-center">
+          <div
+            className={`relative h-[50px] w-full sm:max-w-[300px] md:max-w-[400px] lg:max-w-[500px] xl:max-w-[600px] flex items-center md:border ${
+              isWatchPage ? "md:border-neutral-500" : "md:border-neutral-200"
+            } md:rounded-full overflow-hidden`}
+          >
+            <div className="w-full">
+              <input
+                ref={searchBoxRef}
+                type="text"
+                className={`block w-full h-full max-w-full pl-5 bg-transparent ${
+                  isWatchPage ? "text-white" : ""
                 }`}
-                onClick={clearQuery}
+                value={query}
+                onChange={onChange}
+                onKeyDown={onEnter}
               />
             </div>
-          )}
-          <div
-            className={`h-full w-[60px] flex items-center justify-center cursor-pointer ${
-              isWatchPage
-                ? "md:border-none md:border-neutral-200 hover:bg-neutral-800"
-                : "md:border-l md:border-neutral-200 hover:bg-neutral-100"
-            }`}
-            onClick={onClickSearchIcon}
-          >
-            <IoSearchOutline
-              size={24}
-              className={`cursor-pointer ${
-                isWatchPage ? "text-white" : "text-textExtraLight"
+            {query && (
+              <div className="absolute h-full top-0 bottom-0 right-[50px] flex items-center justify-center">
+                <IoCloseOutline
+                  size={28}
+                  className={`cursor-pointer ${
+                    isWatchPage
+                      ? "text-white hover:text-textExtraLight"
+                      : "text-textExtraLight hover:text-textRegular"
+                  }`}
+                  onClick={clearQuery}
+                />
+              </div>
+            )}
+            <div
+              className={`h-full w-[60px] flex items-center justify-center cursor-pointer ${
+                isWatchPage
+                  ? "md:border-none md:border-neutral-200 hover:bg-neutral-800"
+                  : "md:border-l md:border-neutral-200 hover:bg-neutral-100"
               }`}
-            />
+              onClick={onClickSearchIcon}
+            >
+              <IoSearchOutline
+                size={24}
+                className={`cursor-pointer ${
+                  isWatchPage ? "text-white" : "text-textExtraLight"
+                }`}
+              />
+            </div>
           </div>
         </div>
-      </div>
+      )}
 
-      <div className={`hidden sm:block sm:mr-6`}>
-        <UploadBtn
-          onClick={onStartUpload}
-          color={isWatchPage ? "#FF904D" : "#2096F3"}
-          size={30}
-        />
-      </div>
-
-      {isAuthenticated && (
+      {!isStreamingPage && (
+        <div className={`hidden sm:block sm:mr-6`}>
+          <UploadBtn
+            onClick={onStartUpload}
+            color={isWatchPage ? "#FF904D" : "#2096F3"}
+            size={30}
+          />
+        </div>
+      )}
+      {isAuthenticated && !isStreamingPage && (
         <div className={`mr-3 sm:mr-6`}>
           <Notification
             profile={account?.defaultProfile}
