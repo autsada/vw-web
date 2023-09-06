@@ -111,7 +111,7 @@ export default function VideosByCat({
             <h6>No videos found</h6>
           </div>
         ) : (
-          <div className="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-y-2 sm:gap-y-4 md:gap-y-2 md:gap-x-4 justify-items-center bg-white divide-y-[4px] sm:divide-y-0 divide-neutral-200">
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-y-2 sm:gap-y-4 md:gap-y-2 md:gap-x-4 justify-items-center bg-white divide-y-[4px] sm:divide-y-0 divide-neutral-200">
             {videos.map((edge, i) => (
               <VideoItem
                 key={`${edge?.node?.id}-${tab}-${i}`}

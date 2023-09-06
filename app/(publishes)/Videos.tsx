@@ -150,7 +150,8 @@ export default function Videos({
         </div>
       </div>
 
-      <div className="py-1 pb-20 md:py-5 md:px-10 lg:px-24 xl:px-14">
+      {/* <div className="py-1 pb-20 md:py-5 md:px-10 lg:px-24 xl:px-14"> */}
+      <div className="py-1 pb-20 md:py-5 md:px-2">
         {/* Short videos */}
         <Shorts fetchResult={shortsResult} selectedTab={selectedCat} />
 
