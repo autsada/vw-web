@@ -4,6 +4,7 @@ import React, { useState, useCallback, useRef } from "react"
 
 import StreamModal from "../StreamModal"
 import WebCamLive, { Ref as WebCamLiveRef } from "./WebCamLive"
+import SoftwareLive from "./SoftwareLive"
 import PreviewModal from "./PreviewModal"
 import Mask from "@/components/Mask"
 import Chats from "./Chats"
@@ -33,25 +34,29 @@ export default function Streaming({ profile, publish, liveInput }: Props) {
     setMode("edit")
   }, [])
 
-  const goLive = useCallback(async () => {
-    if (!publish?.id) return
+  const prepareGoingLive = useCallback(async () => {
+    if (!publish) return
+    const result = await fetch(`/api/stream/live`, {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify({
+        publishId: publish.id,
+      }),
+    })
+    const data = (await result.json()) as { status: string }
+    return data
+  }, [publish])
 
+  const goLiveWebcam = useCallback(async () => {
     try {
       if (webCamLiveRef.current?.startStreaming) {
         setLoading(true)
         setMode(undefined)
 
-        const result = await fetch(`/api/stream/live`, {
-          method: "POST",
-          headers: {
-            "Content-Type": "application/json",
-          },
-          body: JSON.stringify({
-            publishId: publish.id,
-          }),
-        })
-        const data = (await result.json()) as { status: string }
-        if (data.status === "Ok") {
+        const data = await prepareGoingLive()
+        if (data?.status === "Ok") {
           setLoading(false)
           setStreaming(true)
           webCamLiveRef.current.startStreaming()
@@ -60,7 +65,21 @@ export default function Streaming({ profile, publish, liveInput }: Props) {
     } catch (error) {
       setLoading(false)
     }
-  }, [publish?.id])
+  }, [prepareGoingLive])
+
+  const goLiveSoftware = useCallback(async () => {
+    try {
+      setLoading(true)
+      setMode(undefined)
+
+      const data = await prepareGoingLive()
+      if (data?.status === "Ok") {
+        setStreaming(true)
+      }
+    } catch (error) {
+      setLoading(false)
+    }
+  }, [prepareGoingLive])
 
   const endEditStream = useCallback(() => {
     if (streaming) {
@@ -80,17 +99,26 @@ export default function Streaming({ profile, publish, liveInput }: Props) {
             mode === "preview" ? "relative" : ""
           } h-full sm:flex-grow`}
         >
-          <WebCamLive
-            ref={webCamLiveRef}
-            broadcastType={publish?.broadcastType}
-            editStream={changeToEdit}
-            streaming={streaming}
-            loading={loading}
-            setStreaming={setStreaming}
-            setCameraDevices={setCameraDevices}
-            setAudioDevices={setAudioDevices}
-            streamKey={liveInput.result?.rtmps?.streamKey}
-          />
+          {publish.broadcastType === "webcam" ? (
+            <WebCamLive
+              ref={webCamLiveRef}
+              broadcastType={publish?.broadcastType}
+              editStream={changeToEdit}
+              streaming={streaming}
+              loading={loading}
+              setStreaming={setStreaming}
+              setCameraDevices={setCameraDevices}
+              setAudioDevices={setAudioDevices}
+              streamKey={liveInput.result?.rtmps?.streamKey}
+            />
+          ) : publish.broadcastType === "software" ? (
+            <SoftwareLive
+              loading={loading}
+              editStream={changeToEdit}
+              streamKey={liveInput.result?.rtmps?.streamKey}
+              streamURL={liveInput.result?.rtmps?.url}
+            />
+          ) : null}
 
           {mode === "edit" ? (
             <StreamModal
@@ -104,7 +132,11 @@ export default function Streaming({ profile, publish, liveInput }: Props) {
               profile={profile}
               publish={publish}
               changeToEdit={changeToEdit}
-              goLive={goLive}
+              goLive={
+                publish.broadcastType === "software"
+                  ? goLiveSoftware
+                  : goLiveWebcam
+              }
               cameraDevices={cameraDevices}
               audioDevices={audioDevices}
             />

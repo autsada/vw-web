@@ -136,40 +136,42 @@ export default function PreviewModal({
                       : "External software"}
                   </p>
                 </div>
-                <div className="mb-2 w-full">
-                  <div className="relative flex items-center gap-x-2 py-1 text-textRegular">
-                    <BsCameraVideo size={18} />
-                    <select
-                      className="relative z-10 w-full bg-transparent appearance-none outline-none focus:outline-none cursor-pointer text-sm"
-                      defaultValue={cameraDevices[0]?.label}
-                    >
-                      {cameraDevices.map((cam) => (
-                        <option key={cam.deviceId} value={cam.label}>
-                          {cam.label}
-                        </option>
-                      ))}
-                    </select>
-                    <div className="absolute z-0 top-0 right-2 h-full flex flex-col justify-center">
-                      <IoCaretDownSharp />
+                {publish?.broadcastType === "webcam" ? (
+                  <div className="mb-2 w-full">
+                    <div className="relative flex items-center gap-x-2 py-1 text-textRegular">
+                      <BsCameraVideo size={18} />
+                      <select
+                        className="relative z-10 w-full bg-transparent appearance-none outline-none focus:outline-none cursor-pointer text-sm"
+                        defaultValue={cameraDevices[0]?.label}
+                      >
+                        {cameraDevices.map((cam) => (
+                          <option key={cam.deviceId} value={cam.label}>
+                            {cam.label}
+                          </option>
+                        ))}
+                      </select>
+                      <div className="absolute z-0 top-0 right-2 h-full flex flex-col justify-center">
+                        <IoCaretDownSharp />
+                      </div>
+                    </div>
+                    <div className="relative flex items-center gap-x-2 py-4 text-textRegular">
+                      <BsMicFill size={18} />
+                      <select
+                        className="relative z-10 w-full bg-transparent appearance-none outline-none focus:outline-none cursor-pointer text-sm"
+                        defaultValue={audioDevices[0]?.label}
+                      >
+                        {audioDevices.map((aud) => (
+                          <option key={aud.deviceId} value={aud.label}>
+                            {aud.label}
+                          </option>
+                        ))}
+                      </select>
+                      <div className="absolute z-0 top-0 right-2 h-full flex flex-col justify-center">
+                        <IoCaretDownSharp />
+                      </div>
                     </div>
                   </div>
-                  <div className="relative flex items-center gap-x-2 py-4 text-textRegular">
-                    <BsMicFill size={18} />
-                    <select
-                      className="relative z-10 w-full bg-transparent appearance-none outline-none focus:outline-none cursor-pointer text-sm"
-                      defaultValue={audioDevices[0]?.label}
-                    >
-                      {audioDevices.map((aud) => (
-                        <option key={aud.deviceId} value={aud.label}>
-                          {aud.label}
-                        </option>
-                      ))}
-                    </select>
-                    <div className="absolute z-0 top-0 right-2 h-full flex flex-col justify-center">
-                      <IoCaretDownSharp />
-                    </div>
-                  </div>
-                </div>
+                ) : null}
               </div>
               <div className="w-max">
                 <button className="btn-light px-5 h-8" onClick={changeToEdit}>
@@ -191,7 +193,7 @@ export default function PreviewModal({
               className="btn-blue mx-0 w-[80px] h-8 text-sm"
               onClick={goLive}
             >
-              GO LIVE
+              {publish?.broadcastType === "software" ? "NEXT" : "GO LIVE"}
             </button>
           </div>
         </div>

@@ -11,7 +11,7 @@ interface Props {
 
 export default function Chats({ profile }: Props) {
   return (
-    <div className="w-full h-full flex flex-col justify-stretch items-stretch">
+    <div className="w-full h-full flex flex-col justify-stretch items-stretch border-l border-neutral-500">
       <div className="w-full flex-grow p-2">
         <div className="h-full w-full overflow-y-auto">Chats</div>
       </div>
