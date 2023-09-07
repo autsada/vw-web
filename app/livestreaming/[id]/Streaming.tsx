@@ -6,7 +6,6 @@ import StreamModal from "../StreamModal"
 import WebCamLive, { Ref as WebCamLiveRef } from "./WebCamLive"
 import SoftwareLive from "./SoftwareLive"
 import PreviewModal from "./PreviewModal"
-import Mask from "@/components/Mask"
 import Chats from "./Chats"
 import type {
   Maybe,
@@ -92,61 +91,58 @@ export default function Streaming({ profile, publish, liveInput }: Props) {
   if (!publish || !liveInput) return null
 
   return (
-    <>
-      <div className="relative z-[100] h-full w-full flex flex-col sm:flex-row">
-        <div
-          className={`${
-            mode === "preview" ? "relative" : ""
-          } h-full sm:flex-grow`}
-        >
-          {publish.broadcastType === "webcam" ? (
-            <WebCamLive
-              ref={webCamLiveRef}
-              broadcastType={publish?.broadcastType}
-              editStream={changeToEdit}
-              streaming={streaming}
-              loading={loading}
-              setStreaming={setStreaming}
-              setCameraDevices={setCameraDevices}
-              setAudioDevices={setAudioDevices}
-              streamKey={liveInput.result?.rtmps?.streamKey}
-            />
-          ) : publish.broadcastType === "software" ? (
-            <SoftwareLive
-              loading={loading}
-              editStream={changeToEdit}
-              streamKey={liveInput.result?.rtmps?.streamKey}
-              streamURL={liveInput.result?.rtmps?.url}
-            />
-          ) : null}
+    <div className="relative z-[100] h-full w-full flex flex-col sm:flex-row">
+      <div
+        className={`${
+          mode === "preview" ? "relative" : ""
+        } h-full sm:flex-grow`}
+      >
+        {publish.broadcastType === "webcam" ? (
+          <WebCamLive
+            ref={webCamLiveRef}
+            broadcastType={publish?.broadcastType}
+            editStream={changeToEdit}
+            streaming={streaming}
+            loading={loading}
+            setStreaming={setStreaming}
+            setCameraDevices={setCameraDevices}
+            setAudioDevices={setAudioDevices}
+            streamKey={liveInput.result?.rtmps?.streamKey}
+          />
+        ) : publish.broadcastType === "software" ? (
+          <SoftwareLive
+            loading={loading}
+            editStream={changeToEdit}
+            streamKey={liveInput.result?.rtmps?.streamKey}
+            streamURL={liveInput.result?.rtmps?.url}
+          />
+        ) : null}
 
-          {mode === "edit" ? (
-            <StreamModal
-              modalName="Update stream"
-              profileName={profile.name}
-              publish={publish}
-              closeModal={endEditStream}
-            />
-          ) : mode === "preview" ? (
-            <PreviewModal
-              profile={profile}
-              publish={publish}
-              changeToEdit={changeToEdit}
-              goLive={
-                publish.broadcastType === "software"
-                  ? goLiveSoftware
-                  : goLiveWebcam
-              }
-              cameraDevices={cameraDevices}
-              audioDevices={audioDevices}
-            />
-          ) : null}
-        </div>
-        <div className="h-full w-full sm:w-[200px] md:w-[280px] lg:w-[320px] xl:w-[380px] bg-black">
-          <Chats profile={profile} />
-        </div>
+        {mode === "edit" ? (
+          <StreamModal
+            modalName="Update stream"
+            profileName={profile.name}
+            publish={publish}
+            closeModal={endEditStream}
+          />
+        ) : mode === "preview" ? (
+          <PreviewModal
+            profile={profile}
+            publish={publish}
+            changeToEdit={changeToEdit}
+            goLive={
+              publish.broadcastType === "software"
+                ? goLiveSoftware
+                : goLiveWebcam
+            }
+            cameraDevices={cameraDevices}
+            audioDevices={audioDevices}
+          />
+        ) : null}
       </div>
-      {streaming && <Mask />}
-    </>
+      <div className="h-full w-full sm:w-[200px] md:w-[280px] lg:w-[320px] xl:w-[380px] bg-black">
+        <Chats profile={profile} />
+      </div>
+    </div>
   )
 }
