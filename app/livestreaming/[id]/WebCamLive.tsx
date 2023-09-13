@@ -250,7 +250,9 @@ const WebCamLive = forwardRef<Ref, Props>(function WebCamLive(
     if (!streamKey) return
 
     const settings = getRecorderSettings()
-    const wsUrl = new URL(`${process.env.NEXT_PUBLIC_LIVE_BASE_URL}/rtmp`)
+    const liveUrl =
+      process.env.NEXT_PUBLIC_LIVE_BASE_URL || "ws://localhost:8080"
+    const wsUrl = new URL(`${liveUrl}/rtmp`)
     wsUrl.searchParams.set("video", settings.video)
     wsUrl.searchParams.set("audio", settings.audio)
     wsUrl.searchParams.set("key", streamKey)

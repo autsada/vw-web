@@ -21,9 +21,9 @@ export default function EmailAuth() {
   }
 
   async function sendSignInLink(email: string) {
-    const url = process.env.NEXT_PUBLIC_VW_URL_TEST || "http://localhost:3000"
+    const url = process.env.NEXT_PUBLIC_WEB_URL || "http://localhost:3000"
     // const url =
-    //   process.env.NEXT_PUBLIC_VW_URL_TEST ||
+    //   process.env.NEXT_PUBLIC_WEB_URL ||
     //   "https://a2df-27-55-71-6.ngrok-free.app"
 
     const actionCodeSettings = {
