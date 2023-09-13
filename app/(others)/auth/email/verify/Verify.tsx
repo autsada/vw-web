@@ -69,6 +69,7 @@ export default function VerifyEmail({
           setIsError(false)
         }
       } catch (error) {
+        console.log('error -->', error)
         setLoading(false)
         setIsError(true)
       }

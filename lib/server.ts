@@ -15,6 +15,7 @@ export async function getAccount() {
     const signature = signedMessage?.value
 
     let account = await getMyAccount(idToken, signature)
+    console.log("accound -->", account)
 
     // If no account found, create a new account
     if (!account) {
@@ -23,6 +24,7 @@ export async function getAccount() {
 
     return { account, idToken, signature }
   } catch (error) {
+    console.log("error -->", error)
     return null
   }
 }
