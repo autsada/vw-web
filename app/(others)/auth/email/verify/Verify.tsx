@@ -12,17 +12,12 @@ import PageLoader from "@/components/PageLoader"
 import ButtonLoader from "@/components/ButtonLoader"
 import { wait } from "@/lib/helpers"
 import { EMAIL_KEY } from "@/lib/constants"
-import type { Maybe, Account } from "@/graphql/codegen/graphql"
 
 /**
  * @dev Verify user's email
  * For email signin, when user clicks the sign-in link they will be brought back to this route to verify their email.
  */
-export default function VerifyEmail({
-  account,
-}: {
-  account: Maybe<Account> | undefined
-}) {
+export default function VerifyEmail() {
   const savedEmail =
     typeof window !== "undefined"
       ? window?.localStorage?.getItem(EMAIL_KEY)
@@ -34,16 +29,6 @@ export default function VerifyEmail({
   const [isError, setIsError] = useState(false)
 
   const router = useRouter()
-
-  useEffect(() => {
-    if (account) {
-      if (!account.defaultProfile) {
-        router.replace("/profile")
-      } else {
-        router.replace("/")
-      }
-    }
-  }, [account, router])
 
   const onEmailChange = useCallback((e: ChangeEvent<HTMLInputElement>) => {
     setEmail(e.target.value)
@@ -62,14 +47,24 @@ export default function VerifyEmail({
           await signInWithEmailLink(firebaseAuth, email, link)
           // Remove saved email in localstorage
           window?.localStorage?.removeItem(EMAIL_KEY)
-          // Bring user to the profile page, wait 0.5 second to make sure the cookie is set
+          // Wait 0.5 second to make sure the cookie is set
           await wait(500)
+
+          // Check if this is a new user, if yes then create an account for this user
+          await fetch(`/api/account/create`, {
+            method: "POST",
+            headers: {
+              "Content-Type": "application/json",
+            },
+          })
+
           // Refresh queries
           router.refresh()
+          // Bring user to the profile page
+          router.replace("/profile")
           setIsError(false)
         }
       } catch (error) {
-        console.log('error -->', error)
         setLoading(false)
         setIsError(true)
       }

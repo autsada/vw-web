@@ -30,7 +30,6 @@ export default function Profile({ account }: Props) {
           title="Create Profile"
           additionalInfo="One more step, create a profile to start upload, like, comment, and more on VewWit."
           useDoItLaterClose={true}
-          doItLaterText="I will do it later"
         />
       )}
     </>

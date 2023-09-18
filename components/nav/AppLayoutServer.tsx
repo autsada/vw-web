@@ -12,20 +12,21 @@ export default async function AppLayoutServer() {
   const signature = data?.signature
 
   const profile = account?.defaultProfile
-  const isAuthenticated = !!account && !!idToken && !!profile
+  const isAuthenticated = !!account && !!idToken
 
   // If user has a profile, fetch their notifications
-  const unReadCount = !isAuthenticated
-    ? undefined
-    : await getUnReadNotifications({
-        idToken,
-        signature,
-        input: {
-          accountId: account?.id,
-          owner: account?.owner,
-          profileId: profile.id,
-        },
-      })
+  const unReadCount =
+    !isAuthenticated || !profile
+      ? undefined
+      : await getUnReadNotifications({
+          idToken,
+          signature,
+          input: {
+            accountId: account?.id,
+            owner: account?.owner,
+            profileId: profile.id,
+          },
+        })
 
   return (
     <Suspense fallback={<TempAppLayout />}>

@@ -1,7 +1,6 @@
 import { cookies } from "next/headers"
 
-import { createAccount, getMyAccount } from "@/graphql"
-import type { Account } from "@/graphql/codegen/graphql"
+import { getMyAccount } from "@/graphql"
 
 export async function getAccount() {
   try {
@@ -15,16 +14,9 @@ export async function getAccount() {
     const signature = signedMessage?.value
 
     let account = await getMyAccount(idToken, signature)
-    console.log("accound -->", account)
-
-    // If no account found, create a new account
-    if (!account) {
-      account = (await createAccount(idToken, signature)) as Account
-    }
 
     return { account, idToken, signature }
   } catch (error) {
-    console.log("error -->", error)
     return null
   }
 }

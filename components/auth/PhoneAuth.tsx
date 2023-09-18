@@ -160,9 +160,21 @@ export default function PhoneAuth() {
       const result = await confirmationResult.confirm(userOtp)
 
       if (result.user) {
+        // Wait 0.5 second to make sure the cookie is set
         await wait(500)
+
+        // Check if this is a new user, if yes then create an account for this user
+        await fetch(`/api/account/create`, {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+          },
+        })
+
         // Refresh queries
         router.refresh()
+        // Bring user to the profile page
+        router.push("/profile")
       }
     } catch (error) {
       setVerifyOtpLoading(false)

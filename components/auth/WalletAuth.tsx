@@ -27,7 +27,7 @@ export default function WalletAuth({ closeModal }: Props) {
       setCookie("dsignature", data)
       await wait(500)
       router.refresh()
-      closeModal()
+      router.push("/profile")
     },
     onError: () => {
       disconnect()
