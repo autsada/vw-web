@@ -25,9 +25,20 @@ export default function WalletAuth({ closeModal }: Props) {
       // Sign in with Firebase auth when sign message is done
       await signIn()
       setCookie("dsignature", data)
+      // Wait 0.5 second to make sure the cookie is set
       await wait(500)
+
+      // Create an account for new user
+      // The route will check and only create an account if the user is new
+      await fetch(`/api/account/create`, {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+      })
+
+      // Refresh queries
       router.refresh()
-      router.push("/profile")
     },
     onError: () => {
       disconnect()

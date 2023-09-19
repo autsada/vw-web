@@ -50,7 +50,8 @@ export default function VerifyEmail() {
           // Wait 0.5 second to make sure the cookie is set
           await wait(500)
 
-          // Check if this is a new user, if yes then create an account for this user
+          // Create an account for new user
+          // The route will check and only create an account if the user is new
           await fetch(`/api/account/create`, {
             method: "POST",
             headers: {
