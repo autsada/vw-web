@@ -278,9 +278,9 @@ export default function BlogModal({ profile, publish }: Props) {
 
         // Save a blog
         // 1 Upload image to cloud storage (if any)
-        let imageUrl: string | undefined = undefined
-        let imageRef: string | undefined = undefined
-        let filename: string | undefined = undefined
+        let imageUrl = ""
+        let imageRef = ""
+        let filename = ""
         if (image) {
           const { url, fileRef } = await uploadFile({
             file: image,
@@ -309,31 +309,36 @@ export default function BlogModal({ profile, publish }: Props) {
           }
         }
 
-        // 2 Save the draft
-        startTransition(() =>
-          saveBlogPost({
+        // Call the API route
+        await fetch(`/api/publish/blog`, {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify({
             publishId,
-            title,
+            title: title || "",
             imageUrl: !imageUrl && !oldImage ? "" : imageUrl,
             imageRef: !imageRef && !oldImage ? "" : imageRef,
             filename: !filename && !oldImage ? "" : filename,
-            tags: tags.length > 0 ? tags.join(" | ") : undefined,
-            primaryCategory: primaryCat,
-            secondaryCategory: secondaryCat,
-            content: content ? JSON.stringify(content) : undefined,
-            htmlContent: contentForPreview,
-            visibility,
-            preview: visibility === "public" ? contentForPreview : undefined,
-          })
-        )
-        const id = setTimeout(() => {
-          if (visibility === "draft") {
-            setSavingDraft(false)
-          } else if (visibility === "public") {
-            setPublishingBlog(false)
-          }
-          clearTimeout(id)
-        }, 1000)
+            primaryCategory: primaryCat || "",
+            secondaryCategory: secondaryCat || "",
+            tags: tags.length > 0 ? tags.join(" | ") : "",
+            content: content ? JSON.stringify(content) : "",
+            htmlContent: contentForPreview || "",
+            visibility: visibility || "",
+            preview: visibility === "public" ? contentForPreview : "",
+          }),
+        })
+
+        if (visibility === "draft") {
+          setSavingDraft(false)
+        } else if (visibility === "public") {
+          setPublishingBlog(false)
+        }
+
+        // Refresh the page
+        router.refresh()
         toast.success(
           visibility === "draft" ? "Blog updated" : "Blog published",
           { theme: "dark" }
@@ -367,6 +372,7 @@ export default function BlogModal({ profile, publish }: Props) {
       content,
       contentForPreview,
       prevVisibility,
+      router,
     ]
   )
 
@@ -420,9 +426,9 @@ export default function BlogModal({ profile, publish }: Props) {
         }
 
         // Upload image to cloud storage (if any)
-        let imageUrl: string | undefined = undefined
-        let imageRef: string | undefined = undefined
-        let filename: string | undefined = undefined
+        let imageUrl = ""
+        let imageRef = ""
+        let filename = ""
         if (image) {
           const { url, fileRef } = await uploadFile({
             file: image,
@@ -451,30 +457,38 @@ export default function BlogModal({ profile, publish }: Props) {
           }
         }
 
-        startTransition(() =>
-          saveBlogPost({
+        // Call the API route
+        await fetch(`/api/publish/blog`, {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify({
             publishId,
-            title,
+            title: title || "",
             imageUrl: !imageUrl && !oldImage ? "" : imageUrl,
             imageRef: !imageRef && !oldImage ? "" : imageRef,
             filename: !filename && !oldImage ? "" : filename,
-            tags: tags.length > 0 ? tags.join(" | ") : undefined,
-            primaryCategory: primaryCat,
-            secondaryCategory: secondaryCat,
-            content: content ? JSON.stringify(content) : undefined,
-            htmlContent: contentForPreview,
-            visibility: updateType === "un-publish" ? "draft" : prevVisibility,
-            preview: updateType === "update" ? contentForPreview : undefined,
-          })
-        )
-        const id = setTimeout(() => {
-          if (updateType === "un-publish") {
-            setUnPublishingBlog(false)
-          } else {
-            setUpdatingBlog(false)
-          }
-          clearTimeout(id)
-        }, 1000)
+            primaryCategory: primaryCat || "",
+            secondaryCategory: secondaryCat || "",
+            tags: tags.length > 0 ? tags.join(" | ") : "",
+            content: content ? JSON.stringify(content) : "",
+            htmlContent: contentForPreview || "",
+            visibility:
+              updateType === "un-publish" ? "draft" : prevVisibility || "",
+            preview: updateType === "update" ? contentForPreview : "",
+          }),
+        })
+
+        if (updateType === "un-publish") {
+          setUnPublishingBlog(false)
+        } else {
+          setUpdatingBlog(false)
+        }
+
+        // Refresh the page
+        router.refresh()
+
         toast.success(
           updateType === "un-publish" ? "Blog un-published" : "Blog updated",
           { theme: "dark" }
@@ -508,6 +522,7 @@ export default function BlogModal({ profile, publish }: Props) {
       content,
       contentForPreview,
       prevVisibility,
+      router,
     ]
   )
 
