@@ -120,7 +120,9 @@ export async function saveBlogPost({
     if (!account || !profile || !idToken)
       throw new Error("Please sign in to proceed.")
 
-    await updateBlog({
+    if (!publishId) return
+
+    const result = await updateBlog({
       idToken,
       signature,
       input: {

@@ -2,7 +2,6 @@ import React, {
   useState,
   useCallback,
   useRef,
-  useTransition,
   ChangeEvent,
 } from "react"
 import Dropzone from "react-dropzone"
@@ -20,7 +19,6 @@ import QuillEditor from "./QuillEditor"
 import ConfirmModal from "@/components/ConfirmModal"
 import { uploadFile } from "@/firebase/helpers"
 import { publishesFolder } from "@/firebase/config"
-import { saveBlogPost } from "@/app/actions/publish-actions"
 import { contentCategories } from "@/lib/helpers"
 import type { FileWithPrview } from "@/types"
 import type { Profile } from "@/graphql/codegen/graphql"
@@ -54,7 +52,6 @@ export default function CreateBlogModal({
   const [error, setError] = useState("")
 
   const tagInputRef = useRef<HTMLDivElement>(null)
-  const [isPending, startTransition] = useTransition()
   const router = useRouter()
 
   const onCloseModal = useCallback(() => {
@@ -139,9 +136,9 @@ export default function CreateBlogModal({
 
         // 2. Save a blog
         // 2.1 Upload image to cloud storage (if any)
-        let imageUrl: string | undefined = undefined
-        let imageRef: string | undefined = undefined
-        let filename: string | undefined = undefined
+        let imageUrl = ""
+        let imageRef = ""
+        let filename = ""
         if (image) {
           const { url, fileRef } = await uploadFile({
             file: image,
@@ -152,23 +149,30 @@ export default function CreateBlogModal({
           filename = image.name
         }
 
-        // 2.2 Save the draft
-        startTransition(() =>
-          saveBlogPost({
+        // Call the API route
+        await fetch(`/api/publish/blog`, {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify({
             publishId,
-            title,
+            title: title || "",
             imageUrl,
             imageRef,
             filename,
-            primaryCategory: primaryCat,
-            secondaryCategory: secondaryCat,
-            tags: tags.length > 0 ? tags.join(" | ") : undefined,
-            content: content ? JSON.stringify(content) : undefined,
-            htmlContent: contentForPreview,
-            visibility,
-            preview: visibility === "public" ? contentForPreview : undefined,
-          })
-        )
+            primaryCategory: primaryCat || "",
+            secondaryCategory: secondaryCat || "",
+            tags: tags.length > 0 ? tags.join(" | ") : "",
+            content: content ? JSON.stringify(content) : "",
+            htmlContent: contentForPreview || "",
+            visibility: visibility || "",
+            preview: visibility === "public" ? contentForPreview : "",
+          }),
+        })
+
+        // Refresh the page
+        router.refresh()
 
         // Push user to content --> blogs
         router.push("/content/blogs")
@@ -242,8 +246,7 @@ export default function CreateBlogModal({
     const value = e.target.value
     const last = value.slice(value.length - 1)
     if (last === ",") {
-      // Remove space and lowercase before saving a tag
-      const newTag = value.substring(0, value.length - 1).toLowerCase()
+      const newTag = value.substring(0, value.length - 1)
       if (newTag && !newTag.includes(",")) {
         setTags((prev) =>
           prev.includes(newTag) || prev.length === 4 ? prev : [...prev, newTag]
@@ -552,7 +555,7 @@ export default function CreateBlogModal({
       )}
 
       {/* Prevent interaction while creating a draft */}
-      {(savingDraft || publishingBlog || isPending) && <Mask />}
+      {(savingDraft || publishingBlog) && <Mask />}
     </ModalWrapper>
   )
 }

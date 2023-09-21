@@ -85,7 +85,11 @@ export default function BlogModal({ profile, publish }: Props) {
   const prevContent = publish.blog?.content
   const [content, setContent] = useState<DeltaStatic | undefined>(prevContent)
   const isContentEqual = useMemo(
-    () => _.isEqual(prevContent, JSON.parse(JSON.stringify(content))),
+    () =>
+      _.isEqual(
+        prevContent,
+        !content ? undefined : JSON.parse(JSON.stringify(content))
+      ),
     [prevContent, content]
   )
   const [contentForPreview, setContentForPreview] = useState("")
