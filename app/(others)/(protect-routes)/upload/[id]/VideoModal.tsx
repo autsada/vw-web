@@ -143,8 +143,7 @@ export default function VideoModal({ publish, profileName }: Props) {
     const value = e.target.value
     const last = value.slice(value.length - 1)
     if (last === ",") {
-      // Lowercase before saving a tag
-      const newTag = value.substring(0, value.length - 1).toLowerCase()
+      const newTag = value.substring(0, value.length - 1)
       if (newTag && !newTag.includes(",")) {
         setTags((prev) =>
           prev.includes(newTag) || prev.length === 4 ? prev : [...prev, newTag]
