@@ -140,10 +140,10 @@ export default function DesktopViewItem({
           </p>
         </div>
         {publish.tags && publish.tags.split(" ").length > 0 && (
-          <div className="mt-2 flex items-center gap-x-4">
+          <div className="mt-2 flex items-center flex-wrap">
             {publish.tags.split(" | ").map((tag) => (
               <Link key={tag} href={`/tag/${tag}`}>
-                <div className="text-textLight px-2 py-1 rounded-full cursor-pointer hover:bg-neutral-100">
+                <div className="px-2 py-1 rounded-full text-sm cursor-pointer hover:bg-neutral-100">
                   #{tag}
                 </div>
               </Link>
