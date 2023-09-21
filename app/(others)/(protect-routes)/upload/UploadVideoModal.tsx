@@ -8,7 +8,7 @@ import ModalWrapper from "@/components/ModalWrapper"
 import ButtonLoader from "@/components/ButtonLoader"
 import Mask from "@/components/Mask"
 import { useAuthContext } from "@/context/AuthContext"
-import { upload } from "@/lib/client"
+import { uploadVideo } from "@/lib/client"
 import type { FileWithPrview } from "@/types"
 
 interface Props {
@@ -56,7 +56,7 @@ export default function UploadVideoModal({
         })
         const data = await result.json()
         // Upload file to cloud storage (without waiting)
-        upload({ idToken, file, publishId: data?.id, profileName })
+        uploadVideo({ idToken, file, publishId: data?.id, profileName })
         // Push user to upload/[id]
         router.push(`/upload/${data?.id}`)
       }

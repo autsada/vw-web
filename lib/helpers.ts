@@ -1,5 +1,6 @@
 import { getCountries } from "react-phone-number-input/input"
 import en from "react-phone-number-input/locale/en.json"
+import type { Accept } from "react-dropzone"
 
 import type {
   PublishEdge,
@@ -93,4 +94,14 @@ export function combineEdges<
       : newEdges
 
   return allEdges
+}
+
+export const dropzoneImageTypes: Accept = {
+  image: [
+    "image/*",
+    // "image/jpeg",
+    // "image/png",
+    "image/heic",
+    "image/heif",
+  ],
 }

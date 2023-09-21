@@ -41,7 +41,7 @@ export default async function Settings() {
                 <p className="font-light text-textLight text-center text-xs mb-1">
                   Click below to change the image.
                 </p>
-                <ProfileImage profile={profile} />
+                <ProfileImage profile={profile} idToken={data?.idToken!} />
               </div>
               <div className="h-full px-2 flex items-center justify-center">
                 <div className="p-4 bg-white rounded-lg">

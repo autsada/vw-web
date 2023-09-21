@@ -6,18 +6,21 @@ import Image from "next/image"
 
 import Avatar from "@/components/Avatar"
 import ImageModal from "./ImageModal"
+import { dropzoneImageTypes } from "@/lib/helpers"
 import type { FileWithPrview } from "@/types"
 import type { Profile } from "@/graphql/codegen/graphql"
 
 interface Props {
   profile: Profile
+  idToken: string
 }
 
-export default function ProfileImage({ profile }: Props) {
+export default function ProfileImage({ profile, idToken }: Props) {
   const [image, setImage] = useState<FileWithPrview>()
   const [imageError, setImageError] = useState("")
+  const [previewUrl, setPreviewUrl] = useState("") // For `.heic` or `.heif` image
 
-  const onDrop = useCallback((acceptedFiles: File[]) => {
+  const onDrop = useCallback(async (acceptedFiles: File[]) => {
     // Do something with the files
     const f = acceptedFiles[0] as FileWithPrview
 
@@ -26,10 +29,31 @@ export default function ProfileImage({ profile }: Props) {
       // Maximum allowed image size = 4mb
       setImageError("File too big")
     }
+
+    // For `heic` or `heif` image, we need to have a specific preview url
+    if (f.type.endsWith("heic") || f.type.endsWith("heif")) {
+      const heic2any = (await import("heic2any")).default
+
+      // Convert HEIC/HEIF file to JPEG Blob
+      const file = (await heic2any({
+        blob: f, // Use the original file object
+        toType: "image/jpeg",
+        quality: 1, // adjust quality as needed
+      })) as Blob
+
+      const previewFile = Object.assign(file, {
+        preview: URL.createObjectURL(file),
+      }) as FileWithPrview
+
+      setPreviewUrl(previewFile.preview)
+    } else {
+      // For other formats we use `image.preview` so need to set `previewUrl` to ''
+      setPreviewUrl("")
+    }
+
     const fileWithPreview = Object.assign(f, {
       preview: URL.createObjectURL(f),
     })
-
     setImage(fileWithPreview)
   }, [])
 
@@ -47,7 +71,7 @@ export default function ProfileImage({ profile }: Props) {
             : "border border-gray-200"
         }`}
       >
-        <Dropzone onDrop={onDrop} multiple={false} accept={{ "image/*": [] }}>
+        <Dropzone onDrop={onDrop} multiple={false} accept={dropzoneImageTypes}>
           {({ getRootProps, getInputProps }) => (
             <section className="h-full w-full">
               <div {...getRootProps()} className="h-full">
@@ -56,7 +80,7 @@ export default function ProfileImage({ profile }: Props) {
                   <div className="relative h-full w-full rounded-full overflow-hidden">
                     {image && imageError ? (
                       <Image
-                        src={image.preview}
+                        src={previewUrl || image.preview}
                         alt={image.name}
                         fill
                         style={{ objectFit: "cover" }}
@@ -93,7 +117,9 @@ export default function ProfileImage({ profile }: Props) {
       {image && !imageError && (
         <ImageModal
           profile={profile}
+          idToken={idToken}
           image={image}
+          previewUrl={previewUrl}
           cancelUpload={cancelUpload}
         />
       )}

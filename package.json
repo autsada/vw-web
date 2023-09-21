@@ -28,6 +28,7 @@
     "firebase": "^10.1.0",
     "graphql": "^16.7.1",
     "graphql-request": "^6.1.0",
+    "heic2any": "^0.0.4",
     "highlight.js": "^11.8.0",
     "html-react-parser": "^4.2.0",
     "lodash": "^4.17.21",

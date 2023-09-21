@@ -135,9 +135,9 @@ export function formatAmount(amount: number, withSign: boolean = false) {
 }
 
 /**
- * A function to call an upload route in the Upload Service
+ * A function to call an upload video route in the Upload Service to upload a video
  */
-export function upload({
+export function uploadVideo({
   idToken,
   file,
   publishId,
@@ -160,6 +160,34 @@ export function upload({
   formData.append("profileName", profileName)
 
   return fetch(`${uploadURL}/upload/video`, {
+    method: "POST",
+    headers: {
+      "id-token": idToken,
+    },
+    body: formData,
+  })
+}
+
+/**
+ * A function to call an upload image route in the Upload Service to upload a profile image
+ */
+export function uploadImage({
+  idToken,
+  file,
+  profileName,
+}: {
+  idToken: string
+  file: File
+  profileName: string
+}) {
+  const uploadURL =
+    process.env.NEXT_PUBLIC_UPLOAD_URL || "http://localhost:4444"
+
+  const formData = new FormData()
+  formData.append("file", file!)
+  formData.append("profileName", profileName)
+
+  return fetch(`${uploadURL}/upload/image`, {
     method: "POST",
     headers: {
       "id-token": idToken,
