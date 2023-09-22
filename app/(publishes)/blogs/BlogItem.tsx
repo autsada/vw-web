@@ -67,10 +67,10 @@ export default function BlogItem({
             )}
           </Link>
           {publish.tags && publish.tags.split(" ").length > 0 && (
-            <div className="mt-1 flex items-center gap-x-4">
+            <div className="mt-1 flex items-center flex-wrap">
               {publish.tags.split(" | ").map((tag) => (
                 <Link key={tag} href={`/tag/${tag}`}>
-                  <div className="text-textLight px-2 py-1 rounded-full cursor-pointer hover:bg-neutral-100">
+                  <div className="text-textLight text-sm px-2 py-1 rounded-full cursor-pointer hover:bg-neutral-100">
                     #{tag}
                   </div>
                 </Link>
