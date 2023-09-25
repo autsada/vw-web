@@ -31,13 +31,16 @@ export default function SidePanelItem({ publish }: Props) {
       </Link>
       {publish.tags && publish.tags.split(" ").length > 0 && (
         <div className="mt-1 flex items-center gap-x-4">
-          {publish.tags.split(" | ").map((tag) => (
-            <Link key={tag} href={`/tag/${tag}`}>
-              <div className="text-textLight text-sm px-2 py-1 rounded-full cursor-pointer hover:bg-neutral-100">
-                #{tag}
-              </div>
-            </Link>
-          ))}
+          {publish.tags.split(" | ").map((tag) => {
+            const queryTag = tag.trim().replaceAll(" ", "-")
+            return (
+              <Link key={tag} href={`/tag/${queryTag}`}>
+                <div className="text-textLight text-sm px-2 py-1 rounded-full cursor-pointer hover:bg-neutral-100">
+                  #{tag}
+                </div>
+              </Link>
+            )
+          })}
         </div>
       )}
     </div>

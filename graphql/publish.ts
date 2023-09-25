@@ -696,10 +696,11 @@ export const FETCH_BY_TAG_QUERY = gql`
 `
 export async function fetchPublishesByTag(input: FetchPublishesByTagInput) {
   try {
+    const tag = input.tag.trim().replaceAll("-", " ")
     const data = await client.request<
       QueryReturnType<"fetchPublishesByTag">,
       QueryArgsType<"fetchPublishesByTag">
-    >(FETCH_BY_TAG_QUERY, { input })
+    >(FETCH_BY_TAG_QUERY, { input: { ...input, tag } })
 
     return data?.fetchPublishesByTag
   } catch (error) {
