@@ -1,12 +1,13 @@
-import React from "react"
+import React, { useCallback } from "react"
 import Link from "next/link"
+import { useRouter, usePathname } from "next/navigation"
 
 import { contentCategories } from "@/lib/helpers"
 import type { PublishCategory } from "@/graphql/types"
 
 interface Props {
-  category?: PublishCategory | "All"
-  onSelectTab: (c: PublishCategory | "All") => void
+  category?: PublishCategory | "All" | "Live"
+  onSelectTab: (c: PublishCategory | "All" | "Live") => void
   loading: boolean
 }
 
@@ -19,16 +20,7 @@ export default function PublishTabs({ category, onSelectTab, loading }: Props) {
         onSelectTab={onSelectTab}
         loading={loading}
       />
-      <Link href="/live">
-        <button
-          type="button"
-          className={`btn-light text-sm sm:text-base px-5 h-8 rounded-full`}
-          disabled={loading}
-        >
-          Live
-        </button>
-      </Link>
-      {contentCategories.map((cat) => (
+      {["Live", ...contentCategories].map((cat: any) => (
         <Tab
           key={cat}
           text={cat}
@@ -47,10 +39,10 @@ function Tab({
   loading,
   selected,
 }: {
-  text: PublishCategory | "All"
-  onSelectTab: (c: PublishCategory | "All") => void
+  text: PublishCategory | "All" | "Live"
+  onSelectTab: (c: PublishCategory | "All" | "Live") => void
   loading: boolean
-  selected?: PublishCategory | "All"
+  selected?: PublishCategory | "All" | "Live"
 }) {
   return (
     <button

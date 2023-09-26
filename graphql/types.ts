@@ -53,6 +53,7 @@ export type FetchPublishesByTagInput =
   NexusGenInputs["FetchPublishesByTagInput"]
 export type FetchPublishesByQueryStringInput =
   NexusGenInputs["FetchPublishesByQueryStringInput"]
+export type FetchLiveVideosInput = NexusGenInputs["FetchLiveVideosInput"]
 export type CreateDraftVideoInput = NexusGenInputs["CreateDraftVideoInput"]
 export type CreateDraftBlogInput = NexusGenInputs["CreateDraftBlogInput"]
 export type UpdateVideoInput = NexusGenInputs["UpdateVideoInput"]

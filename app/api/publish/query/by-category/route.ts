@@ -2,6 +2,7 @@ import { NextResponse } from "next/server"
 import type { Maybe } from "graphql/jsutils/Maybe"
 
 import {
+  fetchLiveVideos,
   fetchPublishes,
   fetchVideosByCategory,
   getProfileById,
@@ -23,13 +24,18 @@ export async function POST(req: Request) {
   const requestorId = profile?.id
 
   const { category, cursor } = (await req.json()) as {
-    category: PublishCategory | "All"
+    category: PublishCategory | "All" | "Live"
     cursor?: string
   }
 
   let result: Maybe<FetchPublishesResponse> | undefined = undefined
 
-  if (category === "All") {
+  if (category === "Live") {
+    result = await fetchLiveVideos({
+      requestorId,
+      cursor,
+    })
+  } else if (category === "All") {
     result = await fetchPublishes({
       requestorId,
       cursor,

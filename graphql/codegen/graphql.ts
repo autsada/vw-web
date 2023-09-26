@@ -255,7 +255,7 @@ export type CreateLiveInputResult = {
   rtmpsPlayback: Rtmps;
   srt: Srt;
   srtPlayback: Srt;
-  status?: Maybe<LiveStatus>;
+  status?: Maybe<LiveInputStatus>;
   uid: Scalars['String']['output'];
   webRTC: WebRtc;
   webRTCPlayback: WebRtc;
@@ -384,6 +384,11 @@ export type FetchFollowsResponse = {
   __typename?: 'FetchFollowsResponse';
   edges: Array<FollowEdge>;
   pageInfo: PageInfo;
+};
+
+export type FetchLiveVideosInput = {
+  cursor?: InputMaybe<Scalars['String']['input']>;
+  requestorId?: InputMaybe<Scalars['String']['input']>;
 };
 
 export type FetchMyPlaylistsInput = {
@@ -590,6 +595,17 @@ export type LikePublishInput = {
   profileId: Scalars['String']['input'];
   publishId: Scalars['String']['input'];
 };
+
+export enum LiveInputStatus {
+  ClientDisconnect = 'client_disconnect',
+  Connected = 'connected',
+  FailedToConnect = 'failed_to_connect',
+  FailedToReconnect = 'failed_to_reconnect',
+  NewConfigurationAccepted = 'new_configuration_accepted',
+  Reconnected = 'reconnected',
+  Reconnecting = 'reconnecting',
+  TtlExceeded = 'ttl_exceeded'
+}
 
 export enum LiveStatus {
   Inprogress = 'inprogress',
@@ -1086,6 +1102,7 @@ export type Query = {
   fetchBookmarks?: Maybe<FetchBookmarkResponse>;
   fetchCommentsByPublishId?: Maybe<FetchCommentsResponse>;
   fetchDontRecommends?: Maybe<FetchDontRecommendsResponse>;
+  fetchLiveVideos?: Maybe<FetchPublishesResponse>;
   fetchMyFollowers?: Maybe<FetchFollowsResponse>;
   fetchMyFollowing?: Maybe<FetchFollowsResponse>;
   fetchMyLiveStream?: Maybe<FetchPublishesResponse>;
@@ -1133,6 +1150,11 @@ export type QueryFetchCommentsByPublishIdArgs = {
 
 export type QueryFetchDontRecommendsArgs = {
   input: FetchDontRecommendsInput;
+};
+
+
+export type QueryFetchLiveVideosArgs = {
+  input: FetchLiveVideosInput;
 };
 
 

@@ -7,7 +7,7 @@ import { PublishCategory } from "@/graphql/types"
 
 interface Props {
   fetchResult: Maybe<FetchPublishesResponse> | undefined
-  selectedTab: PublishCategory | "All"
+  selectedTab: PublishCategory | "All" | "Live"
 }
 
 export default function Shorts({ fetchResult, selectedTab }: Props) {

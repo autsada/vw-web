@@ -318,8 +318,8 @@ export default function VideoModal({ publish, profileName }: Props) {
                           message: "Too short (min 3 characters)",
                         },
                         maxLength: {
-                          value: 64,
-                          message: "Too long (max 64 characters)",
+                          value: 128,
+                          message: "Too long (max 128 characters)",
                         },
                       })}
                     />

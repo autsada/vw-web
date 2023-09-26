@@ -39,7 +39,9 @@ export default function Videos({
   playlistsResult,
 }: Props) {
   const [loading, setLoading] = useState(false)
-  const [selectedCat, setSelectedCat] = useState<PublishCategory | "All">("All")
+  const [selectedCat, setSelectedCat] = useState<
+    PublishCategory | "All" | "Live"
+  >("All")
 
   const [targetPublish, setTargetPublish] = useState<Publish>()
   const [actionsModalVisible, setActionsModalVisible] = useState(false)
@@ -79,9 +81,12 @@ export default function Videos({
 
   const { onVisible: openAuthModal } = useAuthContext()
 
-  const onSelectTab = useCallback(async (t: PublishCategory | "All") => {
-    setSelectedCat(t)
-  }, [])
+  const onSelectTab = useCallback(
+    async (t: PublishCategory | "All" | "Live") => {
+      setSelectedCat(t)
+    },
+    []
+  )
 
   const onOpenActions = useCallback((p: Publish) => {
     setTargetPublish(p)
@@ -170,7 +175,7 @@ export default function Videos({
           setPOS={setPOS}
         />
 
-        {contentCategories.map((cat) => (
+        {["Live", ...contentCategories].map((cat: any) => (
           <VideosByCat
             key={cat}
             tab={cat}

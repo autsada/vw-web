@@ -22,6 +22,7 @@ import type {
   DeletePublishInput,
   SendTipsInput,
   DeletePublishesInput,
+  FetchLiveVideosInput,
 } from "./types"
 
 /**
@@ -711,7 +712,7 @@ export async function fetchPublishesByTag(input: FetchPublishesByTagInput) {
 /**
  * Fetch publishes by query
  */
-export const FETCH_BY__QUERY = gql`
+export const FETCH_BY_QUERY = gql`
   query FetchPublishesByQuery($input: FetchPublishesByQueryStringInput!) {
     fetchPublishesByQueryString(input: $input) {
       pageInfo {
@@ -769,9 +770,66 @@ export async function fetchPublishesByQuery(
     const data = await client.request<
       QueryReturnType<"fetchPublishesByQueryString">,
       QueryArgsType<"fetchPublishesByQueryString">
-    >(FETCH_BY__QUERY, { input })
+    >(FETCH_BY_QUERY, { input })
 
     return data?.fetchPublishesByQueryString
+  } catch (error) {
+    throw error
+  }
+}
+
+export const FETCH_LIVE_VIDEOS_QUERY = gql`
+  query FetchLiveVideos($input: FetchLiveVideosInput!) {
+    fetchLiveVideos(input: $input) {
+      pageInfo {
+        count
+        endCursor
+        hasNextPage
+      }
+      edges {
+        cursor
+        node {
+          id
+          title
+          createdAt
+          views
+          visibility
+          thumbnailType
+          thumbnail
+          primaryCategory
+          secondaryCategory
+          publishType
+          streamType
+          tags
+          bookmarked
+          creator {
+            id
+            name
+            displayName
+            image
+            defaultColor
+          }
+          playback {
+            id
+            videoId
+            duration
+            hls
+            dash
+            thumbnail
+          }
+        }
+      }
+    }
+  }
+`
+export async function fetchLiveVideos(input: FetchLiveVideosInput) {
+  try {
+    const data = await client.request<
+      QueryReturnType<"fetchLiveVideos">,
+      QueryArgsType<"fetchLiveVideos">
+    >(FETCH_LIVE_VIDEOS_QUERY, { input })
+
+    return data?.fetchLiveVideos
   } catch (error) {
     throw error
   }

@@ -165,6 +165,11 @@ export interface NexusGenInputs {
     owner: string // String!
     requestorId: string // String!
   }
+  FetchLiveVideosInput: {
+    // input type
+    cursor?: string | null // String
+    requestorId?: string | null // String
+  }
   FetchMyPlaylistsInput: {
     // input type
     accountId: string // String!
@@ -500,6 +505,15 @@ export interface NexusGenEnums {
     | "Women"
   CommentType: "COMMENT" | "PUBLISH"
   CommentsOrderBy: "counts" | "newest"
+  LiveInputStatus:
+    | "client_disconnect"
+    | "connected"
+    | "failed_to_connect"
+    | "failed_to_reconnect"
+    | "new_configuration_accepted"
+    | "reconnected"
+    | "reconnecting"
+    | "ttl_exceeded"
   LiveStatus: "inprogress" | "ready" | "schedule"
   NotificationType:
     | "COMMENT"
@@ -635,7 +649,7 @@ export interface NexusGenObjects {
     rtmpsPlayback: NexusGenRootTypes["RTMPS"] // RTMPS!
     srt: NexusGenRootTypes["SRT"] // SRT!
     srtPlayback: NexusGenRootTypes["SRT"] // SRT!
-    status?: NexusGenEnums["LiveStatus"] | null // LiveStatus
+    status?: NexusGenEnums["LiveInputStatus"] | null // LiveInputStatus
     uid: string // String!
     webRTC: NexusGenRootTypes["WebRTC"] // WebRTC!
     webRTCPlayback: NexusGenRootTypes["WebRTC"] // WebRTC!
@@ -1052,7 +1066,7 @@ export interface NexusGenFieldTypes {
     rtmpsPlayback: NexusGenRootTypes["RTMPS"] // RTMPS!
     srt: NexusGenRootTypes["SRT"] // SRT!
     srtPlayback: NexusGenRootTypes["SRT"] // SRT!
-    status: NexusGenEnums["LiveStatus"] | null // LiveStatus
+    status: NexusGenEnums["LiveInputStatus"] | null // LiveInputStatus
     uid: string // String!
     webRTC: NexusGenRootTypes["WebRTC"] // WebRTC!
     webRTCPlayback: NexusGenRootTypes["WebRTC"] // WebRTC!
@@ -1369,6 +1383,7 @@ export interface NexusGenFieldTypes {
     fetchBookmarks: NexusGenRootTypes["FetchBookmarkResponse"] | null // FetchBookmarkResponse
     fetchCommentsByPublishId: NexusGenRootTypes["FetchCommentsResponse"] | null // FetchCommentsResponse
     fetchDontRecommends: NexusGenRootTypes["FetchDontRecommendsResponse"] | null // FetchDontRecommendsResponse
+    fetchLiveVideos: NexusGenRootTypes["FetchPublishesResponse"] | null // FetchPublishesResponse
     fetchMyFollowers: NexusGenRootTypes["FetchFollowsResponse"] | null // FetchFollowsResponse
     fetchMyFollowing: NexusGenRootTypes["FetchFollowsResponse"] | null // FetchFollowsResponse
     fetchMyLiveStream: NexusGenRootTypes["FetchPublishesResponse"] | null // FetchPublishesResponse
@@ -1597,7 +1612,7 @@ export interface NexusGenFieldTypeNames {
     rtmpsPlayback: "RTMPS"
     srt: "SRT"
     srtPlayback: "SRT"
-    status: "LiveStatus"
+    status: "LiveInputStatus"
     uid: "String"
     webRTC: "WebRTC"
     webRTCPlayback: "WebRTC"
@@ -1912,6 +1927,7 @@ export interface NexusGenFieldTypeNames {
     fetchBookmarks: "FetchBookmarkResponse"
     fetchCommentsByPublishId: "FetchCommentsResponse"
     fetchDontRecommends: "FetchDontRecommendsResponse"
+    fetchLiveVideos: "FetchPublishesResponse"
     fetchMyFollowers: "FetchFollowsResponse"
     fetchMyFollowing: "FetchFollowsResponse"
     fetchMyLiveStream: "FetchPublishesResponse"
@@ -2222,6 +2238,10 @@ export interface NexusGenArgTypes {
     fetchDontRecommends: {
       // args
       input: NexusGenInputs["FetchDontRecommendsInput"] // FetchDontRecommendsInput!
+    }
+    fetchLiveVideos: {
+      // args
+      input: NexusGenInputs["FetchLiveVideosInput"] // FetchLiveVideosInput!
     }
     fetchMyFollowers: {
       // args

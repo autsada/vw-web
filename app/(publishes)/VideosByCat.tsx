@@ -13,8 +13,8 @@ import type {
 import type { PublishCategory } from "@/graphql/types"
 
 interface Props {
-  tab: PublishCategory | "All"
-  selectedTab: PublishCategory | "All"
+  tab: PublishCategory | "All" | "Live"
+  selectedTab: PublishCategory | "All" | "Live"
   fetchResult?: Maybe<FetchPublishesResponse> | undefined
   loading: boolean
   setLoading: React.Dispatch<React.SetStateAction<boolean>>
