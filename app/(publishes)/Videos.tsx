@@ -160,9 +160,11 @@ export default function Videos({
         {/* Short videos */}
         <Shorts fetchResult={shortsResult} selectedTab={selectedCat} />
 
-        {!!shortsResult?.edges?.length && (
-          <div className="w-full h-[4px] bg-neutral-200 my-10" />
-        )}
+        {selectedCat === "All" &&
+          typeof shortsResult?.edges?.length === "number" &&
+          shortsResult?.edges?.length > 0 && (
+            <div className="w-full h-[4px] bg-neutral-200 my-10" />
+          )}
 
         {/* Render videos by category */}
         <VideosByCat
