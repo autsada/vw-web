@@ -1,12 +1,11 @@
 import React, { useState, useCallback } from "react"
-import { AiOutlineDollar } from "react-icons/ai"
 
 import ModalWrapper from "@/components/ModalWrapper"
 import CloseButton from "@/components/CloseButton"
+import ConfirmModal from "@/components/ConfirmModal"
 import { formatAmount } from "@/lib/client"
 import type { TipAmount } from "@/graphql/types"
 import type { Profile } from "@/graphql/codegen/graphql"
-import ConfirmModal from "@/components/ConfirmModal"
 
 interface Props {
   closeModal: () => void
@@ -32,14 +31,17 @@ export default function TipModal({ closeModal, creator }: Props) {
       <div className="fixed z-10 inset-0" onClick={closeModal}></div>
       <div className="relative z-20 py-6 px-8 w-[500px] max-w-[95%] text-left bg-white rounded-xl overflow-hidden">
         <div className="flex items-center justify-between">
-          <h5>Tip @{creator.name}</h5>
+          {/* <h5>Tip @{creator.name}</h5> */}
+          <div>
+            <p className="mt-2">Send a tip to directly support the creator.</p>
+          </div>
           <div>
             <CloseButton onClick={closeModal} />
           </div>
         </div>
-        <p className="mt-2 text-textLight">
+        {/* <p className="mt-2 text-textLight">
           Send a tip to directly support the creator.
-        </p>
+        </p> */}
         <div className="mt-5 pb-2">
           <p className="font-semibold">
             How much you want to tip{" "}
@@ -108,19 +110,14 @@ function TipItem({
 }) {
   return (
     <div
-      className={`w-[100px] h-[60px] flex items-end justify-center gap-x-1 border-[2px] ${
+      className={`w-[100px] h-[60px] border-[2px] flex flex-col items-center justify-center ${
         selected
           ? "bg-orangeBase border-orangeDark hover:bg-orangeDark text-white"
           : "bg-neutral-100 border-none text-textRegular hover:bg-neutral-200"
       } cursor-pointer rounded-md`}
       onClick={onClick ? onClick.bind(undefined, amount) : undefined}
     >
-      <div className="h-full flex items-center justify-center">
-        <AiOutlineDollar size={24} />
-      </div>
-      <div className="h-full flex items-center justify-center font-semibold font-2xl">
-        {formatAmount(amount)}
-      </div>
+      <h6>{formatAmount(amount)}</h6>
     </div>
   )
 }

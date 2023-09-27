@@ -6,6 +6,7 @@ import {
   db,
   updatesCollection,
   notificationsCollection,
+  addressesCollection,
 } from "@/firebase/config"
 
 export function useSubscribeToUpdates(identifier?: string) {
@@ -42,4 +43,22 @@ export function useSubscribeToNotifications(
     )
     return unsubscribe
   }, [identifier, callback])
+}
+
+export function useSubscribeToAddress(identifier?: string) {
+  const router = useRouter()
+
+  // Listen to the `updates` collection in Firestore
+  useEffect(() => {
+    if (!identifier) return
+
+    const unsubscribe = onSnapshot(
+      doc(db, addressesCollection, identifier),
+      (doc) => {
+        // Reload data to get the most updated publish
+        router.refresh()
+      }
+    )
+    return unsubscribe
+  }, [router, identifier])
 }
