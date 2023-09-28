@@ -225,6 +225,7 @@ export const FETCH_PUBLISHES_QUERY = gql`
             followersCount
             isFollowing
             defaultColor
+            owner
             isOwner
           }
           playback {
@@ -297,6 +298,7 @@ export const FETCH_VIDEOS_BY_CAT_QUERY = gql`
             displayName
             image
             defaultColor
+            owner
           }
           playback {
             id
@@ -353,6 +355,7 @@ export const GET_WATCHING_PUBLISH_QUERY = gql`
         followersCount
         isFollowing
         defaultColor
+        owner
         isOwner
       }
       playback {
@@ -442,6 +445,7 @@ export const FETCH_SUGGESTED_VIDEOS_QUERY = gql`
             displayName
             image
             defaultColor
+            owner
           }
           playback {
             id
@@ -505,6 +509,7 @@ export const FETCH_SUGGESTED_BLOGS_QUERY = gql`
             displayName
             image
             defaultColor
+            owner
           }
           blog {
             createdAt
@@ -563,6 +568,7 @@ export const FETCH_PROFILE_PUBLISHES_QUERY = gql`
             displayName
             image
             defaultColor
+            owner
           }
           playback {
             id
@@ -672,6 +678,7 @@ export const FETCH_BY_TAG_QUERY = gql`
             displayName
             image
             defaultColor
+            owner
           }
           playback {
             id
@@ -741,6 +748,7 @@ export const FETCH_BY_QUERY = gql`
             displayName
             image
             defaultColor
+            owner
           }
           playback {
             id
@@ -808,6 +816,7 @@ export const FETCH_LIVE_VIDEOS_QUERY = gql`
             displayName
             image
             defaultColor
+            owner
           }
           playback {
             id
@@ -1186,7 +1195,7 @@ export const CALCULATE_TIPS_MUTATION = gql`
     }
   }
 `
-export async function CalculateTips(qty: number) {
+export async function calculateTips(qty: number) {
   try {
     const data = await client.request<
       MutationReturnType<"calculateTips">,

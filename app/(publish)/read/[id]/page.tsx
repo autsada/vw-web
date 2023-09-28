@@ -142,7 +142,11 @@ export default async function Read({ params }: Props) {
         </div>
 
         <div className="mb-2 py-4 w-full overflow-x-auto scrollbar-hide">
-          <Reactions isAuthenticated={!!account} publish={publish} />
+          <Reactions
+            isAuthenticated={!!account}
+            account={account}
+            publish={publish}
+          />
         </div>
 
         <div className="w-full">

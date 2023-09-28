@@ -4,10 +4,11 @@ import { AiOutlineDollarCircle, AiFillDollarCircle } from "react-icons/ai"
 import Reaction from "./Reaction"
 import TipModal from "./TipModal"
 import { useAuthContext } from "@/context/AuthContext"
-import type { Publish } from "@/graphql/codegen/graphql"
+import type { Publish, Account, Maybe } from "@/graphql/codegen/graphql"
 
 interface Props {
   isAuthenticated: boolean
+  account?: Maybe<Account> | undefined
   publish: Publish
   withDescription?: boolean
   verticalLayout?: boolean
@@ -17,6 +18,7 @@ interface Props {
 
 export default function TipReaction({
   isAuthenticated,
+  account,
   publish,
   withDescription = true,
   verticalLayout,
@@ -56,7 +58,7 @@ export default function TipReaction({
       />
 
       {tipModalVisible && publish && (
-        <TipModal closeModal={closeModal} creator={publish.creator} />
+        <TipModal closeModal={closeModal} publish={publish} account={account} />
       )}
     </>
   )

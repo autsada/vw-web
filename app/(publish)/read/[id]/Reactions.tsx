@@ -8,14 +8,19 @@ import ShareReaction from "@/components/ShareReaction"
 import BookmarkReaction from "./BookmarkReaction"
 import ReportReaction from "@/components/ReportReaction"
 import { useSubscribeToUpdates } from "@/hooks/useSubscribe"
-import type { Publish } from "@/graphql/codegen/graphql"
+import type { Account, Publish, Maybe } from "@/graphql/codegen/graphql"
 
 interface Props {
   publish: Publish
   isAuthenticated: boolean
+  account?: Maybe<Account> | undefined
 }
 
-export default function Reactions({ publish, isAuthenticated }: Props) {
+export default function Reactions({
+  publish,
+  isAuthenticated,
+  account,
+}: Props) {
   // Subscribe to update on Firestore
   useSubscribeToUpdates(publish?.id)
 
@@ -36,6 +41,7 @@ export default function Reactions({ publish, isAuthenticated }: Props) {
         buttonWidth="w-[60px]"
       />
       <TipReaction
+        account={account}
         isAuthenticated={isAuthenticated}
         publish={publish}
         withDescription={false}

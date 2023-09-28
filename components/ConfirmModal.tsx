@@ -14,6 +14,9 @@ interface Props {
   error?: string
   disabled?: boolean
   useRedBgForConfirm?: boolean
+  confirmBtnBgColor?: string // eg 'bg-blue-200'
+  confirmBtnBgHoverColor?: string // eg 'hover:bg-blue-100'
+  confirmBtnTextColor?: string // eg 'text-white'
 }
 
 export default function ConfirmModal({
@@ -27,6 +30,9 @@ export default function ConfirmModal({
   error,
   disabled,
   useRedBgForConfirm = false,
+  confirmBtnBgColor,
+  confirmBtnBgHoverColor,
+  confirmBtnTextColor,
 }: Props) {
   return (
     <ModalWrapper visible>
@@ -48,9 +54,15 @@ export default function ConfirmModal({
           <button
             type="button"
             className={`${
-              useRedBgForConfirm ? "btn-cancel" : "btn-dark"
+              useRedBgForConfirm
+                ? "btn-cancel"
+                : !confirmBtnBgColor
+                ? "btn-dark"
+                : confirmBtnBgColor
             } min-w-[100px] px-5 rounded-full ${
               disabled ? "opacity-30 cursor-not-allowed" : "opacity-100"
+            } ${confirmBtnTextColor ? confirmBtnTextColor : ""} ${
+              confirmBtnBgHoverColor ? confirmBtnBgHoverColor : ""
             }`}
             disabled={typeof disabled === "boolean" && disabled}
             onClick={onConfirm}
