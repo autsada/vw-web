@@ -13,11 +13,13 @@ import type {
   FetchPlaylistsResponse,
   Maybe,
   Publish,
+  Account,
 } from "@/graphql/codegen/graphql"
 
 interface Props {
   publish: Publish
   isAuthenticated: boolean
+  account?: Maybe<Account> | undefined
   playlistsResult: Maybe<FetchPlaylistsResponse> | undefined
   publishPlaylistsData: Maybe<CheckPublishPlaylistsResponse> | undefined
 }
@@ -25,6 +27,7 @@ interface Props {
 export default function Reactions({
   publish,
   isAuthenticated,
+  account,
   playlistsResult,
   publishPlaylistsData,
 }: Props) {
@@ -44,6 +47,7 @@ export default function Reactions({
       />
       <TipReaction
         isAuthenticated={isAuthenticated}
+        account={account}
         publish={publish}
         withDescription={false}
         buttonWidth="w-[60px]"

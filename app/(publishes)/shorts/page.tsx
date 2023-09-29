@@ -73,6 +73,7 @@ export default async function Page({ searchParams }: Props) {
     <div className="sm:ml-[100px]">
       <Shorts
         isAuthenticated={!!account}
+        account={account}
         profile={profile}
         fetchResult={shortsResult}
         playlistsResult={playlistsResult}

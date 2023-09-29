@@ -16,11 +16,13 @@ import type {
   FetchPlaylistsResponse,
   Maybe,
   Publish,
+  Account,
 } from "@/graphql/codegen/graphql"
 
 interface Props {
   publish: Publish
   isAuthenticated: boolean
+  account?: Maybe<Account> | undefined
   playlistsResult: Maybe<FetchPlaylistsResponse> | undefined
   publishPlaylistsData: Maybe<CheckPublishPlaylistsResponse> | undefined
   commentAction: () => void
@@ -31,6 +33,7 @@ interface Props {
 export default function VerticalReactions({
   publish,
   isAuthenticated,
+  account,
   playlistsResult,
   publishPlaylistsData,
   commentAction,
@@ -55,6 +58,7 @@ export default function VerticalReactions({
       />
       <TipReaction
         isAuthenticated={isAuthenticated}
+        account={account}
         publish={publish}
         verticalLayout
         withDescription={false}

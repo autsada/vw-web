@@ -193,6 +193,7 @@ export default async function Watch({ params }: Props) {
             <Reactions
               publish={publish}
               isAuthenticated={!!account}
+              account={account}
               playlistsResult={playlistsResult || undefined}
               publishPlaylistsData={publishPlaylistsData}
             />

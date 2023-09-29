@@ -20,11 +20,12 @@ import type {
   FetchPlaylistsResponse,
   Publish,
   Profile,
+  Account,
 } from "@/graphql/codegen/graphql"
 
 interface Props {
   isAuthenticated: boolean
-  profile: Maybe<Profile> | undefined
+  account?: Maybe<Account> | undefined
   publish: Publish
   playlistsResult: Maybe<FetchPlaylistsResponse> | undefined
 }
@@ -32,7 +33,7 @@ interface Props {
 export default function ShortItem({
   publish,
   isAuthenticated,
-  profile,
+  account,
   playlistsResult,
 }: Props) {
   const thumbnail =
@@ -182,6 +183,7 @@ export default function ShortItem({
         <div className="w-[90px] sm:w-[80px] pb-5 flex flex-col items-center justify-end">
           <VerticalReactions
             isAuthenticated={isAuthenticated}
+            account={account}
             publish={publish}
             playlistsResult={playlistsResult}
             publishPlaylistsData={publishPlaylistsData}

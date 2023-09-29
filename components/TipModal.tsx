@@ -148,6 +148,7 @@ export default function TipModal({ closeModal, publish, account }: Props) {
         <TipConfirmModal
           account={account}
           balance={balance}
+          loadingBalance={loadingBalance}
           onCancel={onBack}
           tipInUSD={tipInUSD}
           tipInETH={tipInETH}

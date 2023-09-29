@@ -17,6 +17,7 @@ import type {
   FetchCommentsResponse,
   CheckPublishPlaylistsResponse,
   FetchPlaylistsResponse,
+  Account,
 } from "@/graphql/codegen/graphql"
 import type { CommentsOrderBy } from "@/graphql/types"
 
@@ -24,6 +25,7 @@ interface Props {
   isSelected?: boolean
   isPrevious?: boolean
   isAuthenticated: boolean
+  account?: Maybe<Account> | undefined
   profile: Maybe<Profile> | undefined
   publish: Publish
   onPrev: () => void
@@ -37,6 +39,7 @@ interface Props {
 export default function DesktopViewItem({
   isSelected,
   isAuthenticated,
+  account,
   profile,
   publish,
   onPrev,
@@ -155,6 +158,7 @@ export default function DesktopViewItem({
           <Reactions
             publish={publish}
             isAuthenticated={isAuthenticated}
+            account={account}
             playlistsResult={playlistsResult || undefined}
             publishPlaylistsData={publishPlaylistsData}
           />

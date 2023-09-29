@@ -15,11 +15,13 @@ import type {
   Publish,
   CheckPublishPlaylistsResponse,
   FetchCommentsResponse,
+  Account,
 } from "@/graphql/codegen/graphql"
 import type { CommentsOrderBy } from "@/graphql/types"
 
 interface Props {
   isAuthenticated: boolean
+  account?: Maybe<Account> | undefined
   profile: Maybe<Profile> | undefined
   playlistsResult: Maybe<FetchPlaylistsResponse> | undefined
   items: PublishEdge[]
@@ -29,6 +31,7 @@ interface Props {
 
 export default function DesktopViewModal({
   isAuthenticated,
+  account,
   profile,
   playlistsResult,
   items,
@@ -232,6 +235,7 @@ export default function DesktopViewModal({
                 publish={edge.node!}
                 isSelected={targetPublish?.id === edge.node?.id}
                 isAuthenticated={isAuthenticated}
+                account={account}
                 profile={profile}
                 onPrev={goPrevShort}
                 onNext={goNextShort}

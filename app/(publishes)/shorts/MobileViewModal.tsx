@@ -19,12 +19,14 @@ import type {
   CommentEdge,
   FetchCommentsResponse,
   Comment,
+  Account,
 } from "@/graphql/codegen/graphql"
 import type { CommentsOrderBy } from "@/graphql/types"
 import ReportModal from "@/components/ReportModal"
 
 interface Props {
   isAuthenticated: boolean
+  account?: Maybe<Account> | undefined
   profile: Maybe<Profile> | undefined
   playlistsResult: Maybe<FetchPlaylistsResponse> | undefined
   items: PublishEdge[]
@@ -34,6 +36,7 @@ interface Props {
 
 export default function MobileViewModal({
   isAuthenticated,
+  account,
   profile,
   playlistsResult,
   items,
@@ -286,6 +289,7 @@ export default function MobileViewModal({
                   key={edge.node?.id}
                   publish={edge.node!}
                   isAuthenticated={isAuthenticated}
+                  account={account}
                   playlistsResult={playlistsResult}
                   publishPlaylistsData={publishPlaylistsData}
                   openCommentsModal={openCommentsModal}

@@ -16,10 +16,12 @@ import type {
   Maybe,
   PublishEdge,
   Profile,
+  Account,
 } from "@/graphql/codegen/graphql"
 
 interface Props {
   isAuthenticated: boolean
+  account?: Maybe<Account> | undefined
   profile: Maybe<Profile> | undefined
   fetchResult: Maybe<FetchPublishesResponse> | undefined
   playlistsResult: Maybe<FetchPlaylistsResponse> | undefined
@@ -28,6 +30,7 @@ interface Props {
 
 export default function Shorts({
   isAuthenticated,
+  account,
   profile,
   fetchResult,
   playlistsResult,
@@ -101,7 +104,7 @@ export default function Shorts({
                   key={edge.node.id}
                   publish={edge?.node}
                   isAuthenticated={isAuthenticated}
-                  profile={profile}
+                  account={account}
                   playlistsResult={playlistsResult}
                 />
               )
@@ -124,6 +127,7 @@ export default function Shorts({
         <MobileViewModal
           items={shorts}
           isAuthenticated={isAuthenticated}
+          account={account}
           profile={profile}
           playlistsResult={playlistsResult}
           activeId={initialId || shorts[0]?.node?.id}
@@ -136,6 +140,7 @@ export default function Shorts({
         <DesktopViewModal
           items={shorts}
           isAuthenticated={isAuthenticated}
+          account={account}
           profile={profile}
           playlistsResult={playlistsResult}
           activeId={initialId}

@@ -13,12 +13,14 @@ import type {
   FetchPlaylistsResponse,
   Maybe,
   Publish,
+  Account,
 } from "@/graphql/codegen/graphql"
 
 interface Props {
   isSelected?: boolean
   isPrevious?: boolean
   isAuthenticated: boolean
+  account?: Maybe<Account> | undefined
   publish: Publish
   playlistsResult: Maybe<FetchPlaylistsResponse> | undefined
   publishPlaylistsData: Maybe<CheckPublishPlaylistsResponse> | undefined
@@ -28,6 +30,7 @@ interface Props {
 export default function MobileViewItem({
   isSelected,
   isAuthenticated,
+  account,
   publish,
   playlistsResult,
   publishPlaylistsData,
@@ -165,6 +168,7 @@ export default function MobileViewItem({
           <div className="w-[60px] pb-5 flex flex-col items-center justify-end">
             <VerticalReactions
               isAuthenticated={isAuthenticated}
+              account={account}
               publish={publish}
               playlistsResult={playlistsResult}
               publishPlaylistsData={publishPlaylistsData}
