@@ -16,7 +16,6 @@ interface Props {
 export default function TipModal({ closeModal, publish, account }: Props) {
   const [loadingBalance, setLoadingBalance] = useState(false)
   const [balance, setBalance] = useState("")
-  const [userAddress, setUserAddress] = useState("")
   const [tipInUSD, setTipInUSD] = useState<TipAmount>(1)
   const [tipInETH, setTipInETH] = useState("")
   const [isNext, setIsNext] = useState(false)
@@ -36,7 +35,6 @@ export default function TipModal({ closeModal, publish, account }: Props) {
         },
       })
       const data = (await res.json()) as { balance: string; address: string }
-      setUserAddress(data.address)
       setLoadingBalance(false)
       setBalance(data.balance)
     } catch (error) {

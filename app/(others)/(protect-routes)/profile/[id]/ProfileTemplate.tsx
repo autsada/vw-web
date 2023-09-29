@@ -56,12 +56,8 @@ export default function ProfileTemplate({ isAuthenticated, profile }: Props) {
           </div>
 
           <div className="relative ml-2 sm:ml-6 flex-grow flex">
-            <div className="flex-grow">
+            <div className="w-full sm:max-w-[400px]">
               <ProfileName profile={profile} />
-              {/* <h4 className="font-semibold text-lg sm:text-xl">
-                {profile?.displayName}
-              </h4>
-              <p className="text-textLight">@{profile?.name}</p> */}
               <div className="mt-2 flex gap-x-2 sm:gap-x-4">
                 <FollowsLink profile={profile} />
                 <p className="text-sm sm:text-base font-light text-textLight">
@@ -73,14 +69,12 @@ export default function ProfileTemplate({ isAuthenticated, profile }: Props) {
               </div>
             </div>
 
-            <div className="w-max flex items-center justify-end">
-              <ManageFollow
-                isAuthenticated={isAuthenticated}
-                follow={profile}
-                ownerHref="/settings"
-                ownerLinkText="Edit"
-              />
-            </div>
+            <ManageFollow
+              isAuthenticated={isAuthenticated}
+              follow={profile}
+              ownerHref="/settings"
+              ownerLinkText="Edit"
+            />
           </div>
         </div>
 

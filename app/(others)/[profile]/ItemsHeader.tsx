@@ -33,7 +33,7 @@ export default function ItemsHeader({ sortBy, onSelectSortBy }: Props) {
   return (
     <>
       <div
-        className="h-full relative z-10 flex items-center gap-x-1 cursor-pointer"
+        className="h-full w-max relative z-10 flex items-center gap-x-1 cursor-pointer"
         onClick={toggleSortBy}
       >
         <MdOutlineSort className="text-textExtraLight" size={24} />
