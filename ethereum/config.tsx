@@ -1,10 +1,10 @@
 import { EthereumClient, w3mConnectors, w3mProvider } from "@web3modal/ethereum"
 import { configureChains, createConfig } from "wagmi"
-import { mainnet, goerli, localhost } from "@wagmi/chains"
+import { mainnet, sepolia, localhost } from "@wagmi/chains"
 
 import { WALLET_CONNECT_PROJECT_ID } from "@/lib/constants"
 
-const chains = [mainnet, goerli, localhost]
+const chains = [mainnet, sepolia, localhost]
 const projectId = WALLET_CONNECT_PROJECT_ID
 
 const { publicClient } = configureChains(chains, [w3mProvider({ projectId })])

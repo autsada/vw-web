@@ -1,10 +1,14 @@
-import React, { useState, useCallback, useMemo } from "react"
+import React, { useState, useCallback, useMemo, useEffect } from "react"
 import { MdCheckCircle, MdContentCopy, MdOutlineRefresh } from "react-icons/md"
 import Link from "next/link"
+import { useAccount, useContractWrite } from "wagmi"
 
 import ModalWrapper from "./ModalWrapper"
 import CloseButton from "./CloseButton"
 import ButtonLoader from "./ButtonLoader"
+import Mask from "./Mask"
+import { useAuthContext } from "@/context/AuthContext"
+import { usePrepareSendTips } from "@/hooks/contracts/useTips"
 import { formatAmount } from "@/lib/client"
 import type { Publish, Account, Maybe } from "@/graphql/codegen/graphql"
 
@@ -30,6 +34,7 @@ export default function TipConfirmModal({
   refreshBalance,
 }: Props) {
   const accountType = account?.type
+  const creatorAddress = publish?.creator?.owner
   const formattedBalance = useMemo(
     () =>
       !balance || loadingBalance
@@ -54,6 +59,10 @@ export default function TipConfirmModal({
   const [finished, setFinished] = useState(false)
   const [isError, setIsError] = useState(false)
   const [isCopied, setIsCopied] = useState(false)
+  const [tipId, setTipId] = useState("") // For `WALLET` account type
+
+  const { isConnected } = useAccount()
+  const { onVisible: openAuthModal } = useAuthContext()
 
   const confirmTip = useCallback(async () => {
     if (!publish || !tipInUSD || !accountType) return
@@ -70,22 +79,48 @@ export default function TipConfirmModal({
           },
           body: JSON.stringify({
             publishId: publish.id,
-            receiverId: publish.creator?.id,
+            receiverId: publish.creatorId,
             qty: tipInUSD,
           }),
         })
+
+        await refreshBalance()
+        setLoading(false)
+        setFinished(true)
       } else if (accountType === "WALLET") {
         // Send tip directly from user's wallet
+        // Before sending check if user is connected to their wallet first
+        if (!isConnected) {
+          openAuthModal()
+        } else {
+          const result = await fetch(`/api/tip/send`, {
+            method: "POST",
+            headers: {
+              "Content-Type": "application/json",
+            },
+            body: JSON.stringify({
+              publishId: publish.id,
+              receiverId: publish.creatorId,
+              qty: tipInUSD,
+            }),
+          })
+          const data = (await result.json()) as { id: string }
+          setTipId(data.id)
+          // When tipId is ready, render another component for sending transaction to the contract
+        }
       }
-
-      await refreshBalance()
-      setLoading(false)
-      setFinished(true)
     } catch (error) {
       setLoading(false)
       setIsError(true)
     }
-  }, [publish, tipInUSD, refreshBalance, accountType])
+  }, [
+    publish,
+    tipInUSD,
+    refreshBalance,
+    accountType,
+    isConnected,
+    openAuthModal,
+  ])
 
   const clickToCopy = useCallback(async (addr: string) => {
     // Use the Clipboard API to copy text to the clipboard
@@ -206,6 +241,69 @@ export default function TipConfirmModal({
           )}
         </div>
       </div>
+
+      {tipId && creatorAddress && (
+        <WalletTransaction
+          tipId={tipId}
+          tipInUSD={tipInUSD}
+          tipInETH={tipInETH}
+          creatorAddress={creatorAddress}
+          setTipId={setTipId}
+          setLoading={setLoading}
+          setFinished={setFinished}
+          setIsError={setIsError}
+          refreshBalance={refreshBalance}
+        />
+      )}
     </ModalWrapper>
   )
+}
+
+function WalletTransaction({
+  tipId,
+  tipInUSD,
+  tipInETH,
+  creatorAddress,
+  setTipId,
+  setLoading,
+  setFinished,
+  setIsError,
+  refreshBalance,
+}: {
+  tipId: string
+  tipInUSD: number
+  tipInETH: string
+  creatorAddress: string
+  setTipId: React.Dispatch<React.SetStateAction<string>>
+  setLoading: React.Dispatch<React.SetStateAction<boolean>>
+  setFinished: React.Dispatch<React.SetStateAction<boolean>>
+  setIsError: React.Dispatch<React.SetStateAction<boolean>>
+  refreshBalance: () => Promise<void>
+}) {
+  const { config, error } = usePrepareSendTips({
+    tipId,
+    tipInUSD,
+    tipInETH,
+    to: creatorAddress,
+  })
+  const { writeAsync } = useContractWrite(config)
+
+  useEffect(() => {
+    if (writeAsync) {
+      writeAsync().then(() => {
+        setLoading(false)
+        setFinished(true)
+        refreshBalance()
+        setTipId("")
+      })
+    }
+  }, [writeAsync, setLoading, setFinished, refreshBalance, setTipId])
+
+  useEffect(() => {
+    if (error) {
+      setIsError(true)
+    }
+  }, [error, setIsError])
+
+  return <Mask />
 }

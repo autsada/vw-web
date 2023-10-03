@@ -3,6 +3,7 @@ import React, { useState, useCallback, useEffect } from "react"
 import ModalWrapper from "@/components/ModalWrapper"
 import CloseButton from "@/components/CloseButton"
 import TipConfirmModal from "./TipConfirmModal"
+import ButtonLoader from "./ButtonLoader"
 import { formatAmount } from "@/lib/client"
 import type { TipAmount } from "@/graphql/types"
 import type { Publish, Account, Maybe } from "@/graphql/codegen/graphql"
@@ -18,6 +19,7 @@ export default function TipModal({ closeModal, publish, account }: Props) {
   const [balance, setBalance] = useState("")
   const [tipInUSD, setTipInUSD] = useState<TipAmount>(1)
   const [tipInETH, setTipInETH] = useState("")
+  const [calculatingETH, setCalculatingETH] = useState(false)
   const [isNext, setIsNext] = useState(false)
 
   const selectTip = useCallback((t: TipAmount) => {
@@ -49,6 +51,7 @@ export default function TipModal({ closeModal, publish, account }: Props) {
   const calculateTip = useCallback(async () => {
     try {
       setTipInETH("")
+      setCalculatingETH(true)
       const res = await fetch(`/api/tip/calculate`, {
         method: "POST",
         headers: {
@@ -58,14 +61,16 @@ export default function TipModal({ closeModal, publish, account }: Props) {
       })
       const data = (await res.json()) as { tips: string }
       setTipInETH(data.tips)
+      setCalculatingETH(false)
     } catch (error) {
       console.error(error)
+      setCalculatingETH(false)
     }
   }, [tipInUSD])
 
-  const onNext = useCallback(() => {
+  const onNext = useCallback(async () => {
+    await calculateTip()
     setIsNext(true)
-    calculateTip()
   }, [calculateTip])
 
   const onBack = useCallback(() => {
@@ -136,15 +141,16 @@ export default function TipModal({ closeModal, publish, account }: Props) {
           </div>
           <button
             type="submit"
-            className="mt-6 btn-dark px-6 rounded-full"
+            className="mt-6 btn-dark w-[100px] rounded-full"
+            disabled={calculatingETH}
             onClick={onNext}
           >
-            Next
+            {calculatingETH ? <ButtonLoader loading size={8} /> : "NEXT"}
           </button>
         </div>
       </div>
 
-      {isNext && (
+      {isNext && tipInETH && (
         <TipConfirmModal
           account={account}
           balance={balance}

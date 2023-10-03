@@ -1216,10 +1216,7 @@ export async function calculateTips(qty: number) {
 export const SEND_TIPS_MUTATION = gql`
   mutation SendTips($input: SendTipsInput!) {
     sendTips(input: $input) {
-      amount
-      fee
-      from
-      to
+      id
     }
   }
 `

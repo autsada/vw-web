@@ -63,7 +63,6 @@
       "anonymous": false,
       "name": "TipsTransferred",
       "inputs": [
-        { "type": "string", "name": "tipId", "indexed": false },
         { "type": "address", "name": "from", "indexed": false },
         { "type": "address", "name": "to", "indexed": false },
         { "type": "uint256", "name": "amount", "indexed": false },
@@ -248,7 +247,6 @@
       "stateMutability": "payable",
       "payable": true,
       "inputs": [
-        { "type": "string", "name": "tipId" },
         { "type": "address", "name": "to" },
         { "type": "uint256", "name": "qty" }
       ],

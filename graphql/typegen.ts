@@ -896,22 +896,19 @@ export interface NexusGenObjects {
   }
   SendTipsResult: {
     // root type
-    amount: string // String!
-    fee: string // String!
-    from: string // String!
-    to: string // String!
+    id: string // String!
   }
   Tip: {
     // root type
-    amount: string // String!
+    amount?: string | null // String
     createdAt: NexusGenScalars["DateTime"] // DateTime!
-    fee: string // String!
-    from: string // String!
+    fee?: string | null // String
+    from?: string | null // String
     id: string // ID!
     publishId: string // String!
     receiverId: string // String!
     senderId: string // String!
-    to: string // String!
+    to?: string | null // String
   }
   ValidateAuthResult: {
     // root type
@@ -1447,17 +1444,14 @@ export interface NexusGenFieldTypes {
   }
   SendTipsResult: {
     // field return type
-    amount: string // String!
-    fee: string // String!
-    from: string // String!
-    to: string // String!
+    id: string // String!
   }
   Tip: {
     // field return type
-    amount: string // String!
+    amount: string | null // String
     createdAt: NexusGenScalars["DateTime"] // DateTime!
-    fee: string // String!
-    from: string // String!
+    fee: string | null // String
+    from: string | null // String
     id: string // ID!
     publish: NexusGenRootTypes["Publish"] // Publish!
     publishId: string // String!
@@ -1465,7 +1459,7 @@ export interface NexusGenFieldTypes {
     receiverId: string // String!
     sender: NexusGenRootTypes["Profile"] // Profile!
     senderId: string // String!
-    to: string // String!
+    to: string | null // String
   }
   ValidateAuthResult: {
     // field return type
@@ -1983,10 +1977,7 @@ export interface NexusGenFieldTypeNames {
   }
   SendTipsResult: {
     // field return type name
-    amount: "String"
-    fee: "String"
-    from: "String"
-    to: "String"
+    id: "String"
   }
   Tip: {
     // field return type name

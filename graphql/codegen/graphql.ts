@@ -1419,10 +1419,7 @@ export type SendTipsInput = {
 
 export type SendTipsResult = {
   __typename?: 'SendTipsResult';
-  amount: Scalars['String']['output'];
-  fee: Scalars['String']['output'];
-  from: Scalars['String']['output'];
-  to: Scalars['String']['output'];
+  id: Scalars['String']['output'];
 };
 
 export enum StreamType {
@@ -1437,10 +1434,10 @@ export enum ThumbnailType {
 
 export type Tip = {
   __typename?: 'Tip';
-  amount: Scalars['String']['output'];
+  amount?: Maybe<Scalars['String']['output']>;
   createdAt: Scalars['DateTime']['output'];
-  fee: Scalars['String']['output'];
-  from: Scalars['String']['output'];
+  fee?: Maybe<Scalars['String']['output']>;
+  from?: Maybe<Scalars['String']['output']>;
   id: Scalars['ID']['output'];
   publish: Publish;
   publishId: Scalars['String']['output'];
@@ -1448,7 +1445,7 @@ export type Tip = {
   receiverId: Scalars['String']['output'];
   sender: Profile;
   senderId: Scalars['String']['output'];
-  to: Scalars['String']['output'];
+  to?: Maybe<Scalars['String']['output']>;
 };
 
 export type UpdateBlogInput = {

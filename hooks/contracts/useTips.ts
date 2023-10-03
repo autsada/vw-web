@@ -1,76 +1,50 @@
-import { usePrepareContractWrite, useContractEvent } from "wagmi"
+import { usePrepareContractWrite } from "wagmi"
+import { ethers } from "ethers"
 
 import TipsContractDev from "../../abi/localhost/Tips.json"
 import TipsContractTest from "../../abi/testnet/Tips.json"
+import TipsContractProd from "../../abi/mainnet/Tips.json"
 
-const env = process.env.NEXT_PUBLIC_ENV as "localhost" | "test"
-const contract = env === "localhost" ? TipsContractDev : TipsContractTest
+const env = process.env.NEXT_PUBLIC_ENV as "localhost" | "test" | "prod"
+const contract =
+  env === "prod"
+    ? TipsContractProd
+    : env === "test"
+    ? TipsContractTest
+    : TipsContractDev
 
-export function usePrepareStationContractWrite(
-  to: string,
-  name: string,
-  nameValid: boolean
-) {
-  const { config } = usePrepareContractWrite({
+/**
+ * @param to an address of the receiver
+ * @param tipInUSD a quantity (how much in USD) of the tips to be sent
+ * @param tipInETH ETH equivalent of the tips
+ * @returns
+ */
+export function usePrepareSendTips(input: {
+  tipId: string
+  to: string
+  tipInUSD: number
+  tipInETH: string
+}) {
+  return usePrepareContractWrite({
     address: contract.address as any,
+    value: ethers.parseEther(input.tipInETH),
     abi: [
       {
         type: "function",
-        name: "mint",
+        name: "tip",
         constant: false,
-        payable: false,
+        stateMutability: "payable",
+        payable: true,
         inputs: [
+          { type: "string", name: "tipId" },
           { type: "address", name: "to" },
-          { type: "string", name: "name" },
+          { type: "uint256", name: "qty" },
         ],
         outputs: [],
       },
     ],
-    functionName: "mint",
-    args: [to, name.toLowerCase()],
-    enabled: nameValid,
-  })
-
-  return {
-    config,
-  }
-}
-
-export function useStationMintedEvent(name: string, cb: () => void) {
-  useContractEvent({
-    address: contract.address as any,
-    abi: [
-      {
-        type: "event",
-        anonymous: false,
-        name: "StationMinted",
-        inputs: [
-          { type: "uint256", name: "tokenId", indexed: true },
-          { type: "address", name: "owner", indexed: true },
-          { type: "uint256", name: "timestamp", indexed: false },
-        ],
-      },
-    ],
-    eventName: "StationMinted",
-    listener: async (tokenId) => {
-      try {
-        const id = tokenId.toNumber()
-        // Create a station in the database
-        const result = await fetch(`/station/create`, {
-          method: "POST",
-          headers: {
-            "Content-Type": "application/json",
-          },
-          body: JSON.stringify({ name, tokenId: id }),
-        })
-
-        await result.json()
-        // Call the callback fn
-        cb()
-      } catch (error) {
-        console.error("error: ", error)
-      }
-    },
-    once: true,
+    functionName: "tip",
+    args: [input.tipId, input.to, input.tipInUSD],
+    enabled: !!input.to && !!input.tipInUSD && !!input.tipInETH,
   })
 }
