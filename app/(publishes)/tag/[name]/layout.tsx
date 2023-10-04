@@ -1,14 +1,11 @@
 import React from "react"
-import type { Metadata, ResolvingMetadata } from "next"
+import type { Metadata } from "next"
 
 type Props = {
   params: { name: string }
 }
 
-export async function generateMetadata(
-  { params }: Props,
-  parent?: ResolvingMetadata
-): Promise<Metadata> {
+export async function generateMetadata({ params }: Props): Promise<Metadata> {
   const tag = params.name
 
   return {

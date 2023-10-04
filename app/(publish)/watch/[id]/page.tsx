@@ -1,6 +1,6 @@
 import React, { Suspense } from "react"
 import { notFound, redirect } from "next/navigation"
-import type { Metadata, ResolvingMetadata } from "next"
+import type { Metadata } from "next"
 
 import PlayerSection from "./PlayerSection"
 import ButtonLoader from "@/components/ButtonLoader"
@@ -27,10 +27,7 @@ type Props = {
   params: { id: string }
 }
 
-export async function generateMetadata(
-  { params }: Props,
-  parent?: ResolvingMetadata
-): Promise<Metadata> {
+export async function generateMetadata({ params }: Props): Promise<Metadata> {
   // Query a publish
   const publish = await getWatchingPublish({
     targetId: params.id,
