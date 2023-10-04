@@ -27,7 +27,7 @@ export const metadata = {
   },
   openGraph: {
     ...basicMetadata,
-    url: "www.vewwit.vercel.app",
+    url: "vewwit.vercel.app",
     // url: "www.vewwit.xyz",
     siteName: "vewwit.xyz",
     images: [
@@ -70,7 +70,7 @@ export const metadata = {
     },
   },
   alternates: {
-    canonical: "www.vewwit.vercel.app",
+    canonical: "vewwit.vercel.app",
     media: {
       "only screen and (max-width: 639px)": "m.vewwit.vercel.app",
     },

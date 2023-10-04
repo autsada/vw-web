@@ -5,7 +5,7 @@ export const PROFILE_KEY = "vwprofile"
 export const MESSAGE = "VW web3 content sharing platform"
 export const SIGN_IN_HEADER =
   "Sign in to upload, like, comment, and more on VewWit."
-export const BASE_URL = "https://www.vewwit.vercel.app"
+export const BASE_URL = "https://vewwit.vercel.app"
 export const LOGO_URL =
   "https://firebasestorage.googleapis.com/v0/b/vewwit.appspot.com/o/vw.png?alt=media&token=1486648e-771f-4ac3-9f18-91faac2025b3"
 export const DEFAULT_BLOG_COVER_URL =
