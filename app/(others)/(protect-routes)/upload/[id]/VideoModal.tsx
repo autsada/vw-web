@@ -30,6 +30,7 @@ import type {
 } from "@/graphql/types"
 import type { Publish } from "@/graphql/codegen/graphql"
 import type { FileWithPrview } from "@/types"
+import { BASE_URL } from "@/lib/constants"
 
 interface Props {
   publish: Publish
@@ -639,13 +640,12 @@ export default function VideoModal({ publish, profileName }: Props) {
                         <p className="font-thin">Playback link</p>
                         <div>
                           <a
-                            href={`http://localhost:3000/watch/${publish.id}`}
-                            // href={`${BASE_URL}/watch/${publish.id}`}
+                            href={`${BASE_URL}/watch/${publish.id}`}
                             target="_blank"
                             rel="noreferrer"
                             className="text-base text-blueBase break-words"
                           >
-                            http://localhost:3000/watch/{publish.id}
+                            {BASE_URL}/watch/{publish.id}
                           </a>
                         </div>
                       </div>
