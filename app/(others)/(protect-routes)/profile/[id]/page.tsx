@@ -14,7 +14,6 @@ export default async function ProfilePage({
   params,
 }: {
   params: { id: string }
-  children: React.ReactNode
 }) {
   const data = await getAccount()
   const account = data?.account
