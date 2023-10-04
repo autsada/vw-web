@@ -11,7 +11,10 @@ export async function POST(req: Request) {
   const profile = account?.defaultProfile
 
   const isAuthenticated = !!profile && !!idToken
-  if (!isAuthenticated) throw new Error("Please sign in to proceed.")
+  if (!isAuthenticated)
+    return new NextResponse("Please sign in to proceed.", {
+      status: 500,
+    })
 
   const { cursor } = (await req.json()) as {
     cursor?: string

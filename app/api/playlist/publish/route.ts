@@ -10,7 +10,9 @@ export async function POST(req: Request) {
   const signature = data?.signature
 
   if (!account || !account?.defaultProfile || !idToken)
-    throw new Error("Please sign in to proceed.")
+    return new NextResponse("Please sign in to proceed.", {
+      status: 500,
+    })
 
   const { publishId } = (await req.json()) as { publishId: string }
   if (!publishId) throw new Error("Bad input")

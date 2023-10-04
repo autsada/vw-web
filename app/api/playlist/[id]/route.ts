@@ -14,11 +14,15 @@ export async function POST(
     const idToken = data?.idToken
     const signature = data?.signature
     if (!account || !account?.defaultProfile || !idToken)
-      throw new Error("Please sign in to proceed.")
+      return new NextResponse("Please sign in to proceed.", {
+        status: 500,
+      })
+
     const { cursor, sortBy } = (await req.json()) as {
       cursor?: string
       sortBy?: PlaylistOrderBy
     }
+
     // Fetch items from user's watch later list
     const watchLaterResult = await fetchPlaylistItems({
       idToken: idToken!,
@@ -32,6 +36,7 @@ export async function POST(
         orderBy: sortBy,
       },
     })
+
     return NextResponse.json({ result: watchLaterResult })
   } catch (error) {
     console.error(error)

@@ -10,7 +10,10 @@ export async function POST(req: Request) {
     const account = data?.account
     const idToken = data?.idToken
 
-    if (!account || !idToken) throw new Error("Please sign in to proceed.")
+    if (!account || !idToken)
+      return new NextResponse("Please sign in to proceed.", {
+        status: 500,
+      })
 
     const profile = account.defaultProfile
 

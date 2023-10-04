@@ -7,7 +7,10 @@ export async function POST(req: Request) {
       tip: number
     }
 
-    if (!tip) throw new Error("Name is required")
+    if (!tip)
+      return new NextResponse("Name is required.", {
+        status: 500,
+      })
 
     const result = await calculateTips(tip)
 

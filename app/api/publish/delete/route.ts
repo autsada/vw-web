@@ -12,10 +12,15 @@ export async function POST(req: Request) {
   const idToken = data?.idToken
 
   if (!account || !idToken || !account?.defaultProfile)
-    throw new Error("Please sign in to proceed.")
+    return new NextResponse("Please sign in to proceed.", {
+      status: 500,
+    })
 
   const { publishId } = (await req.json()) as { publishId: string }
-  if (!publishId) throw new Error("Bad input")
+  if (!publishId)
+    return new NextResponse("Bad input.", {
+      status: 500,
+    })
 
   const result = await deletePublish({
     idToken,

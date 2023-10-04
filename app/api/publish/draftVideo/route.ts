@@ -10,13 +10,21 @@ export async function POST(req: Request) {
   const data = await getAccount()
   const account = data?.account
   if (!account || !account?.defaultProfile)
-    throw new Error("Please sign in to proceed.")
+    return new NextResponse("Please sign in to proceed.", {
+      status: 500,
+    })
 
   const idToken = data?.idToken
-  if (!idToken) throw new Error("Please sign in to proceed.")
+  if (!idToken)
+    return new NextResponse("Please sign in to proceed.", {
+      status: 500,
+    })
 
   const { filename } = (await req.json()) as { filename: string }
-  if (!filename) throw new Error("Bad input")
+  if (!filename)
+    return new NextResponse("Bad input.", {
+      status: 500,
+    })
 
   const result = await createDraftVideo({
     idToken,
