@@ -7,8 +7,8 @@ import { BASE_URL, LOGO_URL } from "@/lib/constants"
 
 const basicMetadata = {
   title: {
-    template: "%s - VW",
-    default: "VW",
+    template: "%s - Vewwit",
+    default: "Vewwit",
   },
   description: "Content sharing platform for everyone.",
 }
@@ -27,14 +27,15 @@ export const metadata = {
   },
   openGraph: {
     ...basicMetadata,
-    url: "https://www.vewwit.xyz",
+    url: "www.vewwit.vercel.app",
+    // url: "www.vewwit.xyz",
     siteName: "vewwit.xyz",
     images: [
       {
         url: LOGO_URL!,
-        width: 800,
-        height: 600,
-        alt: "VW Logo",
+        width: 600,
+        height: 400,
+        alt: "Vewwit Logo",
       },
     ],
     locale: "en_US",
@@ -49,9 +50,9 @@ export const metadata = {
     images: [
       {
         url: LOGO_URL!,
-        width: 800,
-        height: 600,
-        alt: "VW Logo",
+        width: 600,
+        height: 400,
+        alt: "Vewwit Logo",
       },
     ],
   },
@@ -69,10 +70,14 @@ export const metadata = {
     },
   },
   alternates: {
-    canonical: "https://www.vewwit.xyz",
+    canonical: "www.vewwit.vercel.app",
     media: {
-      "only screen and (max-width: 639px)": "https://m.vewwit.xyz",
+      "only screen and (max-width: 639px)": "m.vewwit.vercel.app",
     },
+    // canonical: "www.vewwit.xyz",
+    // media: {
+    //   "only screen and (max-width: 639px)": "m.vewwit.xyz",
+    // },
   },
 }
 
