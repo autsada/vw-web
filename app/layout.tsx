@@ -27,14 +27,14 @@ export const metadata = {
   },
   openGraph: {
     ...basicMetadata,
-    url: "vewwit.vercel.app",
+    url: "https://vewwit.vercel.app",
     // url: "www.vewwit.xyz",
     siteName: "vewwit.xyz",
     images: [
       {
         url: LOGO_URL!,
-        width: 600,
-        height: 400,
+        width: 800,
+        height: 600,
         alt: "Vewwit Logo",
       },
     ],
@@ -50,8 +50,8 @@ export const metadata = {
     images: [
       {
         url: LOGO_URL!,
-        width: 600,
-        height: 400,
+        width: 800,
+        height: 600,
         alt: "Vewwit Logo",
       },
     ],
@@ -70,7 +70,7 @@ export const metadata = {
     },
   },
   alternates: {
-    canonical: "vewwit.vercel.app",
+    canonical: "https://vewwit.vercel.app",
     media: {
       "only screen and (max-width: 639px)": "m.vewwit.vercel.app",
     },
