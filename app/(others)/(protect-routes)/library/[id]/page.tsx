@@ -6,12 +6,7 @@ import ContentItems from "./ContentItems"
 import { getAccount } from "@/lib/server"
 import { fetchMyPlaylists, fetchPlaylistItems, getProfileById } from "@/graphql"
 
-export default async function Playlist({
-  params,
-}: {
-  params: { id: string }
-  children: React.ReactNode
-}) {
+export default async function Playlist({ params }: { params: { id: string } }) {
   const data = await getAccount()
   const account = data?.account
   const idToken = data?.idToken
