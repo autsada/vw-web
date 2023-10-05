@@ -22,7 +22,7 @@ import type {
 interface Props {
   isAuthenticated: boolean
   feed?: string
-  // latestResult: Maybe<FetchPublishesResponse> | undefined
+  latestResult: Maybe<FetchPublishesResponse> | undefined
   // popularResult: Maybe<FetchPublishesResponse> | undefined
   fetchResult: Maybe<FetchPublishesResponse> | undefined
 }
@@ -30,7 +30,7 @@ interface Props {
 export default function Blogs({
   isAuthenticated,
   feed,
-  // latestResult,
+  latestResult,
   // popularResult,
   fetchResult,
 }: Props) {
@@ -96,6 +96,7 @@ export default function Blogs({
   //   [openShareModal]
   // )
 
+  console.log("latest -->", latestResult)
   return (
     <>
       <div className="w-full pb-40 sm:pb-20">
