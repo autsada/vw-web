@@ -13,11 +13,11 @@ export default async function Page({ searchParams }: Props) {
   const account = data?.account
   const idToken = data?.idToken
 
-  // // Get user profile
-  // const profile =
-  //   !account || !idToken || !account.defaultProfile
-  //     ? undefined
-  //     : await getProfileById(account?.defaultProfile?.id)
+  // Get user profile
+  const profile =
+    !account || !idToken || !account.defaultProfile
+      ? undefined
+      : await getProfileById(account?.defaultProfile?.id)
 
   // const feed = searchParams.feed
 
