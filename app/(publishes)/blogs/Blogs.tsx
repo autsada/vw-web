@@ -101,7 +101,7 @@ export default function Blogs({
       <div className="w-full pb-40 sm:pb-20">
         <FeedTabs feed={feed} />
         <div className="lg:flex">
-          <div
+          {/* <div
             className={
               !feed
                 ? "block lg:w-[60%] lg:min-h-screen lg:pl-2 lg:pr-5 lg:border-r border-neutral-200"
@@ -128,27 +128,27 @@ export default function Blogs({
               onShareBlog={onShareBlog}
               openReportModal={openReportModal}
             />
-          </div>
+          </div> */}
 
           {/* For large device only */}
-          <div className="hidden lg:block lg:w-[40%] lg:pl-5 lg:pr-2">
+          {/* <div className="hidden lg:block lg:w-[40%] lg:pl-5 lg:pr-2">
             <SidePanel fetchResult={popularResult} />
-          </div>
+          </div> */}
         </div>
 
         {/* For small-medium device view only */}
-        <div className={feed === "popular" ? "block lg:hidden" : "hidden"}>
+        {/* <div className={feed === "popular" ? "block lg:hidden" : "hidden"}>
           <PopularFeed
             fetchResult={popularResult}
             bookmark={bookmark}
             onShareBlog={onShareBlog}
             openReportModal={openReportModal}
           />
-        </div>
+        </div> */}
       </div>
 
       {/* Share modal */}
-      {shareModalVisible && targetBlog && (
+      {/* {shareModalVisible && targetBlog && (
         <ShareModal
           title={targetBlog.title!}
           closeModal={closeShareModal}
@@ -164,7 +164,7 @@ export default function Blogs({
         />
       )}
 
-      {isPending && <Mask />}
+      {isPending && <Mask />} */}
     </>
   )
 }
