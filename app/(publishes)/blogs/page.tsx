@@ -51,7 +51,7 @@ export default async function Page({ searchParams }: Props) {
         feed={feed}
         fetchResult={blogsResult}
         // latestResult={latestResult}
-        popularResult={popularResult}
+        // popularResult={popularResult}
       />
     </div>
   )
