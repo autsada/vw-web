@@ -50,7 +50,7 @@ export default async function Page({ searchParams }: Props) {
         isAuthenticated={!!account}
         feed={feed}
         fetchResult={blogsResult}
-        latestResult={latestResult}
+        // latestResult={latestResult}
         // popularResult={popularResult}
       />
     </div>

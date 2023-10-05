@@ -23,7 +23,7 @@ interface Props {
   isAuthenticated: boolean
   feed?: string
   fetchResult: Maybe<FetchPublishesResponse> | undefined
-  latestResult: Maybe<FetchPublishesResponse> | undefined
+  // latestResult: Maybe<FetchPublishesResponse> | undefined
   // popularResult: Maybe<FetchPublishesResponse> | undefined
 }
 
@@ -31,8 +31,8 @@ export default function Blogs({
   isAuthenticated,
   feed,
   fetchResult,
-  latestResult,
-}: // popularResult,
+}: // latestResult,
+// popularResult,
 
 Props) {
   const [targetBlog, setTargetBlog] = useState<Publish>()
