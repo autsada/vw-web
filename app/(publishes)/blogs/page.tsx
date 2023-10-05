@@ -36,13 +36,13 @@ export default async function Page({ searchParams }: Props) {
     orderBy: "latest",
   })
 
-  // // Fetch blogs (popular)
-  // const popularResult = await fetchPublishes({
-  //   requestorId: profile?.id,
-  //   cursor: null,
-  //   publishType: "blogs",
-  //   orderBy: "popular",
-  // })
+  // Fetch blogs (popular)
+  const popularResult = await fetchPublishes({
+    requestorId: profile?.id,
+    cursor: null,
+    publishType: "blogs",
+    orderBy: "popular",
+  })
 
   return (
     <div className="px-2 sm:px-4 py-2 sm:ml-[100px]">
