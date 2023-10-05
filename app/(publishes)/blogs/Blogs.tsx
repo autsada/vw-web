@@ -22,80 +22,82 @@ import type {
 interface Props {
   isAuthenticated: boolean
   feed?: string
-  fetchResult: Maybe<FetchPublishesResponse> | undefined
-  latestResult: Maybe<FetchPublishesResponse> | undefined
-  popularResult: Maybe<FetchPublishesResponse> | undefined
+  // fetchResult: Maybe<FetchPublishesResponse> | undefined
+  // latestResult: Maybe<FetchPublishesResponse> | undefined
+  // popularResult: Maybe<FetchPublishesResponse> | undefined
 }
 
 export default function Blogs({
   isAuthenticated,
   feed,
-  fetchResult,
-  latestResult,
-  popularResult,
-}: Props) {
-  const [targetBlog, setTargetBlog] = useState<Publish>()
-  const [shareModalVisible, setShareModalVisible] = useState(false)
-  const [reportModalVisible, setReportModalVisible] = useState(false)
+}: // fetchResult,
+// latestResult,
+// popularResult,
+Props) {
+  // const [targetBlog, setTargetBlog] = useState<Publish>()
+  // const [shareModalVisible, setShareModalVisible] = useState(false)
+  // const [reportModalVisible, setReportModalVisible] = useState(false)
 
-  const [isPending, startTransition] = useTransition()
-  const { onVisible: openAuthModal } = useAuthContext()
+  // const [isPending, startTransition] = useTransition()
+  // const { onVisible: openAuthModal } = useAuthContext()
 
-  const openShareModal = useCallback((blog: Publish) => {
-    setShareModalVisible(true)
-    setTargetBlog(blog)
-  }, [])
+  // const openShareModal = useCallback((blog: Publish) => {
+  //   setShareModalVisible(true)
+  //   setTargetBlog(blog)
+  // }, [])
 
-  const closeShareModal = useCallback(() => {
-    setShareModalVisible(false)
-    setTargetBlog(undefined)
-  }, [])
+  // const closeShareModal = useCallback(() => {
+  //   setShareModalVisible(false)
+  //   setTargetBlog(undefined)
+  // }, [])
 
-  const openReportModal = useCallback((blog: Publish) => {
-    setReportModalVisible(true)
-    setTargetBlog(blog)
-  }, [])
+  // const openReportModal = useCallback((blog: Publish) => {
+  //   setReportModalVisible(true)
+  //   setTargetBlog(blog)
+  // }, [])
 
-  const closeReportModal = useCallback(() => {
-    setReportModalVisible(false)
-    setTargetBlog(undefined)
-  }, [])
+  // const closeReportModal = useCallback(() => {
+  //   setReportModalVisible(false)
+  //   setTargetBlog(undefined)
+  // }, [])
 
-  const bookmark = useCallback(
-    (publishId: string, callback: () => void) => {
-      if (!isAuthenticated) {
-        openAuthModal("Sign in to bookmark the blog.")
-      } else {
-        startTransition(() => bookmarkPost(publishId))
-        if (callback) callback()
-      }
-    },
-    [isAuthenticated, openAuthModal]
-  )
+  // const bookmark = useCallback(
+  //   (publishId: string, callback: () => void) => {
+  //     if (!isAuthenticated) {
+  //       openAuthModal("Sign in to bookmark the blog.")
+  //     } else {
+  //       startTransition(() => bookmarkPost(publishId))
+  //       if (callback) callback()
+  //     }
+  //   },
+  //   [isAuthenticated, openAuthModal]
+  // )
 
-  const onShareBlog = useCallback(
-    async (blog: Publish) => {
-      if (typeof window === "undefined" || !blog) return
+  // const onShareBlog = useCallback(
+  //   async (blog: Publish) => {
+  //     if (typeof window === "undefined" || !blog) return
 
-      const shareData = {
-        title: blog.title || "",
-        text: blog.title || "",
-        url: `${BASE_URL}/read/${blog.id}`,
-      }
+  //     const shareData = {
+  //       title: blog.title || "",
+  //       text: blog.title || "",
+  //       url: `${BASE_URL}/read/${blog.id}`,
+  //     }
 
-      if (navigator.share && navigator.canShare(shareData)) {
-        try {
-          await navigator.share(shareData)
-        } catch (error) {
-          console.error(error)
-        }
-      } else {
-        openShareModal(blog)
-      }
-    },
-    [openShareModal]
-  )
+  //     if (navigator.share && navigator.canShare(shareData)) {
+  //       try {
+  //         await navigator.share(shareData)
+  //       } catch (error) {
+  //         console.error(error)
+  //       }
+  //     } else {
+  //       openShareModal(blog)
+  //     }
+  //   },
+  //   [openShareModal]
+  // )
 
+  console.log("authenticated -->", isAuthenticated)
+  console.log("feed -->", feed)
   return (
     <>
       <div className="w-full pb-40 sm:pb-20">
