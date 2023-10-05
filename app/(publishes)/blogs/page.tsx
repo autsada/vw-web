@@ -21,12 +21,12 @@ export default async function Page({ searchParams }: Props) {
 
   const feed = searchParams.feed
 
-  // // Fetch blogs (for you)
-  // const blogsResult = await fetchPublishes({
-  //   requestorId: profile?.id,
-  //   cursor: null,
-  //   publishType: "blogs",
-  // })
+  // Fetch blogs (for you)
+  const blogsResult = await fetchPublishes({
+    requestorId: profile?.id,
+    cursor: null,
+    publishType: "blogs",
+  })
 
   // // Fetch blogs (latest)
   // const latestResult = await fetchPublishes({
