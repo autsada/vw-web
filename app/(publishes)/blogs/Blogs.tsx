@@ -22,88 +22,86 @@ import type {
 interface Props {
   isAuthenticated: boolean
   feed?: string
-  latestResult: Maybe<FetchPublishesResponse> | undefined
-  // popularResult: Maybe<FetchPublishesResponse> | undefined
   fetchResult: Maybe<FetchPublishesResponse> | undefined
+  latestResult: Maybe<FetchPublishesResponse> | undefined
+  popularResult: Maybe<FetchPublishesResponse> | undefined
 }
 
 export default function Blogs({
   isAuthenticated,
   feed,
-  latestResult,
-  // popularResult,
   fetchResult,
+  latestResult,
+  popularResult,
 }: Props) {
   const [targetBlog, setTargetBlog] = useState<Publish>()
   const [shareModalVisible, setShareModalVisible] = useState(false)
   const [reportModalVisible, setReportModalVisible] = useState(false)
 
-  // const [isPending, startTransition] = useTransition()
-  // const { onVisible: openAuthModal } = useAuthContext()
+  const [isPending, startTransition] = useTransition()
+  const { onVisible: openAuthModal } = useAuthContext()
 
-  // const openShareModal = useCallback((blog: Publish) => {
-  //   setShareModalVisible(true)
-  //   setTargetBlog(blog)
-  // }, [])
+  const openShareModal = useCallback((blog: Publish) => {
+    setShareModalVisible(true)
+    setTargetBlog(blog)
+  }, [])
 
-  // const closeShareModal = useCallback(() => {
-  //   setShareModalVisible(false)
-  //   setTargetBlog(undefined)
-  // }, [])
+  const closeShareModal = useCallback(() => {
+    setShareModalVisible(false)
+    setTargetBlog(undefined)
+  }, [])
 
-  // const openReportModal = useCallback((blog: Publish) => {
-  //   setReportModalVisible(true)
-  //   setTargetBlog(blog)
-  // }, [])
+  const openReportModal = useCallback((blog: Publish) => {
+    setReportModalVisible(true)
+    setTargetBlog(blog)
+  }, [])
 
-  // const closeReportModal = useCallback(() => {
-  //   setReportModalVisible(false)
-  //   setTargetBlog(undefined)
-  // }, [])
+  const closeReportModal = useCallback(() => {
+    setReportModalVisible(false)
+    setTargetBlog(undefined)
+  }, [])
 
-  // const bookmark = useCallback(
-  //   (publishId: string, callback: () => void) => {
-  //     if (!isAuthenticated) {
-  //       openAuthModal("Sign in to bookmark the blog.")
-  //     } else {
-  //       startTransition(() => bookmarkPost(publishId))
-  //       if (callback) callback()
-  //     }
-  //   },
-  //   [isAuthenticated, openAuthModal]
-  // )
+  const bookmark = useCallback(
+    (publishId: string, callback: () => void) => {
+      if (!isAuthenticated) {
+        openAuthModal("Sign in to bookmark the blog.")
+      } else {
+        startTransition(() => bookmarkPost(publishId))
+        if (callback) callback()
+      }
+    },
+    [isAuthenticated, openAuthModal]
+  )
 
-  // const onShareBlog = useCallback(
-  //   async (blog: Publish) => {
-  //     if (typeof window === "undefined" || !blog) return
+  const onShareBlog = useCallback(
+    async (blog: Publish) => {
+      if (typeof window === "undefined" || !blog) return
 
-  //     const shareData = {
-  //       title: blog.title || "",
-  //       text: blog.title || "",
-  //       url: `${BASE_URL}/read/${blog.id}`,
-  //     }
+      const shareData = {
+        title: blog.title || "",
+        text: blog.title || "",
+        url: `${BASE_URL}/read/${blog.id}`,
+      }
 
-  //     if (navigator.share && navigator.canShare(shareData)) {
-  //       try {
-  //         await navigator.share(shareData)
-  //       } catch (error) {
-  //         console.error(error)
-  //       }
-  //     } else {
-  //       openShareModal(blog)
-  //     }
-  //   },
-  //   [openShareModal]
-  // )
+      if (navigator.share && navigator.canShare(shareData)) {
+        try {
+          await navigator.share(shareData)
+        } catch (error) {
+          console.error(error)
+        }
+      } else {
+        openShareModal(blog)
+      }
+    },
+    [openShareModal]
+  )
 
-  console.log("latest -->", latestResult)
   return (
     <>
       <div className="w-full pb-40 sm:pb-20">
-        Blogs
-        {/* <FeedTabs feed={feed} /> */}
+        <FeedTabs feed={feed} />
         <div className="lg:flex">
-          {/* <div
+          <div
             className={
               !feed
                 ? "block lg:w-[60%] lg:min-h-screen lg:pl-2 lg:pr-5 lg:border-r border-neutral-200"
@@ -130,26 +128,26 @@ export default function Blogs({
               onShareBlog={onShareBlog}
               openReportModal={openReportModal}
             />
-          </div> */}
+          </div>
 
           {/* For large device only */}
-          {/* <div className="hidden lg:block lg:w-[40%] lg:pl-5 lg:pr-2">
+          <div className="hidden lg:block lg:w-[40%] lg:pl-5 lg:pr-2">
             <SidePanel fetchResult={popularResult} />
-          </div> */}
+          </div>
         </div>
         {/* For small-medium device view only */}
-        {/* <div className={feed === "popular" ? "block lg:hidden" : "hidden"}>
+        <div className={feed === "popular" ? "block lg:hidden" : "hidden"}>
           <PopularFeed
             fetchResult={popularResult}
             bookmark={bookmark}
             onShareBlog={onShareBlog}
             openReportModal={openReportModal}
           />
-        </div> */}
+        </div>
       </div>
 
       {/* Share modal */}
-      {/* {shareModalVisible && targetBlog && (
+      {shareModalVisible && targetBlog && (
         <ShareModal
           title={targetBlog.title!}
           closeModal={closeShareModal}
@@ -165,7 +163,7 @@ export default function Blogs({
         />
       )}
 
-      {isPending && <Mask />} */}
+      {isPending && <Mask />}
     </>
   )
 }
