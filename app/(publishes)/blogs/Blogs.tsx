@@ -24,17 +24,16 @@ interface Props {
   feed?: string
   fetchResult: Maybe<FetchPublishesResponse> | undefined
   // latestResult: Maybe<FetchPublishesResponse> | undefined
-  // popularResult: Maybe<FetchPublishesResponse> | undefined
+  popularResult: Maybe<FetchPublishesResponse> | undefined
 }
 
 export default function Blogs({
   isAuthenticated,
   feed,
   fetchResult,
-}: // latestResult,
-// popularResult,
-
-Props) {
+  // latestResult,
+  popularResult,
+}: Props) {
   const [targetBlog, setTargetBlog] = useState<Publish>()
   const [shareModalVisible, setShareModalVisible] = useState(false)
   const [reportModalVisible, setReportModalVisible] = useState(false)
@@ -97,7 +96,7 @@ Props) {
   //   [openShareModal]
   // )
 
-  console.log("result -->", fetchResult)
+  console.log("result -->", popularResult)
   return (
     <>
       <div className="w-full pb-40 sm:pb-20">
