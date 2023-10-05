@@ -99,6 +99,7 @@ export default function Blogs({
   return (
     <>
       <div className="w-full pb-40 sm:pb-20">
+        Blogs
         {/* <FeedTabs feed={feed} /> */}
         <div className="lg:flex">
           {/* <div
@@ -135,7 +136,6 @@ export default function Blogs({
             <SidePanel fetchResult={popularResult} />
           </div> */}
         </div>
-
         {/* For small-medium device view only */}
         {/* <div className={feed === "popular" ? "block lg:hidden" : "hidden"}>
           <PopularFeed
