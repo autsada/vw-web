@@ -3,7 +3,7 @@ import "./globals.css"
 import AppLayoutServer from "@/components/nav/AppLayoutServer"
 import AuthContextProvider from "@/context/AuthContext"
 import WalletClient from "./WalletClient"
-import { BASE_URL, LOGO_URL } from "@/lib/constants"
+import { BASE_URL, LOGO_BANNER } from "@/lib/constants"
 
 const basicMetadata = {
   title: {
@@ -32,7 +32,7 @@ export const metadata = {
     siteName: "vewwit.xyz",
     images: [
       {
-        url: LOGO_URL!,
+        url: LOGO_BANNER!,
         width: 800,
         height: 600,
         alt: "Vewwit Logo",
@@ -49,7 +49,7 @@ export const metadata = {
     creator: "@vwxyz",
     images: [
       {
-        url: LOGO_URL!,
+        url: LOGO_BANNER!,
         width: 800,
         height: 600,
         alt: "Vewwit Logo",

@@ -46,8 +46,8 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
       title: publish?.title || "",
       description: publish?.blog?.excerpt || "",
       card: "summary_large_image",
-      site: "@DiiRxyz",
-      creator: "@DiiRxyz",
+      site: "@vwxyz",
+      creator: "@vwxyz",
       images: [
         {
           url: imageUrl,
