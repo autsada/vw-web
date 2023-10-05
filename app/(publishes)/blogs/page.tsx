@@ -28,13 +28,13 @@ export default async function Page({ searchParams }: Props) {
     publishType: "blogs",
   })
 
-  // // Fetch blogs (latest)
-  // const latestResult = await fetchPublishes({
-  //   requestorId: profile?.id,
-  //   cursor: null,
-  //   publishType: "blogs",
-  //   orderBy: "latest",
-  // })
+  // Fetch blogs (latest)
+  const latestResult = await fetchPublishes({
+    requestorId: profile?.id,
+    cursor: null,
+    publishType: "blogs",
+    orderBy: "latest",
+  })
 
   // // Fetch blogs (popular)
   // const popularResult = await fetchPublishes({
