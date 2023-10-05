@@ -49,7 +49,7 @@ export default async function Page({ searchParams }: Props) {
       <Blogs
         isAuthenticated={!!account}
         feed={feed}
-        // fetchResult={blogsResult}
+        fetchResult={blogsResult}
         // latestResult={latestResult}
         // popularResult={popularResult}
       />

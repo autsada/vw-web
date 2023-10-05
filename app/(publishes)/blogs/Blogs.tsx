@@ -22,7 +22,7 @@ import type {
 interface Props {
   isAuthenticated: boolean
   feed?: string
-  // fetchResult: Maybe<FetchPublishesResponse> | undefined
+  fetchResult: Maybe<FetchPublishesResponse> | undefined
   // latestResult: Maybe<FetchPublishesResponse> | undefined
   // popularResult: Maybe<FetchPublishesResponse> | undefined
 }
@@ -30,13 +30,13 @@ interface Props {
 export default function Blogs({
   isAuthenticated,
   feed,
-}: // fetchResult,
-// latestResult,
+  fetchResult,
+}: // latestResult,
 // popularResult,
 Props) {
-  // const [targetBlog, setTargetBlog] = useState<Publish>()
-  // const [shareModalVisible, setShareModalVisible] = useState(false)
-  // const [reportModalVisible, setReportModalVisible] = useState(false)
+  const [targetBlog, setTargetBlog] = useState<Publish>()
+  const [shareModalVisible, setShareModalVisible] = useState(false)
+  const [reportModalVisible, setReportModalVisible] = useState(false)
 
   // const [isPending, startTransition] = useTransition()
   // const { onVisible: openAuthModal } = useAuthContext()
@@ -96,8 +96,7 @@ Props) {
   //   [openShareModal]
   // )
 
-  console.log("authenticated -->", isAuthenticated)
-  console.log("feed -->", feed)
+  console.log("result -->", fetchResult)
   return (
     <>
       <div className="w-full pb-40 sm:pb-20">
