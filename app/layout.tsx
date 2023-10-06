@@ -8,9 +8,10 @@ import { BASE_URL, LOGO_BANNER } from "@/lib/constants"
 const basicMetadata = {
   title: {
     template: "%s - Vewwit",
-    default: "Vewwit",
+    default: "VewWit",
   },
-  description: "Content sharing platform for everyone.",
+  description:
+    "The platform to share your content either videos, shorts, or blogs. And get likes, followers, and tips from your audience.",
 }
 
 export const metadata = {
@@ -35,7 +36,7 @@ export const metadata = {
         url: LOGO_BANNER!,
         width: 800,
         height: 600,
-        alt: "Vewwit Logo",
+        alt: "VewWit Logo",
       },
     ],
     locale: "en_US",
@@ -52,7 +53,7 @@ export const metadata = {
         url: LOGO_BANNER!,
         width: 800,
         height: 600,
-        alt: "Vewwit Logo",
+        alt: "VewWit Logo",
       },
     ],
   },
