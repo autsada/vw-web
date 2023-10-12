@@ -56,9 +56,11 @@ export default async function Page({ searchParams }: Props) {
         <Blogs
           isAuthenticated={!!account}
           feed={feed}
-          fetchResult={blogsResult}
-          latestResult={latestResult}
-          popularResult={popularResult}
+          fetchResult={blogsResult ? JSON.stringify(blogsResult) : undefined}
+          latestResult={latestResult ? JSON.stringify(latestResult) : undefined}
+          popularResult={
+            popularResult ? JSON.stringify(popularResult) : undefined
+          }
         />
       </Suspense>
     </div>

@@ -22,9 +22,12 @@ import type {
 interface Props {
   isAuthenticated: boolean
   feed?: string
-  fetchResult: Maybe<FetchPublishesResponse> | undefined
-  latestResult: Maybe<FetchPublishesResponse> | undefined
-  popularResult: Maybe<FetchPublishesResponse> | undefined
+  fetchResult: string | undefined
+  latestResult: string | undefined
+  popularResult: string | undefined
+  // fetchResult: Maybe<FetchPublishesResponse> | undefined
+  // latestResult: Maybe<FetchPublishesResponse> | undefined
+  // popularResult: Maybe<FetchPublishesResponse> | undefined
 }
 
 export default function Blogs({
