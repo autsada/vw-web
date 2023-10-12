@@ -60,7 +60,11 @@ export default async function Page({ searchParams }: Props) {
             blogsResult
               ? {
                   pageInfo: blogsResult.pageInfo,
-                  edges: [blogsResult.edges[0], blogsResult.edges[1]],
+                  edges: [
+                    blogsResult.edges[0],
+                    blogsResult.edges[1],
+                    blogsResult.edges[2],
+                  ],
                 }
               : undefined
           }
