@@ -2,7 +2,7 @@
 
 // import React, { useState, useCallback, useTransition } from "react"
 
-// import FeedTabs from "./FeedTabs"
+import FeedTabs from "./FeedTabs"
 // import ForYouFeed from "./ForYouFeed"
 // import LatestFeed from "./LatestFeed"
 // import PopularFeed from "./PopularFeed"
@@ -106,8 +106,7 @@ Props) {
   return (
     <>
       <div className="w-full pb-40 sm:pb-20">
-        Blogs
-        {/* <FeedTabs feed={feed} /> */}
+        <FeedTabs feed={feed} />
         <div className="lg:flex">
           {/* <div
             className={
