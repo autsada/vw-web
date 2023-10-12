@@ -103,7 +103,8 @@ export default function Blogs({
   return (
     <>
       <div className="w-full pb-40 sm:pb-20">
-        <FeedTabs feed={feed} />
+        Blogs
+        {/* <FeedTabs feed={feed} /> */}
         <div className="lg:flex">
           {/* <div
             className={
