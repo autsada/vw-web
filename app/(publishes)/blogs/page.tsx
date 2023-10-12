@@ -1,6 +1,6 @@
 import React, { Suspense } from "react"
 
-import Blogs from "./Blogs"
+import BlogPosts from "./BlogPosts"
 import { getAccount } from "@/lib/server"
 import { getProfileById, fetchPublishes } from "@/graphql"
 
@@ -53,14 +53,14 @@ export default async function Page({ searchParams }: Props) {
       <Suspense
         fallback={<div className="w-full text-center py-10">Loading...</div>}
       >
-        <Blogs
+        <BlogPosts
           isAuthenticated={!!account}
           feed={feed}
-          fetchResult={blogsResult ? JSON.stringify(blogsResult) : undefined}
-          latestResult={latestResult ? JSON.stringify(latestResult) : undefined}
-          popularResult={
-            popularResult ? JSON.stringify(popularResult) : undefined
-          }
+          // fetchResult={blogsResult ? JSON.stringify(blogsResult) : undefined}
+          // latestResult={latestResult ? JSON.stringify(latestResult) : undefined}
+          // popularResult={
+          //   popularResult ? JSON.stringify(popularResult) : undefined
+          // }
         />
       </Suspense>
     </div>

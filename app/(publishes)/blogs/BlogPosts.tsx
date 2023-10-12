@@ -22,21 +22,21 @@
 interface Props {
   isAuthenticated: boolean
   feed?: string
-  fetchResult: string | undefined
-  latestResult: string | undefined
-  popularResult: string | undefined
+  // fetchResult: string | undefined
+  // latestResult: string | undefined
+  // popularResult: string | undefined
   // fetchResult: Maybe<FetchPublishesResponse> | undefined
   // latestResult: Maybe<FetchPublishesResponse> | undefined
   // popularResult: Maybe<FetchPublishesResponse> | undefined
 }
 
-export default function Blogs({
+export default function BlogPosts({
   isAuthenticated,
   feed,
-  fetchResult,
-  latestResult,
-  popularResult,
-}: Props) {
+}: // fetchResult,
+// latestResult,
+// popularResult,
+Props) {
   // const [targetBlog, setTargetBlog] = useState<Publish>()
   // const [shareModalVisible, setShareModalVisible] = useState(false)
   // const [reportModalVisible, setReportModalVisible] = useState(false)
@@ -100,9 +100,9 @@ export default function Blogs({
   // )
 
   console.log("feed -->", feed)
-  console.log("blogs -->", fetchResult)
-  console.log("latest -->", latestResult)
-  console.log("popular -->", popularResult)
+  // console.log("blogs -->", fetchResult)
+  // console.log("latest -->", latestResult)
+  // console.log("popular -->", popularResult)
   return (
     <>
       <div className="w-full pb-40 sm:pb-20">
