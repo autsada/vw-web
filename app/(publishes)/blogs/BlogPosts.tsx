@@ -22,20 +22,18 @@ import type {
 interface Props {
   isAuthenticated: boolean
   feed?: string
-  // latestResult: string | undefined
-  // popularResult: string | undefined
   fetchResult: Maybe<FetchPublishesResponse> | undefined
-  // latestResult: Maybe<FetchPublishesResponse> | undefined
-  // popularResult: Maybe<FetchPublishesResponse> | undefined
+  latestResult: Maybe<FetchPublishesResponse> | undefined
+  popularResult: Maybe<FetchPublishesResponse> | undefined
 }
 
 export default function BlogPosts({
   isAuthenticated,
   feed,
   fetchResult,
-}: // latestResult,
-// popularResult,
-Props) {
+  latestResult,
+  popularResult,
+}: Props) {
   const [targetBlog, setTargetBlog] = useState<Publish>()
   const [shareModalVisible, setShareModalVisible] = useState(false)
   const [reportModalVisible, setReportModalVisible] = useState(false)
@@ -98,10 +96,6 @@ Props) {
     [openShareModal]
   )
 
-  console.log("feed -->", feed)
-  console.log("blogs -->", fetchResult)
-  // console.log("latest -->", latestResult)
-  // console.log("popular -->", popularResult)
   return (
     <>
       <div className="w-full pb-40 sm:pb-20">
@@ -121,7 +115,7 @@ Props) {
               openReportModal={openReportModal}
             />
           </div>
-          {/* <div
+          <div
             className={
               feed === "latest"
                 ? "block lg:w-[60%] lg:min-h-screen lg:pl-2 lg:pr-5 lg:border-r border-neutral-200"
@@ -134,26 +128,26 @@ Props) {
               onShareBlog={onShareBlog}
               openReportModal={openReportModal}
             />
-          </div> */}
+          </div>
 
           {/* For large device only */}
-          {/* <div className="hidden lg:block lg:w-[40%] lg:pl-5 lg:pr-2">
+          <div className="hidden lg:block lg:w-[40%] lg:pl-5 lg:pr-2">
             <SidePanel fetchResult={popularResult} />
-          </div> */}
+          </div>
         </div>
         {/* For small-medium device view only */}
-        {/* <div className={feed === "popular" ? "block lg:hidden" : "hidden"}>
+        <div className={feed === "popular" ? "block lg:hidden" : "hidden"}>
           <PopularFeed
             fetchResult={popularResult}
             bookmark={bookmark}
             onShareBlog={onShareBlog}
             openReportModal={openReportModal}
           />
-        </div> */}
+        </div>
       </div>
 
       {/* Share modal */}
-      {/* {shareModalVisible && targetBlog && (
+      {shareModalVisible && targetBlog && (
         <ShareModal
           title={targetBlog.title!}
           closeModal={closeShareModal}
@@ -169,7 +163,7 @@ Props) {
         />
       )}
 
-      {isPending && <Mask />} */}
+      {isPending && <Mask />}
     </>
   )
 }
