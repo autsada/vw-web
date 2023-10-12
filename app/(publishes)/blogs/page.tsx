@@ -56,7 +56,14 @@ export default async function Page({ searchParams }: Props) {
         <BlogPosts
           isAuthenticated={!!account}
           feed={feed}
-          fetchResult={`Test props`}
+          fetchResult={
+            blogsResult
+              ? {
+                  pageInfo: blogsResult.pageInfo,
+                  edges: [blogsResult.edges[0]],
+                }
+              : undefined
+          }
           // latestResult={latestResult ? JSON.stringify(latestResult) : undefined}
           // popularResult={
           //   popularResult ? JSON.stringify(popularResult) : undefined

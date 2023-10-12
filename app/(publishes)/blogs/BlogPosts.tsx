@@ -13,19 +13,18 @@ import FeedTabs from "./FeedTabs"
 // import { useAuthContext } from "@/context/AuthContext"
 // import { bookmarkPost } from "@/app/actions/publish-actions"
 // import { BASE_URL } from "@/lib/constants"
-// import type {
-//   Maybe,
-//   FetchPublishesResponse,
-//   Publish,
-// } from "@/graphql/codegen/graphql"
+import type {
+  Maybe,
+  FetchPublishesResponse,
+  Publish,
+} from "@/graphql/codegen/graphql"
 
 interface Props {
   isAuthenticated: boolean
   feed?: string
-  fetchResult: string | undefined
   // latestResult: string | undefined
   // popularResult: string | undefined
-  // fetchResult: Maybe<FetchPublishesResponse> | undefined
+  fetchResult: Maybe<FetchPublishesResponse> | undefined
   // latestResult: Maybe<FetchPublishesResponse> | undefined
   // popularResult: Maybe<FetchPublishesResponse> | undefined
 }
