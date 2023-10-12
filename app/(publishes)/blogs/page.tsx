@@ -1,4 +1,4 @@
-import React from "react"
+import React, { Suspense } from "react"
 
 import Blogs from "./Blogs"
 import { getAccount } from "@/lib/server"
@@ -50,13 +50,17 @@ export default async function Page({ searchParams }: Props) {
 
   return (
     <div className="px-2 sm:px-4 py-2 sm:ml-[100px]">
-      <Blogs
-        isAuthenticated={!!account}
-        feed={feed}
-        fetchResult={blogsResult}
-        latestResult={latestResult}
-        popularResult={popularResult}
-      />
+      <Suspense
+        fallback={<div className="w-full text-center py-10">Loading...</div>}
+      >
+        <Blogs
+          isAuthenticated={!!account}
+          feed={feed}
+          fetchResult={blogsResult}
+          latestResult={latestResult}
+          popularResult={popularResult}
+        />
+      </Suspense>
     </div>
   )
 }
