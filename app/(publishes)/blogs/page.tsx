@@ -1,6 +1,6 @@
 import React from "react"
 
-import Blogs from "./Blogs"
+// import Blogs from "./Blogs"
 import { getAccount } from "@/lib/server"
 import { getProfileById, fetchPublishes } from "@/graphql"
 
@@ -20,6 +20,7 @@ export default async function Page({ searchParams }: Props) {
       : await getProfileById(account?.defaultProfile?.id)
 
   const feed = searchParams.feed
+  console.log("feed -->", feed)
 
   // Fetch blogs (for you)
   const blogsResult = await fetchPublishes({
@@ -27,6 +28,7 @@ export default async function Page({ searchParams }: Props) {
     cursor: null,
     publishType: "blogs",
   })
+  console.log("blogs -->", blogsResult)
 
   // Fetch blogs (latest)
   const latestResult = await fetchPublishes({
@@ -35,6 +37,7 @@ export default async function Page({ searchParams }: Props) {
     publishType: "blogs",
     orderBy: "latest",
   })
+  console.log("latest -->", latestResult)
 
   // Fetch blogs (popular)
   const popularResult = await fetchPublishes({
@@ -43,16 +46,18 @@ export default async function Page({ searchParams }: Props) {
     publishType: "blogs",
     orderBy: "popular",
   })
+  console.log("popular -->", popularResult)
 
   return (
     <div className="px-2 sm:px-4 py-2 sm:ml-[100px]">
-      <Blogs
+      {/* <Blogs
         isAuthenticated={!!account}
         feed={feed}
         fetchResult={blogsResult}
         latestResult={latestResult}
         popularResult={popularResult}
-      />
+      /> */}
+      Blogs
     </div>
   )
 }
