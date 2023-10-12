@@ -22,7 +22,7 @@ import FeedTabs from "./FeedTabs"
 interface Props {
   isAuthenticated: boolean
   feed?: string
-  // fetchResult: string | undefined
+  fetchResult: string | undefined
   // latestResult: string | undefined
   // popularResult: string | undefined
   // fetchResult: Maybe<FetchPublishesResponse> | undefined
@@ -33,8 +33,8 @@ interface Props {
 export default function BlogPosts({
   isAuthenticated,
   feed,
-}: // fetchResult,
-// latestResult,
+  fetchResult,
+}: // latestResult,
 // popularResult,
 Props) {
   // const [targetBlog, setTargetBlog] = useState<Publish>()
@@ -100,7 +100,7 @@ Props) {
   // )
 
   console.log("feed -->", feed)
-  // console.log("blogs -->", fetchResult)
+  console.log("blogs -->", fetchResult)
   // console.log("latest -->", latestResult)
   // console.log("popular -->", popularResult)
   return (
