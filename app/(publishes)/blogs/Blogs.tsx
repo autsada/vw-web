@@ -96,6 +96,10 @@ export default function Blogs({
     [openShareModal]
   )
 
+  console.log("feed -->", feed)
+  console.log("blogs -->", fetchResult)
+  console.log("latest -->", latestResult)
+  console.log("popular -->", popularResult)
   return (
     <>
       <div className="w-full pb-40 sm:pb-20">
