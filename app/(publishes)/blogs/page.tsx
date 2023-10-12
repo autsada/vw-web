@@ -20,7 +20,6 @@ export default async function Page({ searchParams }: Props) {
       : await getProfileById(account?.defaultProfile?.id)
 
   const feed = searchParams.feed
-  console.log("feed -->", feed)
 
   // Fetch blogs (for you)
   const blogsResult = await fetchPublishes({

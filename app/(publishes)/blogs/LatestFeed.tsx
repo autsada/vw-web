@@ -84,7 +84,7 @@ export default function LatestFeed({
 
       <div
         ref={observedRef}
-        className="mt-2 w-full h-4 flex items-center justify-center"
+        className="mt-2 py-10 w-full h-4 flex items-center justify-center"
       >
         {loading && <ButtonLoader loading={loading} size={8} color="#d4d4d4" />}
       </div>
